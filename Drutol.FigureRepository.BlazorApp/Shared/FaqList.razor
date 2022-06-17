@@ -1,0 +1,166 @@
+﻿@using MudBlazor
+
+<MudExpansionPanels MultiExpansion="true" Class="mt-4">
+    <MudExpansionPanel>
+        <TitleContent>
+            <div class="d-flex">
+                <MudIcon Icon="@Icons.Material.Filled.ChevronRight" Color="Color.Primary"></MudIcon>
+                <MudText><strong>Q: What are these?</strong></MudText>
+            </div>
+        </TitleContent>
+        <ChildContent>
+            <MudText Typo="Typo.body1">
+                <strong>A:</strong> Some people buy mass produced, pre-painted figures from the companies like Kotobukiya or Alter,
+                deeper in the rabbit hole you have those who buy resin Garage Kits (GKs).
+                <br/>
+                GKs are usually resin-cast figures that come in parts and require manual assembly and painting.
+                <br/>
+                At the end of this chain there's me who after going through with first two steps decided that sculpting something on my own would be fun!
+                <br/>
+                And that's where we are now, I'm creating 3D models which are later split into parts, prepared for 3D printing (sliced),
+                printed using 3D Resin printer and finally assembled and painted.
+            </MudText>
+        </ChildContent>
+    </MudExpansionPanel>
+    <MudExpansionPanel>
+        <TitleContent>
+            <div class="d-flex">
+                <MudIcon Icon="@Icons.Material.Filled.ChevronRight" Color="Color.Primary"></MudIcon>
+                <MudText><strong>Q: What can I do with these?</strong></MudText>
+            </div>
+        </TitleContent>
+        <ChildContent>
+            <MudText Typo="Typo.body1">
+                <strong>A:</strong> The main purpose of these is to print them, paint and display just like you'd with pre-painted figure with added
+                flavour of doing it yourself.
+                <br/> Standard FDM 3D printing (the one that first comes to mind) is sadly not something I can recommend. 4K resolution SLA printer is necessary to achieve
+                satisfactory results.
+                <br/> From other use cases I've seen people laser engraving the models in crystal for example.
+            </MudText>
+        </ChildContent>
+    </MudExpansionPanel>
+    <MudExpansionPanel>
+        <TitleContent>
+            <div class="d-flex">
+                <MudIcon Icon="@Icons.Material.Filled.ChevronRight" Color="Color.Primary"></MudIcon>
+                <MudText><strong>Q: What's the deal with NFTs?</strong></MudText>
+            </div>
+        </TitleContent>
+        <ChildContent>
+            <MudText Typo="Typo.body1">
+                <strong>A:</strong> There's a lot of bad fame around NFTs. Their hopefully now past main use of being just some crappy images stored somewhere on ipfs.
+                <br/>
+                However I believe that they <strong>do have</strong> a reason, you can treat an NFT as a license, be it for movie, book, audio... or in my case a license to download figure.
+                <br/>
+                You can have all of these digital goods in your wallet and precisely speaking immortalized in blockchain. No pesky payment providers, royalties etc.
+                <br/>
+                When you purchase a figure NFT on the marketplace, I'll just ask you to send me your wallet address, validate ownership and generate download link based on this <del>license</del> NFT.
+            </MudText>
+        </ChildContent>
+    </MudExpansionPanel>
+    <MudExpansionPanel>
+        <TitleContent>
+            <div class="d-flex">
+                <MudIcon Icon="@Icons.Material.Filled.ChevronRight" Color="Color.Primary"></MudIcon>
+                <MudText><strong>Q: Is it difficult?</strong></MudText>
+            </div>
+        </TitleContent>
+        <ChildContent>
+            <MudText Typo="Typo.body1">
+                <strong>A:</strong> It is.
+                <br/>
+                <br/>
+                But at the same time it's incredibly satisfying to build something on your own. Lots of skills to obtain and the path will be thorny,
+                it's certainly doable though. I myself started basically from creative black hole (I'm a programmer professionally and no, I'm not doing frontend usually ^^)
+                not having done anything creative at all and while I'm far from mastering anything I have a lot of fun while the results are satisfactory.
+                <br/>
+                It also requires some major investments as it's not cheap hobby by any means.
+            </MudText>
+        </ChildContent>
+    </MudExpansionPanel>  
+    <MudExpansionPanel>
+        <TitleContent>
+            <div class="d-flex">
+                <MudIcon Icon="@Icons.Material.Filled.ChevronRight" Color="Color.Primary"></MudIcon>
+                <MudText><strong>Q: How do I print?</strong></MudText>
+            </div>
+        </TitleContent>
+        <ChildContent>
+            <MudText Typo="Typo.body1">
+                <strong>A:</strong> Assuming you own resin 3D printer, you are provided with Lychee slicer scenes with pre-supported parts. <em>I'm doing these on best-effort basis, sadly can't guarantee these to be the most optimal. I did successfully print them though.</em>
+                In theory you just adjust them to use your resin and printer profile, export, load onto the printer and done.
+                <br/>
+                In reality you most likely will have to rearrange them based on your printer's print volume and other conditions that you know best
+                about your printer and resin.
+                <br/>
+                <br/>
+                If you are entirely new to it you will have to research from scratch, buy printer and necessary equipment. Thankfully there's plenty of resources online.
+                I can recommend getting <em>at least 4K</em> resolution printer with decently sized build plate, I'm using Elegoo Saturn as of writing this.
+            </MudText>
+        </ChildContent>
+    </MudExpansionPanel>
+    <MudExpansionPanel>
+        <TitleContent>
+            <div class="d-flex">
+                <MudIcon Icon="@Icons.Material.Filled.ChevronRight" Color="Color.Primary"></MudIcon>
+                <MudText><strong>Q: How do I paint?</strong></MudText>
+            </div>
+        </TitleContent>
+        <ChildContent>
+            <MudText Typo="Typo.body1">
+                <strong>A:</strong> You can either paint with airbrush or standard brushes, any kind of paint will suffice (Acrylics, Laquers, Enamels).
+                Get ready for a lot of sanding too. <br/>
+                It's quite complex topic as you may imagine and it's not my goal to cover it here entirely. I will recommend this site as a good starting point:
+                <MudLink Href="https://www.plumworkshop.com/guides" Target="_blank" rel="noopener noreferrer">https://www.plumworkshop.com/guides</MudLink>
+            </MudText>
+        </ChildContent>
+    </MudExpansionPanel>
+    <MudExpansionPanel>
+        <TitleContent>
+            <div class="d-flex">
+                <MudIcon Icon="@Icons.Material.Filled.ChevronRight" Color="Color.Primary"></MudIcon>
+                <MudText><strong>Q: Do you sell physicals?</strong></MudText>
+            </div>
+        </TitleContent>
+        <ChildContent>
+            <MudText Typo="Typo.body1">
+                <strong>A:</strong> Nope.
+            </MudText>
+        </ChildContent>
+    </MudExpansionPanel>
+    <MudExpansionPanel>
+        <TitleContent>
+            <div class="d-flex">
+                <MudIcon Icon="@Icons.Material.Filled.ChevronRight" Color="Color.Primary"></MudIcon>
+                <MudText><strong>Q: Are there solid models not split into parts?</strong></MudText>
+            </div>
+        </TitleContent>
+        <ChildContent>
+            <MudText Typo="Typo.body1">
+                <strong>A:</strong> During my workflow I destructively divide the model at the end stages and while there will be little further overall changes, 
+                there will be some tweaks and improvements before final release. Thus the answer is no. 
+                <br/>
+                You can join the parts manually in Blender though as you are given the entire scene.
+            </MudText>
+        </ChildContent>
+    </MudExpansionPanel>   
+    <MudExpansionPanel>
+        <TitleContent>
+            <div class="d-flex">
+                <MudIcon Icon="@Icons.Material.Filled.ChevronRight" Color="Color.Primary"></MudIcon>
+                <MudText><strong>Q: How can I download?</strong></MudText>
+            </div>
+        </TitleContent>
+        <ChildContent>
+            <MudText Typo="Typo.body1">
+                <strong>A:</strong> If you bought via CGTrader they are handling the download, if you bought an NFT you will find a download button
+                on figure details page. You will have to have your wallet extension installed and connected to this website, after that a prompt will pop-up asking to sign a message.
+                This signed message will allow me to verify ownership of given wallet address, if everything checks out I'll display your custom download link.
+            </MudText>
+        </ChildContent>
+    </MudExpansionPanel>
+</MudExpansionPanels>
+
+@code {
+
+}

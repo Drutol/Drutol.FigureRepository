@@ -1,0 +1,66 @@
+﻿@using MudBlazor
+@using MudBlazor.Utilities
+@using Drutol.FigureRepository.BlazorApp.Util
+@inherits LayoutComponentBase
+
+<MudThemeProvider Theme="_theme" @bind-IsDarkMode="@DarkMode"/>
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="3">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudText Typo="Typo.h5" Align="Align.Center" Color="Color.Default">Drutol's Figure Repository</MudText>
+        <MudSpacer />
+        <MudIconButton Icon="@(DarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)" Color="Color.Inherit" OnClick="@((e) => DarkMode = !DarkMode)" />
+    </MudAppBar>
+    <MudDrawer @bind-Open="@_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="3">
+        <NavMenu/>
+    </MudDrawer>
+    <MudMainContent>
+        <CascadingValue Value="_wrapper">
+            @Body
+        </CascadingValue>
+    </MudMainContent>
+</MudLayout>
+@code {
+    bool _drawerOpen = true;
+
+    private readonly ThemeWrapper _wrapper;
+
+    readonly MudTheme _theme = new MudTheme
+    {
+        Palette = new Palette
+        {
+            Primary = Colors.LightGreen.Default,
+            AppbarBackground = Colors.Shades.White,
+            AppbarText = Colors.Shades.Black,
+        },
+        PaletteDark =
+        {
+            Primary = Colors.LightGreen.Default,
+        }
+    };
+
+    private bool _darkMode;
+
+    public MainLayout()
+    {
+        _wrapper = new ThemeWrapper(_theme, () => DarkMode);
+    }
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+    public bool DarkMode
+    {
+        get => _darkMode;
+        set
+        {
+            _darkMode = value;
+            StateHasChanged();
+        }
+    }
+}

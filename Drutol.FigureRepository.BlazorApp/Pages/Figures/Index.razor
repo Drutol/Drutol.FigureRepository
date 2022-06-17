@@ -1,0 +1,52 @@
+﻿@page "/Figures"
+
+@using MudBlazor;
+@using Drutol.FigureRepository.BlazorApp.Infrastructure
+
+@inject FigureProvider FigureProvider;
+
+<MudBreadcrumbs Items="_breadcrumbs"/>
+
+<MudContainer Class="pa-8">
+    <MudText Typo="Typo.h3" Align="Align.Center">
+        Figures for 3D printing
+    </MudText>
+    <MudText Class="mt-8">
+        Figures listed below were sculpted, printed and assembled. They are meant for resin 3D printing. Each figurine has each own details page
+        with additional information and photos.
+    </MudText>
+</MudContainer>
+
+<MudDivider DividerType="DividerType.Middle"/>
+
+<MudContainer Class="pa-8 mb-12">
+    <MudGrid Justify="Justify.SpaceEvenly">
+        @foreach (var figure in FigureProvider.Figures)
+        {
+            <MudItem xs="12" sm="6" md="5" lg="4">
+                <MudCard>
+                    <MudCardMedia Image="@figure.PhotoUrl" Height="400" Style="@($"background-position: {figure.PhotoGravity}")"/>
+                    <MudCardContent Style="min-height: 100px">
+                        <MudText Typo="Typo.h5" Align="Align.Center">@figure.Name</MudText>
+                        <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
+                        <MudText Typo="Typo.body1" Class="mt-2">@figure.Description</MudText>
+                        <MudText Typo="Typo.body2" Class="mt-2">Published: @figure.PublishDate</MudText>
+                    </MudCardContent>
+                    <MudCardActions Class="justify-end">
+                        <MudButton Variant="Variant.Outlined" Color="Color.Primary" Href="@($"Figures/{figure.Name}")">Details</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        }
+    </MudGrid>
+</MudContainer>
+
+
+@code {
+
+    private readonly List<BreadcrumbItem> _breadcrumbs = new()
+    {
+        new BreadcrumbItem("Home", "/", false, "home"),
+        new BreadcrumbItem("Figures", "/Figures")
+    };
+}

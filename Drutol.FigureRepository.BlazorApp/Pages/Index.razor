@@ -1,0 +1,95 @@
+﻿@page "/"
+
+@using MudBlazor
+@using Drutol.FigureRepository.BlazorApp.Infrastructure
+@using Drutol.FigureRepository.BlazorApp.Util
+@inject FigureProvider FigureProvider
+
+<style>
+    #Carousel :nth-child(2) {
+        flex-grow: 0 !important;
+    }  
+    
+    #Carousel :nth-child(2) :nth-child(1)  {
+        align-self: center !important;
+    }  
+    
+    #Carousel :nth-child(2) :nth-child(1) :nth-child(1) {
+        flex-direction: column !important;
+    }
+</style>
+
+<MudPaper Class="ma-8 pa-8" Elevation="3">
+    <MudGrid>
+        <MudItem xs="12" Class="border-l-2 ml-4 mud-border-primary">
+            <MudText Typo="Typo.h3" Align="Align.Left">Welcome!</MudText>
+        </MudItem>   
+
+        <MudItem xs="12" sm="6" Style="align-self: center">
+            <MudCarousel Id="Carousel" Style="height: 464px" ShowBullets="true" ShowArrows="false" AutoCycle="true" TData="object" B>
+                @foreach (var figure in FigureProvider.Figures)
+                {
+                    <MudCarouselItem Transition="Transition.Slide" Style="@($"background-color: {Theme.Palette.BackgroundGrey}")" Class="pa-8 d-flex justify-center rounded">
+                        <MudImage Src="@figure.PhotoUrl" ObjectFit="ObjectFit.Cover" Class="rounded" Elevation="3" Height="400"/>
+                    </MudCarouselItem>
+                }
+            </MudCarousel>
+        </MudItem>
+        <MudItem xs="12" sm="6" Class="border-l-2 mt-4 mb-4 mud-border-primary d-flex flex-column">
+            <MudStack>
+                <MudText Typo="Typo.body1">
+                    Welcome to my figure repository page. I'm hosting here figures I've sculpted in the past and published online.
+                    It serves as:
+                </MudText>
+                <MudStack Class="mt-2" Row="true" AlignItems="AlignItems.Center">
+                    <MudIcon Icon="@Icons.Filled.ChevronRight" Color="Color.Primary"/>
+                    <MudText Typo="Typo.body2" Align="Align.Center"><strong>Archive</strong></MudText>
+                </MudStack>
+                <MudStack Class="mt-2" Row="true" AlignItems="AlignItems.Center">
+                    <MudIcon Icon="@Icons.Filled.ChevronRight" Color="Color.Primary"/>
+                    <MudText Typo="Typo.body2" Align="Align.Center"><strong>Download Service</strong></MudText>
+                </MudStack>
+
+                <MudText Class="mt-2" Typo="Typo.body1">
+                    I'm purely an amateur, sculpting in Blender. Figures are Resin Printed (SLA) on Elegoo Saturn. Files provided are usually:
+                </MudText>
+
+                <MudStack Class="mt-2" Row="true" AlignItems="AlignItems.Center">
+                    <MudIcon Icon="@Icons.Filled.ChevronRight" Color="Color.Primary"/>
+                    <MudText Typo="Typo.body2" Align="Align.Center"><strong>Blender Scenes</strong></MudText>
+                </MudStack>
+                <MudStack Class="mt-2" Row="true" AlignItems="AlignItems.Center">
+                    <MudIcon Icon="@Icons.Filled.ChevronRight" Color="Color.Primary"/>
+                    <MudText Typo="Typo.body2" Align="Align.Center"><strong>Pre-Supported Lychee Slicer Scenes</strong></MudText>
+                </MudStack>   
+                <MudStack Class="mt-2" Row="true" AlignItems="AlignItems.Center">
+                    <MudIcon Icon="@Icons.Filled.ChevronRight" Color="Color.Primary"/>
+                    <MudText Typo="Typo.body2" Align="Align.Center"><strong>STLs</strong></MudText>
+                </MudStack>
+
+                <MudText Class="mt-2" Typo="Typo.body1">
+                    There are no physical options available. You can purchase the models via CGTrader listings or as NFTs on GameStop NFT marketplace.
+                </MudText>
+            </MudStack>
+
+            <MudSpacer/>
+
+            <MudContainer Class="d-flex justify-end align-self-end">
+                <MudButton Variant="Variant.Filled" Href="/Figures"Color="Color.Primary" Size="Size.Large">Browse Figurines</MudButton>
+            </MudContainer>
+        </MudItem>
+    </MudGrid>
+</MudPaper>
+
+<MudPaper Class="ma-8 pa-8" Elevation="3">
+    <MudItem Class="border-l-2 pl-4 mud-border-primary">
+        <MudText Typo="Typo.h4" Align="Align.Left">FAQ</MudText>
+    </MudItem>   
+    
+    <FaqList/>
+</MudPaper>
+
+@code {
+    [CascadingParameter]
+    protected ThemeWrapper Theme { get; set; }
+}

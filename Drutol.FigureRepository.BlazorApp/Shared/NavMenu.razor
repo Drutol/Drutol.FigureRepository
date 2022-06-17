@@ -1,0 +1,16 @@
+﻿@using MudBlazor
+
+<MudNavMenu Bordered="true" Margin="Margin.Normal">
+    <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.House">Home</MudNavLink>
+    <MudNavGroup Title="Figures" Expanded="true"  HideExpandIcon="true" Icon="@Icons.Material.Filled.Man">
+        <MudNavLink Href="/Figures" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.SpaceDashboard">Index</MudNavLink>
+        <MudNavLink Href="/Figures/Ganyu" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.ChevronRight">Ganyu</MudNavLink>
+        <MudNavLink Href="/Figures/Asuka" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.ChevronRight">Asuka</MudNavLink>
+        <MudNavLink Href="/Figures/Lumine" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.ChevronRight">Lumine</MudNavLink>
+    </MudNavGroup>  
+    <MudNavGroup Title="Help" Expanded="true"  HideExpandIcon="true" Icon="@Icons.Material.Filled.Help">
+        <MudNavLink Href="/About" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Info">About</MudNavLink>
+        <MudNavLink Href="/Contact" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.ContactPage">Contact</MudNavLink>
+        <MudNavLink Href="/Faq" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.QuestionAnswer">FAQ</MudNavLink>
+    </MudNavGroup>
+</MudNavMenu>
