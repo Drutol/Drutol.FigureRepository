@@ -2,6 +2,8 @@
 
 @using MudBlazor;
 @using Drutol.FigureRepository.BlazorApp.Infrastructure
+@using Drutol.FigureRepository.BlazorApp.Models.Enums
+@using Drutol.FigureRepository.BlazorApp.Util
 
 @inject FigureProvider FigureProvider;
 
@@ -21,11 +23,12 @@
 
 <MudContainer Class="pa-8 mb-12">
     <MudGrid Justify="Justify.SpaceEvenly">
-        @foreach (var figure in FigureProvider.Figures)
+        @foreach (var figure in FigureProvider.Figures.Where(figure => figure.Media.Any(media => media.Display.HasFlag(FigurePhotoIntendedDisplay.FigureIndex))))
         {
+            var photo = figure.Media.First(media => media.Display.HasFlag(FigurePhotoIntendedDisplay.FigureIndex));
             <MudItem xs="12" sm="6" md="5" lg="4">
                 <MudCard>
-                    <MudCardMedia Image="@figure.PhotoUrl" Height="400" Style="@($"background-position: {figure.PhotoGravity}")"/>
+                    <MudCardMedia Image="@photo.Url" Height="400" Style="@($"background-position: {@photo.Gravity.ToCssValue()}")"/>
                     <MudCardContent Style="min-height: 100px">
                         <MudText Typo="Typo.h5" Align="Align.Center">@figure.Name</MudText>
                         <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>

@@ -1,15 +1,21 @@
-﻿namespace Drutol.FigureRepository.BlazorApp.Models
+﻿namespace Drutol.FigureRepository.BlazorApp.Models;
+
+public record Figure
 {
-    public class Figure
-    {
-        public string Name { get; set; }
-        public string TokenAddress { get; set; }
-        public string Description { get; set; }
-        public string CgTraderLink { get; set; }
+    public string Name { get; init; }
+    public string Description { get; init; }
 
-        public string PhotoUrl { get; set; }
-        public string PhotoGravity { get; set; } = "center";
+    public FigureTechnicalStatistics TechnicalStatistics { get; init; }
+    public FigureDimensions FigureDimensions { get; init; }
+    public FigureNftDetails NftDetails { get; init; }
+    public FigurePrintDetails PrintDetails { get; init; }
 
-        public DateOnly PublishDate { get; set; }
-    }
+    public List<FigureMedia> Media { get; init; }
+    public List<FigureExternalLink> ExternalLinks { get; init; }
+
+    public DateOnly ProjectStartDate { get; init; }
+    public DateOnly SculptDoneDate { get; init; }
+    public DateOnly PrintDoneDate { get; init; }
+    public DateOnly PaintDoneDate { get; init; }
+    public DateOnly PublishDate { get; init; }
 }

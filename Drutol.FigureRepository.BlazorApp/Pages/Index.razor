@@ -2,6 +2,7 @@
 
 @using MudBlazor
 @using Drutol.FigureRepository.BlazorApp.Infrastructure
+@using Drutol.FigureRepository.BlazorApp.Models.Enums
 @using Drutol.FigureRepository.BlazorApp.Util
 @inject FigureProvider FigureProvider
 
@@ -29,9 +30,12 @@
             <MudCarousel Id="Carousel" Style="height: 464px" ShowBullets="true" ShowArrows="false" AutoCycle="true" TData="object" B>
                 @foreach (var figure in FigureProvider.Figures)
                 {
-                    <MudCarouselItem Transition="Transition.Slide" Style="@($"background-color: {Theme.Palette.BackgroundGrey}")" Class="pa-8 d-flex justify-center rounded">
-                        <MudImage Src="@figure.PhotoUrl" ObjectFit="ObjectFit.Cover" Class="rounded" Elevation="3" Height="400"/>
-                    </MudCarouselItem>
+                    @foreach (var photo in figure.Media.Where(media => media.Display.HasFlag(FigurePhotoIntendedDisplay.HomeShowcase)))
+                    {
+                        <MudCarouselItem Transition="Transition.Slide" Style="@($"background-color: {Theme.Palette.BackgroundGrey}")" Class="pa-8 d-flex justify-center rounded">
+                            <MudImage Src="@photo.Url" ObjectFit="ObjectFit.Cover" Class="rounded" Elevation="3" Height="400"/>
+                        </MudCarouselItem>
+                    }
                 }
             </MudCarousel>
         </MudItem>
