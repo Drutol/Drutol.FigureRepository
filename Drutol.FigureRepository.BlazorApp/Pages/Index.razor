@@ -27,7 +27,7 @@
         </MudItem>   
 
         <MudItem xs="12" sm="6" Style="align-self: center">
-            <MudCarousel Id="Carousel" Style="height: 464px" ShowBullets="true" ShowArrows="false" AutoCycle="true" TData="object" B>
+            <MudCarousel Id="Carousel" Style="height: 464px" ShowBullets="true" ShowArrows="false" AutoCycle="true" TData="object">
                 @foreach (var figure in FigureProvider.Figures)
                 {
                     @foreach (var photo in figure.Media.Where(media => media.Display.HasFlag(FigurePhotoIntendedDisplay.HomeShowcase)))

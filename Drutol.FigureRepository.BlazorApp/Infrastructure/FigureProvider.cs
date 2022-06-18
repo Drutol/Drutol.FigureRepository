@@ -21,7 +21,43 @@ public class FigureProvider
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.PrintPrototype,
                     MediaType = FigureMediaType.Photo
-                }
+                },
+                new FigureMedia
+                {
+                    Url = "images/Ganyu.jpg",
+                    IsPortraitOrientation = true,
+                    Display = FigurePhotoIntendedDisplay.All,
+                    Gravity = FigurePhotoGravity.Top,
+                    MediaKind = FigureMediaKind.PrintPrototype,
+                    MediaType = FigureMediaType.Photo
+                },
+                new FigureMedia
+                {
+                    Url = "images/Ganyu.jpg",
+                    IsPortraitOrientation = true,
+                    Display = FigurePhotoIntendedDisplay.All,
+                    Gravity = FigurePhotoGravity.Top,
+                    MediaKind = FigureMediaKind.PrintPrototype,
+                    MediaType = FigureMediaType.Photo
+                },
+                new FigureMedia
+                {
+                    Url = "images/Ganyu.jpg",
+                    IsPortraitOrientation = true,
+                    Display = FigurePhotoIntendedDisplay.All,
+                    Gravity = FigurePhotoGravity.Top,
+                    MediaKind = FigureMediaKind.PrintPrototype,
+                    MediaType = FigureMediaType.Photo
+                },
+                new FigureMedia
+                {
+                    Url = "images/Ganyu.jpg",
+                    IsPortraitOrientation = true,
+                    Display = FigurePhotoIntendedDisplay.All,
+                    Gravity = FigurePhotoGravity.Top,
+                    MediaKind = FigureMediaKind.PrintPrototype,
+                    MediaType = FigureMediaType.Photo
+                },
             },
             PublishDate = new DateOnly(2021, 5, 1)
         },
