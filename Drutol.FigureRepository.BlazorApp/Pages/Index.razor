@@ -2,9 +2,11 @@
 
 @using MudBlazor
 @using Drutol.FigureRepository.BlazorApp.Infrastructure
+@using Drutol.FigureRepository.BlazorApp.Models
 @using Drutol.FigureRepository.BlazorApp.Models.Enums
 @using Drutol.FigureRepository.BlazorApp.Util
 @inject FigureProvider FigureProvider
+@inject IJSRuntime JS
 
 <style>
     #Carousel :nth-child(2) {
@@ -26,14 +28,14 @@
             <MudText Typo="Typo.h3" Align="Align.Left">Welcome!</MudText>
         </MudItem>   
 
-        <MudItem xs="12" sm="6" Style="align-self: center">
+        <MudItem Id="Gallery" xs="12" sm="6" Style="align-self: center">
             <MudCarousel Id="Carousel" Style="height: 464px" ShowBullets="true" ShowArrows="false" AutoCycle="true" TData="object">
                 @foreach (var figure in FigureProvider.Figures)
                 {
                     @foreach (var photo in figure.Media.Where(media => media.Display.HasFlag(FigurePhotoIntendedDisplay.HomeShowcase)))
                     {
                         <MudCarouselItem Transition="Transition.Slide" Style="@($"background-color: {Theme.Palette.BackgroundGrey}")" Class="pa-8 d-flex justify-center rounded">
-                            <MudImage Src="@photo.Url" ObjectFit="ObjectFit.Cover" Class="rounded" Elevation="3" Height="400"/>
+                            <MudImage Src="@photo.Url" ObjectFit="ObjectFit.Cover" Class="rounded" Elevation="3" Height="400" data-pswp-src="@photo.Url" @onclick="() => OnImageClick(figure)"/>
                         </MudCarouselItem>
                     }
                 }
@@ -96,4 +98,17 @@
 @code {
     [CascadingParameter]
     protected ThemeWrapper Theme { get; set; }
+
+    private void OnImageClick(Figure figure)
+    {
+        JS.InvokeVoidAsync("openLightBox",
+            figure.Media.Select(media => new
+            {
+                src = media.Url,
+                width = media.Width,
+                height = media.Height,
+            }).ToArray(),
+            0);
+    }
+
 }

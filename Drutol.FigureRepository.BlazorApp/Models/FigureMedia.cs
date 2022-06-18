@@ -6,6 +6,9 @@ public record FigureMedia
 {
     public string Url { get; init; }
 
+    public int Width { get; set; }
+    public int Height { get; set; }
+
     public bool IsPortraitOrientation { get; init; }
 
     public FigureMediaKind MediaKind { get; init; }

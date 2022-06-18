@@ -20,7 +20,9 @@ public class FigureProvider
                     Display = FigurePhotoIntendedDisplay.All,
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.PrintPrototype,
-                    MediaType = FigureMediaType.Photo
+                    MediaType = FigureMediaType.Photo,    
+                    Width = 768,
+                    Height = 1024
                 },
                 new FigureMedia
                 {
@@ -29,7 +31,9 @@ public class FigureProvider
                     Display = FigurePhotoIntendedDisplay.All,
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.PrintPrototype,
-                    MediaType = FigureMediaType.Photo
+                    MediaType = FigureMediaType.Photo,
+                    Width = 768,
+                    Height = 1024
                 },
                 new FigureMedia
                 {
@@ -38,7 +42,9 @@ public class FigureProvider
                     Display = FigurePhotoIntendedDisplay.All,
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.PrintPrototype,
-                    MediaType = FigureMediaType.Photo
+                    MediaType = FigureMediaType.Photo,
+                    Width = 768,
+                    Height = 1024
                 },
                 new FigureMedia
                 {
@@ -47,7 +53,9 @@ public class FigureProvider
                     Display = FigurePhotoIntendedDisplay.All,
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.PrintPrototype,
-                    MediaType = FigureMediaType.Photo
+                    MediaType = FigureMediaType.Photo,
+                    Width = 768,
+                    Height = 1024
                 },
                 new FigureMedia
                 {
@@ -56,7 +64,9 @@ public class FigureProvider
                     Display = FigurePhotoIntendedDisplay.All,
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.PrintPrototype,
-                    MediaType = FigureMediaType.Photo
+                    MediaType = FigureMediaType.Photo,
+                    Width = 768,
+                    Height = 1024
                 },
             },
             PublishDate = new DateOnly(2021, 5, 1)
@@ -74,7 +84,9 @@ public class FigureProvider
                     Display = FigurePhotoIntendedDisplay.All,
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.PrintPrototype,
-                    MediaType = FigureMediaType.Photo
+                    MediaType = FigureMediaType.Photo,
+                    Width = 768,
+                    Height = 1024
                 }
             },
             PublishDate = new DateOnly(2021, 10, 22)
@@ -92,7 +104,9 @@ public class FigureProvider
                     Display = FigurePhotoIntendedDisplay.All,
                     Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.PrintPrototype,
-                    MediaType = FigureMediaType.Photo
+                    MediaType = FigureMediaType.Photo,
+                    Width = 1152,
+                    Height = 768
                 }
             },
             PublishDate = new DateOnly(2022, 6, 17)
