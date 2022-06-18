@@ -23,24 +23,6 @@
 </div>
 <script src="_framework/blazor.webassembly.js"></script>
 <script src="_content/MudBlazor/MudBlazor.min.js"></script>
-<script type="module">
-    import PhotoSwipeLightbox from '/photoswipe/photoswipe-lightbox.esm.js';
-    function openLightBox(imageArray, index) {
-        const options = {
-            dataSource: imageArray,
-            pswpModule: () => import('/photoswipe/photoswipe.esm.js')
-        };
-        console.log(imageArray);
-        const lightbox = new PhotoSwipeLightbox(options);
-        globalThis.lightbox = lightbox;
-        lightbox.loadAndOpen(index);
-    }
-
-    
-    globalThis.openLightBox = openLightBox;
-    </script>
-<script>
-
-</script>
+<script src="js/photoswipeIntegration.js" type="module"></script>
 </body>
 </html>

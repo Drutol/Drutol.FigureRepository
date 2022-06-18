@@ -9,7 +9,7 @@
 @inject IJSRuntime JS
 
 <style>
-    #Carousel :nth-child(2) {
+/*    #Carousel :nth-child(2) {
         flex-grow: 0 !important;
     }  
     
@@ -19,7 +19,12 @@
     
     #Carousel :nth-child(2) :nth-child(1) :nth-child(1) {
         flex-direction: column !important;
+    }*/
+
+    .CarouselBullet {
+        color: var(--mud-palette-primary-darken) !important;
     }
+
 </style>
 
 <MudPaper Class="ma-8 pa-8" Elevation="3">
@@ -29,46 +34,43 @@
         </MudItem>   
 
         <MudItem Id="Gallery" xs="12" sm="6" Style="align-self: center">
-            <MudCarousel Id="Carousel" Style="height: 464px" ShowBullets="true" ShowArrows="false" AutoCycle="true" TData="object">
-                @foreach (var figure in FigureProvider.Figures)
+            <MudCarousel Id="Carousel" Style="height: 464px" ShowBullets="false" BulletsClass="CarouselBullet" ShowArrows="true" AutoCycle="true" TData="object" @bind-SelectedIndex="SelectedCarouselIndex">
+                @foreach (var photo in CarouselPhotos)
                 {
-                    @foreach (var photo in figure.Media.Where(media => media.Display.HasFlag(FigurePhotoIntendedDisplay.HomeShowcase)))
-                    {
-                        <MudCarouselItem Transition="Transition.Slide" Style="@($"background-color: {Theme.Palette.BackgroundGrey}")" Class="pa-8 d-flex justify-center rounded">
-                            <MudImage Src="@photo.Url" ObjectFit="ObjectFit.Cover" Class="rounded" Elevation="3" Height="400" data-pswp-src="@photo.Url" @onclick="() => OnImageClick(figure)"/>
-                        </MudCarouselItem>
-                    }
+                    <MudCarouselItem Transition="Transition.Slide" Style="@($"background-color: {Theme.Palette.BackgroundGrey}")" Class="pa-8 d-flex justify-center rounded">
+                        <MudImage Src="@photo.Url" ObjectFit="ObjectFit.Cover" Class="rounded" Elevation="3" Height="400" data-pswp-src="@photo.Url" @onclick="OnImageClick"/>
+                    </MudCarouselItem>
                 }
             </MudCarousel>
         </MudItem>
         <MudItem xs="12" sm="6" Class="border-l-2 mt-4 mb-4 mud-border-primary d-flex flex-column">
-            <MudStack>
+            <MudStack Spacing="0">
                 <MudText Typo="Typo.body1">
                     Welcome to my figure repository page. I'm hosting here figures I've sculpted in the past and published online.
                     It serves as:
                 </MudText>
-                <MudStack Class="mt-2" Row="true" AlignItems="AlignItems.Center">
+                <MudStack Class="mt-1" Row="true" AlignItems="AlignItems.Center">
                     <MudIcon Icon="@Icons.Filled.ChevronRight" Color="Color.Primary"/>
                     <MudText Typo="Typo.body2" Align="Align.Center"><strong>Archive</strong></MudText>
                 </MudStack>
-                <MudStack Class="mt-2" Row="true" AlignItems="AlignItems.Center">
+                <MudStack Class="mt-1" Row="true" AlignItems="AlignItems.Center">
                     <MudIcon Icon="@Icons.Filled.ChevronRight" Color="Color.Primary"/>
                     <MudText Typo="Typo.body2" Align="Align.Center"><strong>Download Service</strong></MudText>
                 </MudStack>
 
                 <MudText Class="mt-2" Typo="Typo.body1">
-                    I'm purely an amateur, sculpting in Blender. Figures are Resin Printed (SLA) on Elegoo Saturn. Files provided are usually:
+                    I'm purely an hobbyist, sculpting in Blender. Figures are Resin Printed (SLA) on Elegoo Saturn. Files provided are usually:
                 </MudText>
 
-                <MudStack Class="mt-2" Row="true" AlignItems="AlignItems.Center">
+                <MudStack Class="mt-1" Row="true" AlignItems="AlignItems.Center">
                     <MudIcon Icon="@Icons.Filled.ChevronRight" Color="Color.Primary"/>
                     <MudText Typo="Typo.body2" Align="Align.Center"><strong>Blender Scenes</strong></MudText>
                 </MudStack>
-                <MudStack Class="mt-2" Row="true" AlignItems="AlignItems.Center">
+                <MudStack Class="mt-1" Row="true" AlignItems="AlignItems.Center">
                     <MudIcon Icon="@Icons.Filled.ChevronRight" Color="Color.Primary"/>
                     <MudText Typo="Typo.body2" Align="Align.Center"><strong>Pre-Supported Lychee Slicer Scenes</strong></MudText>
                 </MudStack>   
-                <MudStack Class="mt-2" Row="true" AlignItems="AlignItems.Center">
+                <MudStack Class="mt-1" Row="true" AlignItems="AlignItems.Center">
                     <MudIcon Icon="@Icons.Filled.ChevronRight" Color="Color.Primary"/>
                     <MudText Typo="Typo.body2" Align="Align.Center"><strong>STLs</strong></MudText>
                 </MudStack>
@@ -99,16 +101,23 @@
     [CascadingParameter]
     protected ThemeWrapper Theme { get; set; }
 
-    private void OnImageClick(Figure figure)
+    public List<FigureMedia> CarouselPhotos { get; set; }
+
+    private void OnImageClick()
     {
-        JS.InvokeVoidAsync("openLightBox",
-            figure.Media.Select(media => new
-            {
-                src = media.Url,
-                width = media.Width,
-                height = media.Height,
-            }).ToArray(),
-            0);
+        CarouselPhotos.OpenGallery(JS, SelectedCarouselIndex);
     }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        CarouselPhotos = FigureProvider
+            .Figures
+            .SelectMany(figure => figure.Media).Where(media => media.Display.HasFlag(FigurePhotoIntendedDisplay.HomeShowcase))
+            .ToList();
+    }
+
+    public int SelectedCarouselIndex { get; set; }
 
 }

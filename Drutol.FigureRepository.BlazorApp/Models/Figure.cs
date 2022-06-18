@@ -4,6 +4,7 @@ public record Figure
 {
     public string Name { get; init; }
     public string Description { get; init; }
+    public string Notes { get; init; }
 
     public FigureTechnicalStatistics TechnicalStatistics { get; init; }
     public FigureDimensions FigureDimensions { get; init; }

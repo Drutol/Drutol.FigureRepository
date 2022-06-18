@@ -3,9 +3,11 @@
 @using MudBlazor
 @using Drutol.FigureRepository.BlazorApp.Infrastructure
 @using Drutol.FigureRepository.BlazorApp.Models
+@using Drutol.FigureRepository.BlazorApp.Models.Enums
 @using Drutol.FigureRepository.BlazorApp.Util
 
 @inject FigureProvider FigureProvider;
+@inject IJSRuntime JS;
 
 <MudBreadcrumbs Items="_breadcrumbs"/>
 
@@ -14,20 +16,34 @@
     <MudGrid Class="mt-2">
         <MudItem xs="12" sm="5" Class="pa-8 rounded" Style="@($"background-color: {Theme.Palette.BackgroundGrey}")">
             <MudText Typo="Typo.h4" Class="border-l-2 ml-4 pl-4 mud-border-primary">Gallery</MudText>
-            <MudCarousel Id="Carousel" Style="height: 496px" ShowBullets="true" ShowArrows="true" AutoCycle="false" TData="object">
-                @foreach (var photo in Figure.Media)
+            <MudCarousel Id="Carousel" Style="height: 456px" ShowBullets="false" ShowArrows="true" AutoCycle="false" TData="object" @bind-SelectedIndex="CarouselSelectedIndex">
+                @foreach (var photo in GalleryItems)
                 {
                     <MudCarouselItem Transition="Transition.Slide" Class="pa-8 d-flex justify-center rounded">
-                        <MudImage Src="@photo.Url" ObjectFit="ObjectFit.Cover" Class="rounded" Elevation="3" Height="400"/>
+                        <MudImage Src="@photo.Url" ObjectFit="ObjectFit.Cover" Class="rounded" Elevation="3" Height="400" @onclick="() => OpenGallery(CarouselSelectedIndex)"/>
                     </MudCarouselItem>
                 }
             </MudCarousel>
+            <MudPaper Class="d-flex pa-2 mr-4 ml-4" Elevation="0" Square="true" Style="justify-content: center">
+                <MudChipSet @bind-SelectedChip="SelectedGalleryKind" Filter="true" Mandatory="true">
+                    @{ var first = true; }
+                    @foreach (var kind in Enum.GetValues<FigureMediaKind>().Reverse())
+                    {
+                        @if (Figure.Media.Any(media => media.MediaKind == kind))
+                        {
+                            <MudChip Tag="@kind" Color="Color.Primary" Variant="Variant.Filled" Default="@first">@kind.ToString()</MudChip>
+                            first = false;
+                        }
+                    }
+                </MudChipSet>
+            </MudPaper>
             <MudGrid Spacing="0" Class="mt-2 justify-center" Justify="Justify.SpaceBetween">
-                @foreach (var photo in Figure.Media)
+                @foreach (var photo in GalleryItems)
                 {
                     <MudItem Class="ma-2" Style="width: 100px; height: 100px;">
-                        <MudButton Class="d-flex" Style="padding: 0px" 
+                        <MudButton Class="d-flex" Style="padding: 0px"
                                    Variant="Variant.Filled" Color="Color.Primary"
+                                   OnClick="() => OpenGallery(GalleryItems.IndexOf(photo))"
                                    DisableElevation="false">
                             <MudImage Src="@photo.Url" ObjectFit="ObjectFit.Cover" Class="rounded align-center" Width="100" Height="100"/>
                         </MudButton>
@@ -55,11 +71,27 @@ else
     [Parameter]
     public string Name { get; set; }
 
+    public int CarouselSelectedIndex { get; set; }
+
+    public MudChip SelectedGalleryKind
+    {
+        get => _selectedGalleryKindChip;
+        set
+        {
+            _selectedGalleryKindChip = value;
+            RefreshGallery();
+        }
+    }
+
+    public List<FigureMedia> GalleryItems { get; set; } = new();
+
     private readonly List<BreadcrumbItem> _breadcrumbs = new()
     {
         new BreadcrumbItem("Home", "/", false, "home"),
         new BreadcrumbItem("Figures", "/Figures")
     };
+
+    private MudChip _selectedGalleryKindChip;
 
     public Figure? Figure { get; set; }
 
@@ -71,5 +103,20 @@ else
             _breadcrumbs.RemoveAt(2);
         _breadcrumbs.Add(new BreadcrumbItem(Name, $"/Figures/{Name}"));
         Figure = FigureProvider.Figures.FirstOrDefault(figure => figure.Name.Equals(Name));
+        RefreshGallery();
+    }
+
+    private void RefreshGallery()
+    {
+        if(Figure == null)
+            return;
+
+        var kind = (FigureMediaKind?)_selectedGalleryKindChip?.Tag ?? Figure.Media.Select(media => media.MediaKind).MaxBy(mediaKind => (int)mediaKind);
+        GalleryItems = Figure.Media.Where(media => media.MediaKind == kind).ToList();
+    }
+
+    private void OpenGallery(int index)
+    {
+        GalleryItems.OpenGallery(JS, index);
     }
 }
