@@ -3,7 +3,7 @@
 ###############################################################################
 * text=auto
 
-wwwroot/** linguist-vendored
+Drutol.FigureRepository.BlazorApp/wwwroot/** linguist-vendored
 
 ###############################################################################
 # Set default behavior for command prompt diff.
