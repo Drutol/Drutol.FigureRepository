@@ -5,7 +5,6 @@ public enum FigureMediaKind
     ShadedRender,
     SculptRender,
     PrintPrototype,
-    PaintWorkInProgress,
+    WorkInProgress,
     Painted,
-    PaintedShowcase
 }

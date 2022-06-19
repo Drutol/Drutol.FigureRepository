@@ -10,14 +10,18 @@
 @inject FigureProvider FigureProvider;
 @inject IJSRuntime JS;
 
-<component type="typeof(FigureDatail)" render-mode="WebAssembly" />
+<style>
+    .ToolbarMenuPopover {
+
+    }
+</style>
 
 <MudBreadcrumbs Items="_breadcrumbs"/>
 
 @if (Figure != null)
 {
     <MudGrid Class="mt-2">
-        <MudItem xs="12" sm="5" Class="pa-8 rounded" Style="@($"background-color: {Theme.Palette.BackgroundGrey}")">
+        <MudItem xs="12" sm="5" Class="pa-4 rounded" Style="@($"background-color: {Theme.Palette.BackgroundGrey}")">
             <MudText Typo="Typo.h4" Class="border-l-2 ml-4 pl-4 mud-border-primary">Gallery</MudText>
             <MudCarousel Id="Carousel" Style="height: 456px" ShowBullets="false" ShowArrows="true" AutoCycle="false" TData="object" @bind-SelectedIndex="CarouselSelectedIndex">
                 @foreach (var photo in GalleryItems)
@@ -28,25 +32,23 @@
                 }
             </MudCarousel>
             <MudPaper Class="d-flex pa-2 mr-4 ml-4" Elevation="0" Square="true" Style="justify-content: center">
-                <MudChipSet @bind-SelectedChip="SelectedGalleryKind" Filter="true" Mandatory="true">
-                    @{ var first = true; }
+                <MudChipSet SelectedValues="SelectedGalleryKind" SelectedValuesChanged="OnGalleryFilterChange" Filter="true" Mandatory="true">
                     @foreach (var kind in Enum.GetValues<FigureMediaKind>().Reverse())
                     {
                         @if (Figure.Media.Any(media => media.MediaKind == kind))
                         {
-                            <MudChip Tag="@kind" Color="Color.Primary" Variant="Variant.Filled" Default="@first">@kind.ToString()</MudChip>
-                            first = false;
+                            <MudChip Color="Color.Primary" Variant="Variant.Filled" Value="@kind">@kind.Str()</MudChip>
                         }
                     }
                 </MudChipSet>
             </MudPaper>
-            <MudGrid Spacing="0" Class="mt-2 justify-center" Justify="Justify.SpaceBetween" Style="max-height: 232px; overflow: auto">
+            <MudGrid Spacing="0" Class="mt-2" Justify="Justify.Center" Style="max-height: 232px; overflow: auto; align-content: flex-start">
                 @foreach (var photo in GalleryItems)
                 {
                     <MudItem Class="ma-2" Style="width: 100px; height: 100px;">
                         <MudButton Class="d-flex" Style="padding: 0px"
                                    Variant="Variant.Filled" Color="Color.Primary"
-                                   OnClick="() => OpenGallery(GalleryItems.IndexOf(photo))"
+                                   OnClick="() => OpenGallery(photo)"
                                    DisableElevation="false">
                             <MudImage Src="@photo.Url" ObjectFit="ObjectFit.Cover" Class="rounded align-center" Width="100" Height="100"/>
                         </MudButton>
@@ -55,9 +57,38 @@
             </MudGrid>
         </MudItem>
         <MudItem xs="12" sm="7">
-            <MudPaper Elevation="3" Class="pa-8 ma-8">
-                <MudText Typo="Typo.h4" Class="border-l-2 pl-4 mud-border-primary">@Figure.Name</MudText>
-                <MudText Typo="Typo.body1" Class="border-l-2 pl-4 mud-border-primary">@Figure.Description</MudText>
+            <MudPaper Elevation="2" Square="false" Class="ml-8 mr-8" >
+                <MudToolBar>
+                    <MudMenu Size="Size.Large" PopoverClass="pr-2 pl-2">
+                        <ActivatorContent>
+                            <MudButton StartIcon="@Icons.Material.Outlined.AccountBalanceWallet" Color="Color.Inherit">Wallet</MudButton>
+                        </ActivatorContent>
+                        <ChildContent>
+                            <MudMenuItem>
+                                <Metamask/>
+                            </MudMenuItem>
+                        </ChildContent>
+                    </MudMenu>
+                    <MudSpacer/>
+                    <MudMenu Size="Size.Large" AnchorOrigin="Origin.BottomCenter" PopoverClass="pr-2 pl-2">
+                        <ActivatorContent>
+                            <MudButton StartIcon="@Icons.Material.Outlined.Download" Size="Size.Large">Download</MudButton>
+                        </ActivatorContent>
+                        <ChildContent>
+                            <MudStack>
+                                <MudButton StartIcon="@Icons.Filled.ViewInAr">Blender Scene</MudButton>
+                                <MudButton StartIcon="@Icons.Filled.Print">Lychee Scenes</MudButton>
+                                <MudButton StartIcon="@Icons.Filled.Print">STLs</MudButton>
+                            </MudStack>
+                        </ChildContent>
+                    </MudMenu>
+                </MudToolBar>
+            </MudPaper>
+
+            <MudPaper Elevation="3" Class="ml-8 mr-8 mt-4 pa-4">
+                <MudText Typo="Typo.h4" Class="mt-4 border-l-2 pl-4 mud-border-primary">@Figure.Name</MudText>
+                <MudText Typo="Typo.body1" Class="ml-4">@Figure.Description</MudText>
+
                 <MudContainer Class="d-flex flex-wrap flex-row mt-4" Style="justify-content: center">
                     <MudItem xs="12" sm="7" Class="pb-4" Style="max-width: unset !important; flex-grow: 1 !important">
                         <MudGrid>
@@ -73,7 +104,7 @@
                                     <MudStack Row="true" AlignItems="AlignItems.Center">
                                         <MudTooltip Text="Maximum single part dimension at the default scale.">
                                             <MudText Typo="Typo.subtitle1" Align="Align.Center">
-                                                <span class="border-b-2 border-dashed mud-border-primary">
+                                                <span class="border-b-2 border-dashed mud-border-primary pb-1">
                                                     Biggest Object
                                                 </span>
                                             </MudText>
@@ -83,7 +114,7 @@
                                     <MudText Typo="Typo.body2"><strong>Height:</strong> @Figure.PrintDetails.BiggestPartDimension.Height.ToString("N0") mm</MudText>
                                     <MudText Typo="Typo.body2"><strong>Length:</strong> @Figure.PrintDetails.BiggestPartDimension.Length.ToString("N0") mm</MudText>
                                 </MudStack>
-                            </MudItem>  
+                            </MudItem>
                             <MudItem xs="6">
                                 <MudStack>
                                     <MudStack Row="true" AlignItems="AlignItems.Center">
@@ -98,14 +129,14 @@
                                     <MudText Typo="Typo.body2"><strong>Triangles:</strong> @Figure.TechnicalStatistics.Triangles.ToMetric(MetricNumeralFormats.WithSpace, 2)</MudText>
                                     <MudText Typo="Typo.body2"><strong>Faces:</strong> @Figure.TechnicalStatistics.Faces.ToMetric(MetricNumeralFormats.WithSpace, 2)</MudText>
                                 </MudStack>
-                            </MudItem>   
+                            </MudItem>
                             <MudItem xs="6">
                                 <MudStack>
                                     <MudStack Row="true" AlignItems="AlignItems.Center">
                                         <MudIcon Icon="@Icons.Filled.Print"/>
                                         <MudText Typo="Typo.h6" Align="Align.Center">Printing</MudText>
                                     </MudStack>
-                                    <MudText Typo="Typo.body2"><strong>Number of parts: </strong> 
+                                    <MudText Typo="Typo.body2"><strong>Number of parts: </strong>
                                         @if (Figure.PrintDetails.MinNumberOfParts == Figure.PrintDetails.MaxNumberOfParts)
                                         {
                                             @Figure.PrintDetails.MaxNumberOfParts
@@ -119,11 +150,16 @@
                                             </MudTooltip>
                                         }
                                     </MudText>
-                                    <MudText Typo="Typo.body2"><strong>Clear Parts:</strong> @Figure.PrintDetails.NumberOfClearParts</MudText>
+                                    <MudText Typo="Typo.body2">
+                                        <MudTooltip Text="Some parts were designed to be printed clear (translucent). Separate kind of resin required.">
+                                            <span class="border-b-2 border-dashed mud-border-primary">
+                                                <strong>Clear Parts: </strong>
+                                            </span>
+                                        </MudTooltip>
+                                        @Figure.PrintDetails.NumberOfClearParts
+                                    </MudText>
                                     <MudText Typo="Typo.body2"><strong>Print Batches:</strong> @Figure.PrintDetails.NumberOfPrintBatches</MudText>
-                                    <MudText Typo="Typo.body2"><strong>Resin - Parts:</strong> @Figure.PrintDetails.PrintResinVolumeParts ml</MudText>
-                                    <MudText Typo="Typo.body2"><strong>Resin - Supports:</strong> @Figure.PrintDetails.PrintResinVolumeSupports ml</MudText>
-                                    <MudText Typo="Typo.body2"><strong>Resin - Total:</strong> @(Figure.PrintDetails.PrintResinVolumeParts + Figure.PrintDetails.PrintResinVolumeSupports) ml</MudText>
+                                    <MudText Typo="Typo.body2"><strong>Resin Volume:</strong> @Figure.PrintDetails.PrintResinVolume ml</MudText>
                                 </MudStack>
                             </MudItem>
                             <MudItem xs="6">
@@ -139,7 +175,7 @@
                                 </MudStack>
                             </MudItem>
                         </MudGrid>
-                    </MudItem>   
+                    </MudItem>
                     <MudItem xs="12" sm="5" Style="max-width: unset !important;">
                         <MudStack Row="true" AlignItems="AlignItems.Center">
                             <MudIcon Icon="@Icons.Filled.EventRepeat"/>
@@ -156,7 +192,7 @@
                                                             FigureTimelineEvent.Publish=> Color.Primary,
                                                             FigureTimelineEvent.ProjectInception => Color.Info,
                                                             _=> Color.Default })">
-                                    <MudText Typo="Typo.button">@step.Event</MudText>
+                                    <MudText Typo="Typo.button">@step.Event.Str()</MudText>
                                     <MudText Typo="Typo.body2" Class="mud-text-secondary">@step.Date</MudText>
                                 </MudTimelineItem>
                             }
@@ -181,11 +217,9 @@ else
     public string Name { get; set; }
 
     public List<FigureMedia> GalleryItems { get; set; } = new();
-
     public Figure? Figure { get; set; }
-
+    public List<object> SelectedGalleryKind { get; set; }
     public int CarouselSelectedIndex { get; set; }
-    private MudChip? _selectedGalleryKindChip;
 
     private readonly List<BreadcrumbItem> _breadcrumbs = new()
     {
@@ -193,40 +227,43 @@ else
         new BreadcrumbItem("Figures", "/Figures")
     };
 
-    public MudChip? SelectedGalleryKind
+
+    private void OnGalleryFilterChange(IEnumerable<object> filters)
     {
-        get => _selectedGalleryKindChip;
-        set
-        {
-            _selectedGalleryKindChip = value;
-            RefreshGallery();
-        }
+        SelectedGalleryKind = filters.ToList();
+        RefreshGallery();
     }
 
     protected override async Task OnParametersSetAsync()
     {
         await base.OnParametersSetAsync();
 
-        //await Task.Delay(10);
-
-        _selectedGalleryKindChip = null;
         if(_breadcrumbs.Count == 3)
             _breadcrumbs.RemoveAt(2);
         _breadcrumbs.Add(new BreadcrumbItem(Name, $"/Figures/{Name}"));
         Figure = FigureProvider.Figures.FirstOrDefault(figure => figure.Name.Equals(Name));
+
+        if(Figure == null)
+            return;
+
+        SelectedGalleryKind = new List<object> { Figure.Media.MaxBy(media => media.MediaKind).MediaKind };
         RefreshGallery();
     }
-
 
     private void RefreshGallery()
     {
         if(Figure == null)
             return;
 
-        var kind = (FigureMediaKind?)_selectedGalleryKindChip?.Tag ?? Figure.Media.Select(media => media.MediaKind).MaxBy(mediaKind => (int)mediaKind);
+        var kind = (FigureMediaKind)SelectedGalleryKind.First();
         GalleryItems = Figure.Media.Where(media => media.MediaKind == kind).ToList();
     }
 
+    private void OpenGallery(FigureMedia photo)
+    {
+        GalleryItems.OpenGallery(JS, GalleryItems.IndexOf(photo));
+    }   
+    
     private void OpenGallery(int index)
     {
         GalleryItems.OpenGallery(JS, index);

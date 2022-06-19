@@ -1,11 +1,17 @@
-﻿namespace Drutol.FigureRepository.BlazorApp.Models;
+﻿using Drutol.FigureRepository.BlazorApp.Models.Enums;
+
+namespace Drutol.FigureRepository.BlazorApp.Models;
 
 public record Figure
 {
+    public long Id { get; init; }
     public string Name { get; init; }
+    public string Flavour { get; init; }
     public string Description { get; init; }
     public string Notes { get; init; }
+    public FigureEyeType EyeType { get; set; }
 
+    public FigureCharacter FigureCharacter { get; set; }
     public FigureTechnicalStatistics TechnicalStatistics { get; init; }
     public FigureDimensions FigureDimensions { get; init; }
     public FigureNftDetails NftDetails { get; init; }

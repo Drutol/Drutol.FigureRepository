@@ -10,29 +10,198 @@ public class FigureProvider
         new Figure
         {
             Name = "Ganyu",
+            Notes = "Printed back in the day on small Photon S printer.",
             Description = "Ganyu from GenshinImpact based on her Banner Art.",
             Media = new List<FigureMedia>
             {
+                #region Photos
+
                 new FigureMedia
                 {
-                    Url = "images/Ganyu.jpg",
+                    Url = "images/Ganyu/Photos/Main.jpg",
+                    Name = "Main",
                     IsPortraitOrientation = true,
                     Display = FigurePhotoIntendedDisplay.All,
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.PrintPrototype,
                     MediaType = FigureMediaType.Photo,
-                    Width = 768,
-                    Height = 1024
+                    Width = 1080,
+                    Height = 1440
                 },
+                new FigureMedia
+                {
+                    Url = "images/Ganyu/Photos/BacklightSilhouette.jpg",
+                    Name = "Silhouette on lit background.",
+                    IsPortraitOrientation = true,
+                    Display = FigurePhotoIntendedDisplay.All,
+                    Gravity = FigurePhotoGravity.Top,
+                    MediaKind = FigureMediaKind.PrintPrototype,
+                    MediaType = FigureMediaType.Photo,
+                    Width = 1080,
+                    Height = 1440
+                },
+
+                #endregion
+
+                #region Sculpt
+
+                new FigureMedia
+                {
+                    Url = "images/Ganyu/Sculpt/Front.jpg",
+                    Name = "Front",
+                    IsPortraitOrientation = true,
+                    Display = FigurePhotoIntendedDisplay.All,
+                    Gravity = FigurePhotoGravity.Top,
+                    MediaKind = FigureMediaKind.SculptRender,
+                    MediaType = FigureMediaType.Photo,
+                    Width = 1080,
+                    Height = 1080
+                },
+                new FigureMedia
+                {
+                    Url = "images/Ganyu/Sculpt/Face.jpg",
+                    Name = "Face",
+                    IsPortraitOrientation = true,
+                    Display = FigurePhotoIntendedDisplay.Gallery,
+                    Gravity = FigurePhotoGravity.Top,
+                    MediaKind = FigureMediaKind.SculptRender,
+                    MediaType = FigureMediaType.Photo,
+                    Width = 1080,
+                    Height = 1080
+                },
+                new FigureMedia
+                {
+                    Url = "images/Ganyu/Sculpt/FrontBottom.jpg",
+                    Name = "Bottom Closeup",
+                    IsPortraitOrientation = true,
+                    Display = FigurePhotoIntendedDisplay.Gallery,
+                    Gravity = FigurePhotoGravity.Top,
+                    MediaKind = FigureMediaKind.SculptRender,
+                    MediaType = FigureMediaType.Photo,
+                    Width = 1080,
+                    Height = 1080
+                },
+                new FigureMedia
+                {
+                    Url = "images/Ganyu/Sculpt/LeftSide.jpg",
+                    Name = "Left Side",
+                    IsPortraitOrientation = true,
+                    Display = FigurePhotoIntendedDisplay.Gallery,
+                    Gravity = FigurePhotoGravity.Top,
+                    MediaKind = FigureMediaKind.SculptRender,
+                    MediaType = FigureMediaType.Photo,
+                    Width = 1080,
+                    Height = 1080
+                },
+                new FigureMedia
+                {
+                    Url = "images/Ganyu/Sculpt/Base.jpg",
+                    Name = "Base",
+                    IsPortraitOrientation = true,
+                    Display = FigurePhotoIntendedDisplay.Gallery,
+                    Gravity = FigurePhotoGravity.Top,
+                    MediaKind = FigureMediaKind.SculptRender,
+                    MediaType = FigureMediaType.Photo,
+                    Width = 1080,
+                    Height = 1080
+                },
+                new FigureMedia
+                {
+                    Url = "images/Ganyu/Sculpt/BackBottom.jpg",
+                    Name = "Back Bottom",
+                    IsPortraitOrientation = true,
+                    Display = FigurePhotoIntendedDisplay.Gallery,
+                    Gravity = FigurePhotoGravity.Top,
+                    MediaKind = FigureMediaKind.SculptRender,
+                    MediaType = FigureMediaType.Photo,
+                    Width = 1080,
+                    Height = 1080
+                },
+                new FigureMedia
+                {
+                    Url = "images/Ganyu/Sculpt/Back.jpg",
+                    Name = "Back",
+                    IsPortraitOrientation = true,
+                    Display = FigurePhotoIntendedDisplay.Gallery,
+                    Gravity = FigurePhotoGravity.Top,
+                    MediaKind = FigureMediaKind.SculptRender,
+                    MediaType = FigureMediaType.Photo,
+                    Width = 1080,
+                    Height = 1080
+                },
+
+                #endregion
             },
             Timeline = new List<FigureTimelineEntry>
             {
-                new FigureTimelineEntry
+                new()
+                {
+                    Event = FigureTimelineEvent.ProjectInception,
+                    Date = new(2020, 12, 19)
+                },
+                new()
+                {
+                    Event = FigureTimelineEvent.SculptDone,
+                    Date = new(2021, 2, 15)
+                },              
+                new()
+                {
+                    Event = FigureTimelineEvent.PrintDone,
+                    Date = new(2021, 3, 4)
+                },
+                new()
                 {
                     Event = FigureTimelineEvent.Publish,
-                    Date = new DateOnly(2021, 5, 1)
+                    Date = new DateOnly(2021, 3, 13)
                 }
-            }
+            },
+            FigureDimensions = new()
+            {
+                Height = 282,
+                Width = 184,
+                Length = 191
+            },
+            TechnicalStatistics = new()
+            {
+                Vertices = 11_414_652,
+                Faces = 13_850_121,
+                Triangles = 22_829_528,
+                LycheeScenesSize = 2_250_981_376,
+                BlendFileSize = 2_333_720_576,
+                StlsSize = 1_197_367_696
+            },
+            PrintDetails = new()
+            {
+                MinNumberOfParts = 39,
+                MaxNumberOfParts = 42,
+                NumberOfClearParts = 7,
+                BiggestPartDimension = new FigureDimensions
+                {
+                    Width = 100,
+                    Height = 68,
+                    Length = 190,
+                },
+                PrintResinVolume = 1488,
+                NumberOfPrintBatches = 18
+            },
+            ExternalLinks = new()
+            {
+                new()
+                {
+                    Type = FigureExternalLinkType.CgTrader,
+                    Url = "https://www.cgtrader.com/3d-print-models/art/sculptures/ganyu-from-genshin-impact-sculpture-for-3d-printing",
+                },
+                new()
+                {
+                    Type = FigureExternalLinkType.Twitter,
+                    Url = "https://twitter.com/Drutol/status/1369716421907873794"
+                },
+                new()
+                {
+                    Type = FigureExternalLinkType.ArtStation,
+                    Url = "https://www.artstation.com/artwork/DAQ49A"
+                }
+            },
         },
         new Figure
         {
@@ -119,18 +288,6 @@ public class FigureProvider
                 },
                 new FigureMedia
                 {
-                    Url = "images/Asuka/Photos/FrontAlt.jpg",
-                    Name = "Front",
-                    IsPortraitOrientation = false,
-                    Display = FigurePhotoIntendedDisplay.Gallery,
-                    Gravity = FigurePhotoGravity.Center,
-                    MediaKind = FigureMediaKind.Painted,
-                    MediaType = FigureMediaType.Photo,
-                    Width = 1619,
-                    Height = 1080
-                },
-                new FigureMedia
-                {
                     Url = "images/Asuka/Photos/LeftBack.jpg",
                     Name = "Back Left",
                     IsPortraitOrientation = false,
@@ -200,18 +357,6 @@ public class FigureProvider
                     Name = "Front Bottom",
                     IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.All,
-                    Gravity = FigurePhotoGravity.Center,
-                    MediaKind = FigureMediaKind.ShadedRender,
-                    MediaType = FigureMediaType.Photo,
-                    Width = 1920,
-                    Height = 1080
-                },
-                new FigureMedia
-                {
-                    Url = "images/Asuka/Render/AsukaMainAlt.jpg",
-                    Name = "Main Alternative",
-                    IsPortraitOrientation = false,
-                    Display = FigurePhotoIntendedDisplay.Gallery,
                     Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.ShadedRender,
                     MediaType = FigureMediaType.Photo,
@@ -318,6 +463,18 @@ public class FigureProvider
                 {
                     Url = "images/Asuka/Render/AsukaBootCloseup.jpg",
                     Name = "Boot closeup",
+                    IsPortraitOrientation = false,
+                    Display = FigurePhotoIntendedDisplay.Gallery,
+                    Gravity = FigurePhotoGravity.Center,
+                    MediaKind = FigureMediaKind.ShadedRender,
+                    MediaType = FigureMediaType.Photo,
+                    Width = 1920,
+                    Height = 1080
+                },
+                new FigureMedia
+                {
+                    Url = "images/Asuka/Render/AsukaAltRightSide.jpg",
+                    Name = "Right Side",
                     IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.Gallery,
                     Gravity = FigurePhotoGravity.Center,
@@ -498,8 +655,7 @@ public class FigureProvider
                 MinNumberOfParts = 37,
                 NumberOfClearParts = 4,
                 NumberOfPrintBatches = 6,
-                PrintResinVolumeParts = 811,
-                PrintResinVolumeSupports = 237,
+                PrintResinVolume = 1148,
             },
             NftDetails = new()
             {
