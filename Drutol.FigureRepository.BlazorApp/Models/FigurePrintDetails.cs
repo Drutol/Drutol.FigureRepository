@@ -9,5 +9,6 @@ public record FigurePrintDetails
 
     public FigureDimensions BiggestPartDimension { get; init; }
 
-    public double PrintResinVolume { get; init; }
+    public double PrintResinVolumeParts { get; set; }
+    public double PrintResinVolumeSupports { get; set; }
 }

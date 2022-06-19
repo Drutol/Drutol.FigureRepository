@@ -13,10 +13,5 @@ public record Figure
 
     public List<FigureMedia> Media { get; init; }
     public List<FigureExternalLink> ExternalLinks { get; init; }
-
-    public DateOnly ProjectStartDate { get; init; }
-    public DateOnly SculptDoneDate { get; init; }
-    public DateOnly PrintDoneDate { get; init; }
-    public DateOnly PaintDoneDate { get; init; }
-    public DateOnly PublishDate { get; init; }
+    public List<FigureTimelineEntry> Timeline { get; set; }
 }

@@ -33,7 +33,18 @@
                         <MudText Typo="Typo.h5" Align="Align.Center">@figure.Name</MudText>
                         <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
                         <MudText Typo="Typo.body1" Class="mt-2">@figure.Description</MudText>
-                        <MudText Typo="Typo.body2" Class="mt-2">Published: @figure.PublishDate</MudText>
+                        @{
+                            var publishEvent = figure.Timeline.FirstOrDefault(entry => entry.Event == FigureTimelineEvent.Publish);
+                        }
+                        @if (publishEvent != null)
+                        {
+                            <MudText Typo="Typo.body2" Class="mt-2">Published: @publishEvent.Date</MudText>
+                        }
+                        else
+                        {
+                            <MudText Typo="Typo.body2" Class="mt-2">Published: TBD</MudText>
+                        }
+
                     </MudCardContent>
                     <MudCardActions Class="justify-end">
                         <MudButton Variant="Variant.Outlined" Color="Color.Primary" Href="@($"Figures/{figure.Name}")">Details</MudButton>

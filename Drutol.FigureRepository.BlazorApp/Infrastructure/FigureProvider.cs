@@ -25,7 +25,14 @@ public class FigureProvider
                     Height = 1024
                 },
             },
-            PublishDate = new DateOnly(2021, 5, 1)
+            Timeline = new List<FigureTimelineEntry>
+            {
+                new FigureTimelineEntry
+                {
+                    Event = FigureTimelineEvent.Publish,
+                    Date = new DateOnly(2021, 5, 1)
+                }
+            }
         },
         new Figure
         {
@@ -45,13 +52,20 @@ public class FigureProvider
                     Height = 1024
                 }
             },
-            PublishDate = new DateOnly(2021, 10, 22)
+            Timeline = new List<FigureTimelineEntry>
+            {
+                new FigureTimelineEntry
+                {
+                    Event = FigureTimelineEvent.Publish,
+                    Date = new(2021, 10, 22)
+                }
+            }
         },
         new Figure
         {
             Name = "Asuka",
             Description = "Asuka from AoKana based on tapestry art in a different outfit.",
-            Media = new List<FigureMedia>
+            Media = new()
             {
                 #region Photos
 
@@ -415,9 +429,82 @@ public class FigureProvider
                 },
 
                 #endregion
-
             },
-            PublishDate = new DateOnly(2022, 6, 17)
+            Timeline = new()
+            {
+                new()
+                {
+                    Date = new DateOnly(2022, 2, 22),
+                    Event = FigureTimelineEvent.ProjectInception
+                },
+                new()
+                {
+                    Date = new(2022, 3, 25),
+                    Event = FigureTimelineEvent.SculptDone
+                },
+                new()
+                {
+                    Date = new(2022, 4, 5),
+                    Event = FigureTimelineEvent.PrintDone
+                },
+                new()
+                {
+                    Date = new(2022, 6, 12),
+                    Event = FigureTimelineEvent.PaintDone
+                },
+                new()
+                {
+                    Date = new DateOnly(2022, 7, 15),
+                    Event = FigureTimelineEvent.Publish
+                }
+            },
+            ExternalLinks = new List<FigureExternalLink>
+            {
+                new()
+                {
+                    Url = "https://www.artstation.com/artwork/G8gomz",
+                    Type = FigureExternalLinkType.ArtStation
+                },
+                new()
+                {
+                    Url = "https://twitter.com/Drutol/status/1523677655769382914",
+                    Type = FigureExternalLinkType.Twitter
+                },
+            },
+            FigureDimensions = new()
+            {
+                Width = 331,
+                Height = 190,
+                Length = 330
+            },
+            TechnicalStatistics = new()
+            {
+                BlendFileSize = 1_470_000_000,
+                LycheeScenesSize = 430_000_000,
+                StlsSize = 1_170_000_000,
+                Vertices = 12_741_292,
+                Faces = 13_537_682,
+                Triangles = 25_482_519,
+            },
+            PrintDetails = new FigurePrintDetails
+            {
+                BiggestPartDimension = new()
+                {
+                    Width = 157,
+                    Height = 32,
+                    Length = 132
+                },
+                MaxNumberOfParts = 50,
+                MinNumberOfParts = 37,
+                NumberOfClearParts = 4,
+                NumberOfPrintBatches = 6,
+                PrintResinVolumeParts = 811,
+                PrintResinVolumeSupports = 237,
+            },
+            NftDetails = new()
+            {
+                TokenAddress = "0xTestTest123TestTest123TestTest123"
+            }
         },
     };
 }

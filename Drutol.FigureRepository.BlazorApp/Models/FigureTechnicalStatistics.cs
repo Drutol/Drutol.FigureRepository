@@ -6,7 +6,7 @@ public record FigureTechnicalStatistics
     public int Triangles { get; init; }
     public int Faces { get; init; }
 
-    public double BlendFileSize { get; init; }
+    public long BlendFileSize { get; init; }
     public double LycheeScenesSize { get; init; }
     public double StlsSize { get; init; }
 }

@@ -4,6 +4,7 @@
     {
         ArtStation,
         CgTrader,
-        GameStopMarketplace
+        GameStopMarketplace,
+        Twitter
     }
 }
