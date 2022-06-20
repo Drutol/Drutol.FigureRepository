@@ -100,18 +100,27 @@ namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
                 return;
             }
 
-            var sha = Sha3Keccack.Current.CalculateHash("balanceOf(address)");
-            var methodSignature = sha.Substring(0, 8); //first 4 bytes make the function signature
-            var methodArgument = SelectedAccountAddress[2..].PadLeft(64, '0'); //arguments have to be encoded as 32 bytes
-            var result = (JsonElement)await MetaMaskService.GenericRpc("eth_call", new
+            try
             {
-                to = Figure.NftDetails.TokenAddress,
-                data = $"0x{methodSignature}{methodArgument}"
-            });
-            var amount = (int)result.GetString().HexToBigInteger(false);
+                var sha = Sha3Keccack.Current.CalculateHash("balanceOf(address)");
+                var methodSignature = sha.Substring(0, 8); //first 4 bytes make the function signature
+                var methodArgument = SelectedAccountAddress[2..].PadLeft(64, '0'); //arguments have to be encoded as 32 bytes
+                var result = (JsonElement)await MetaMaskService.GenericRpc("eth_call", new
+                {
+                    to = Figure.NftDetails.TokenAddress,
+                    data = $"0x{methodSignature}{methodArgument}"
+                }, "latest");
+                var amount = (int)result.GetString().HexToBigInteger(false);
 
-            OwnedTokensCount = amount;
-            IsFigureOwned = amount > 0;
+                OwnedTokensCount = amount;
+                IsFigureOwned = amount > 0;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                OwnedTokensCount = 0;
+                IsFigureOwned = false;
+            }
         }
 
         public async Task UpdateSelectedAddress()

@@ -10,6 +10,7 @@ public record Figure
     public string Description { get; init; }
     public string Notes { get; init; }
     public FigureEyeType EyeType { get; set; }
+    public List<FigureDownloadType> DownloadTypes { get; set; }
 
     public FigureCharacter FigureCharacter { get; set; }
     public FigureTechnicalStatistics TechnicalStatistics { get; init; }

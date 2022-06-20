@@ -5,6 +5,10 @@ VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drutol.FigureRepository.BlazorApp", "Drutol.FigureRepository.BlazorApp\Drutol.FigureRepository.BlazorApp.csproj", "{49E57B9B-ACD6-41EC-9665-BAFB098B6A8E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drutol.FigureRepository.Api", "Drutol.FigureRepository.Api\Drutol.FigureRepository.Api.csproj", "{1611D58B-7B0F-4A49-BD17-AAC6232017AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drutol.FigureRepository.Shared", "Drutol.FigureRepository.Shared\Drutol.FigureRepository.Shared.csproj", "{9CA1F06A-587C-411D-9EFE-DE5C22169BC4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{49E57B9B-ACD6-41EC-9665-BAFB098B6A8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49E57B9B-ACD6-41EC-9665-BAFB098B6A8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49E57B9B-ACD6-41EC-9665-BAFB098B6A8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1611D58B-7B0F-4A49-BD17-AAC6232017AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1611D58B-7B0F-4A49-BD17-AAC6232017AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1611D58B-7B0F-4A49-BD17-AAC6232017AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1611D58B-7B0F-4A49-BD17-AAC6232017AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CA1F06A-587C-411D-9EFE-DE5C22169BC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CA1F06A-587C-411D-9EFE-DE5C22169BC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CA1F06A-587C-411D-9EFE-DE5C22169BC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CA1F06A-587C-411D-9EFE-DE5C22169BC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
