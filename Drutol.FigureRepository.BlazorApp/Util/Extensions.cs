@@ -38,6 +38,11 @@ namespace Drutol.FigureRepository.BlazorApp.Util
             _ => throw new ArgumentOutOfRangeException(nameof(ev), ev, null)
         };
 
+        public static string TruncateAddress(this string str)
+        {
+            return $"{str.Substring(0, 5)}...{str.Substring(str.Length - 4, 4)}";
+        }
+
         public static string ToCssValue(this FigurePhotoGravity gravity)
         {
             return gravity switch

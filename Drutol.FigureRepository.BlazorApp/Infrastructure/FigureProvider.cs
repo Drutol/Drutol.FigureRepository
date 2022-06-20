@@ -659,7 +659,7 @@ public class FigureProvider
             },
             NftDetails = new()
             {
-                TokenAddress = "0xTestTest123TestTest123TestTest123"
+                TokenAddress = "0x7267f3256289ad424835309275511C0BD225D6E1"
             }
         },
     };

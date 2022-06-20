@@ -1,12 +1,9 @@
 using Drutol.FigureRepository.BlazorApp.Infrastructure;
-using Microsoft.AspNetCore.Components.Authorization;
+using MetaMask.Blazor;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using MudBlazor;
 using MudBlazor.Services;
-using Nethereum.Blazor;
-using Nethereum.Metamask;
-using Nethereum.Metamask.Blazor;
-using Nethereum.UI;
 
 namespace Drutol.FigureRepository.BlazorApp.Client;
 
@@ -19,28 +16,13 @@ public class Program
         builder.RootComponents.Add<HeadOutlet>("head::after");
 
         builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-        builder.Services.AddMudServices();
+        builder.Services.AddMudServices(configuration =>
+        {
+            configuration.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomLeft;
+        });
+        builder.Services.AddMetaMaskBlazor();
 
         builder.Services.AddScoped<FigureProvider>();
-
-        #region Nethereum
-
-        builder.Services.AddSingleton<IMetamaskInterop, MetamaskBlazorInterop>();
-        builder.Services.AddSingleton<MetamaskInterceptor>();
-        builder.Services.AddSingleton<MetamaskHostProvider>();
-
-        //Add metamask as the selected ethereum host provider
-        builder.Services.AddSingleton(services =>
-        {
-            var metamaskHostProvider = services.GetService<MetamaskHostProvider>();
-            var selectedHostProvider = new SelectedEthereumHostProviderService();
-            selectedHostProvider.SetSelectedEthereumHostProvider(metamaskHostProvider);
-            return selectedHostProvider;
-        });
-
-        builder.Services.AddSingleton<AuthenticationStateProvider, EthereumAuthenticationStateProvider>();
-
-        #endregion
 
 
         await builder.Build().RunAsync();

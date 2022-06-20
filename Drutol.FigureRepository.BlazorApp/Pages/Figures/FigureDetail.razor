@@ -10,12 +10,6 @@
 @inject FigureProvider FigureProvider;
 @inject IJSRuntime JS;
 
-<style>
-    .ToolbarMenuPopover {
-
-    }
-</style>
-
 <MudBreadcrumbs Items="_breadcrumbs"/>
 
 @if (Figure != null)
@@ -31,7 +25,7 @@
                     </MudCarouselItem>
                 }
             </MudCarousel>
-            <MudPaper Class="d-flex pa-2 mr-4 ml-4" Elevation="0" Square="true" Style="justify-content: center">
+            <MudPaper Class="d-flex pa-2 mr-6 ml-6" Elevation="0" Square="true" Style="justify-content: center">
                 <MudChipSet SelectedValues="SelectedGalleryKind" SelectedValuesChanged="OnGalleryFilterChange" Filter="true" Mandatory="true">
                     @foreach (var kind in Enum.GetValues<FigureMediaKind>().Reverse())
                     {
@@ -64,15 +58,41 @@
                             <MudButton StartIcon="@Icons.Material.Outlined.AccountBalanceWallet" Color="Color.Inherit">Wallet</MudButton>
                         </ActivatorContent>
                         <ChildContent>
-                            <MudMenuItem>
-                                <Metamask/>
-                            </MudMenuItem>
+                            <MudButton OnClick="ConnectMetaMask">
+                                <MudImage Src="svg/MetaMask.svg" Width="30" Height="30" Class="mr-2"/>
+                                Connect MetaMask
+                            </MudButton>  
+                            <MudButton OnClick="ConnectMetaMask">
+                                <MudImage Src="svg/Gme.svg" Width="30" Height="30" Class="mr-2"/>
+                                Connect GameStop
+                            </MudButton>
                         </ChildContent>
                     </MudMenu>
-                    <MudSpacer/>
+                    @if (EthereumAvailable)
+                    {
+                        <MudStack Spacing="0" Class="ml-4">
+                            <MudText Typo="Typo.button" Color="Color.Primary">My Address</MudText>
+                            <MudTooltip Text="@SelectedAccountAddress">
+                                <MudText Typo="Typo.body2" Class="mud-text-secondary">@SelectedAccountAddress.TruncateAddress()</MudText>
+                            </MudTooltip>
+                        </MudStack>
+                    }
+                    <MudSpacer />
+                    @if (IsFigureOwned)
+                    {
+                        <MudTooltip Text="You own at least one NFT of this figure.">
+                            <MudFab Class="mr-2" StartIcon="@Icons.Filled.Check" Color="Color.Success" Size="Size.Small"/>
+                        </MudTooltip>
+                    }
+                    else
+                    {
+                        <MudTooltip  Text="You don't own an NFT of this figure yet.">
+                            <MudFab Class="mr-2" StartIcon="@Icons.Filled.AddShoppingCart" Color="Color.Info" Size="Size.Small"/>
+                        </MudTooltip>
+                    }
                     <MudMenu Size="Size.Large" AnchorOrigin="Origin.BottomCenter" PopoverClass="pr-2 pl-2">
                         <ActivatorContent>
-                            <MudButton StartIcon="@Icons.Material.Outlined.Download" Size="Size.Large">Download</MudButton>
+                            <MudButton Disabled="!IsFigureOwned" StartIcon="@Icons.Material.Outlined.Download" Size="Size.Large">Download</MudButton>
                         </ActivatorContent>
                         <ChildContent>
                             <MudStack>
@@ -126,8 +146,10 @@
                                     <MudText Typo="Typo.body2"><strong>STLs:</strong> @Figure.TechnicalStatistics.StlsSize.Bytes()</MudText>
                                     <MudText Typo="Typo.body2"><strong>Vertices:</strong> @Figure.TechnicalStatistics.Vertices.ToMetric(MetricNumeralFormats.WithSpace, 2)
                                     </MudText>
-                                    <MudText Typo="Typo.body2"><strong>Triangles:</strong> @Figure.TechnicalStatistics.Triangles.ToMetric(MetricNumeralFormats.WithSpace, 2)</MudText>
                                     <MudText Typo="Typo.body2"><strong>Faces:</strong> @Figure.TechnicalStatistics.Faces.ToMetric(MetricNumeralFormats.WithSpace, 2)</MudText>
+                                    <MudTooltip Text="@Figure.NftDetails.TokenAddress">
+                                        <MudText Typo="Typo.body2"><strong>Token:</strong> @Figure.NftDetails.TokenAddress.TruncateAddress()</MudText>
+                                    </MudTooltip>
                                 </MudStack>
                             </MudItem>
                             <MudItem xs="6">
