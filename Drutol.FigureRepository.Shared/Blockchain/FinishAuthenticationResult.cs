@@ -4,8 +4,15 @@ using System.Text;
 
 namespace Drutol.FigureRepository.Shared.Blockchain
 {
-    public class FinishAuthenticationResult
+    public record FinishAuthenticationResult(FinishAuthenticationResult.StatusCode Status, string JsonToken = default)
     {
-        public string JwtToken { get; set; }
+        public enum StatusCode
+        {
+            Ok,
+            InvalidSignedData,
+            SessionDoesNotExist,
+            NotAnOwner,
+            Error = 999,
+        }
     }
 }

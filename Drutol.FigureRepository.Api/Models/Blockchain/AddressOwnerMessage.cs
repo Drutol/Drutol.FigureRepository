@@ -2,7 +2,7 @@
 
 namespace Drutol.FigureRepository.Api.Models.Blockchain
 {
-    [Struct("Owner")]
+    [Struct(nameof(AddressOwnerMessage))]
     public class AddressOwnerMessage
     {
         [Parameter("address", "ownerAddress", 1)]

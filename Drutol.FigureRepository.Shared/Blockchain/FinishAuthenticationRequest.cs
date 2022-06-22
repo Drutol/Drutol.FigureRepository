@@ -4,5 +4,5 @@ using System.Text;
 
 namespace Drutol.FigureRepository.Shared.Blockchain
 {
-    public record StartAuthenticationResult(Guid SessionGuid, string DataToSign);
+    public record FinishAuthenticationRequest(Guid SessionGuid, string SignedDataHash);
 }
