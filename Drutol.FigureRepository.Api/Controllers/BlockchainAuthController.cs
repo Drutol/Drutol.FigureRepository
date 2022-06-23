@@ -19,7 +19,7 @@ public class BlockchainAuthController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet("StartAuthentication")]
+    [HttpPost("StartAuthentication")]
     public async Task<StartAuthenticationResult> Start(StartAuthenticationRequest startAuthenticationRequest)
     {
         return await _authProvider.StartAuthentication(startAuthenticationRequest).ConfigureAwait(false);

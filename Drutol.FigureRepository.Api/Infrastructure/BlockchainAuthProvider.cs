@@ -55,7 +55,8 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
             return ValueTask.FromResult(
                 new StartAuthenticationResult(
                     activeSession.SessionGuid,
-                    activeSession.GetSerializedDataToSign()));
+                    activeSession.GetSerializedDataToSign(),
+                    StartAuthenticationResult.StatusCode.Ok));
         }
 
         var session = new BlockchainAuthSession(startAuthenticationRequest);
@@ -64,7 +65,8 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
         return ValueTask.FromResult(
             new StartAuthenticationResult(
                 session.SessionGuid,
-                session.GetSerializedDataToSign()));
+                session.GetSerializedDataToSign(),
+                StartAuthenticationResult.StatusCode.Ok));
     }
 
     public async ValueTask<FinishAuthenticationResult> FinishAuthentication(FinishAuthenticationRequest finishAuthenticationRequest)
@@ -80,7 +82,7 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
             activeSession.GetTypedData(),
             finishAuthenticationRequest.SignedDataHash);
 
-        if(!walletAddress.Equals(activeSession.Request.TokenAddress, StringComparison.OrdinalIgnoreCase))
+        if(!walletAddress.Equals(activeSession.Request.WalletAddress, StringComparison.OrdinalIgnoreCase))
             return new FinishAuthenticationResult(FinishAuthenticationResult.StatusCode.InvalidSignedData);
 
         var service = new ERC721ContractService(

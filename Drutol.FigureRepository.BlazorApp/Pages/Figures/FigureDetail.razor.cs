@@ -1,8 +1,11 @@
-﻿using System.Security.Claims;
+﻿using System.Net.Http.Json;
+using System.Security.Claims;
 using System.Text.Json;
+using Drutol.FigureRepository.Shared.Blockchain;
 using MetaMask.Blazor;
 using MetaMask.Blazor.Enums;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
 using Nethereum.Hex.HexConvertors.Extensions;
 using Nethereum.RPC.Web3;
@@ -25,31 +28,16 @@ namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
         public MetaMaskService MetaMaskService { get; set; } 
         
         [Inject]
-        public ISnackbar Snackbar { get; set; }
+        public ISnackbar Snackbar { get; set; }  
+        
+        [Inject]
+        public HttpClient HttpClient { get; set; }
 
-        protected override async Task OnInitializedAsync()
-        {
-            MetaMaskService.AccountChangedEvent += MetaMaskAccountChangedEvent;
-            MetaMaskService.ChainChangedEvent += MetaMaskChainChangedEvent;
-
-            HasMetaMask = await MetaMaskService.HasMetaMask();
-            if (HasMetaMask)
-            {
-                await MetaMaskService.ListenToEvents();
-            }
-
-            if (await MetaMaskService.IsSiteConnected())
-            {
-                EthereumAvailable = true;
-                await UpdateSelectedAddress();
-                await UpdateSelectedNetwork();
-                await UpdateOwnership();
-            }
-        }
+        #region MetaMask
 
         private async Task MetaMaskChainChangedEvent((long, Chain) arg)
         {
-            if(_connectingToMetaMask)
+            if (_connectingToMetaMask)
                 return;
 
             await UpdateSelectedNetwork();
@@ -60,7 +48,7 @@ namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
 
         private async Task MetaMaskAccountChangedEvent(string arg)
         {
-            if(_connectingToMetaMask)
+            if (_connectingToMetaMask)
                 return;
 
             await UpdateSelectedAddress();
@@ -78,6 +66,7 @@ namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
                 Snackbar.Add("Successfully connected with MetaMask!", Severity.Success);
                 await UpdateSelectedAddress();
                 await UpdateOwnership();
+                await UpdateSelectedNetwork();
                 EthereumAvailable = true;
             }
             catch (Exception e)
@@ -133,6 +122,45 @@ namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
             var chainInfo = await MetaMaskService.GetSelectedChain();
             SelectedChain = chainInfo.chain;
         }
+
+        #endregion
+
+        private async void Download(MouseEventArgs obj)
+        {
+            using var authStartContent = JsonContent.Create(new StartAuthenticationRequest(
+                (int)SelectedChain.Value, SelectedAccountAddress, Figure.NftDetails.TokenAddress));
+            var response = await 
+                (await HttpClient.PostAsync("/api/auth/StartAuthentication", authStartContent)).Content.ReadFromJsonAsync<StartAuthenticationResult>();
+            
+            var signResult = await MetaMaskService.SignTypedDataV4(response.DataToSign.Trim('\''));
+
+            var authFinishContent = JsonContent.Create(new FinishAuthenticationRequest(response.SessionGuid, signResult));
+            var auth = await
+                (await HttpClient.PostAsync("/api/auth/FinishAuthentication", authFinishContent)).Content.ReadFromJsonAsync<FinishAuthenticationResult>();
+
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            MetaMaskService.AccountChangedEvent += MetaMaskAccountChangedEvent;
+            MetaMaskService.ChainChangedEvent += MetaMaskChainChangedEvent;
+
+            HasMetaMask = await MetaMaskService.HasMetaMask();
+            if (HasMetaMask)
+            {
+                await MetaMaskService.ListenToEvents();
+            }
+
+            if (await MetaMaskService.IsSiteConnected())
+            {
+                EthereumAvailable = true;
+                await UpdateSelectedAddress();
+                await UpdateSelectedNetwork();
+                await UpdateOwnership();
+            }
+        }
+
+        
 
         public void Dispose()
         {

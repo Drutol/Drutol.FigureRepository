@@ -21,4 +21,8 @@
     <Folder Include="wwwroot\images\Lumine\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Drutol.FigureRepository.Shared\Drutol.FigureRepository.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
