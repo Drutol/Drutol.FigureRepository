@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Blender, SVG Export for Grease Pencil - v1.0 -->
+
+<svg
+   version="1.0"
+   x="0px"
+   y="0px"
+   width="385.71457"
+   height="181.17281"
+   viewBox="0 0 385.71457 181.17281"
+   id="svg31036"
+   sodipodi:docname="Logo.svg"
+   inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
+   inkscape:export-filename="LogoWeb.svg"
+   inkscape:export-xdpi="300"
+   inkscape:export-ydpi="300"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs31040">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient33490">
+      <stop
+         style="stop-color:#0bab8b;stop-opacity:1;"
+         offset="0"
+         id="stop33486" />
+      <stop
+         style="stop-color:#8bc34a;stop-opacity:1;"
+         offset="0.34726694"
+         id="stop33488" />
+      <stop
+         style="stop-color:#fffa51;stop-opacity:1;"
+         offset="1"
+         id="stop34961" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient33490"
+       id="linearGradient2506"
+       x1="19.725296"
+       y1="124.05271"
+       x2="236.47224"
+       y2="36.636353"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.7074724,0,0,1.7074724,-40.174548,-141.79705)" />
+  </defs>
+  <sodipodi:namedview
+     id="namedview31038"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     showgrid="false"
+     inkscape:zoom="0.87826877"
+     inkscape:cx="136.63243"
+     inkscape:cy="311.97739"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg31036">
+    <inkscape:grid
+       type="xygrid"
+       id="grid31455" />
+  </sodipodi:namedview>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:100px;line-height:1.85;font-family:Righteous;-inkscape-font-specification:Righteous;letter-spacing:5px;fill:url(#linearGradient2506);fill-opacity:1;stroke:none;stroke-width:1.70747;stroke-opacity:1"
+     x="-6.4941497"
+     y="70.019531"
+     id="text299"
+     transform="scale(0.91572786,1.0920275)"
+     inkscape:export-filename="LogoTextBlack.svg"
+     inkscape:export-xdpi="300"
+     inkscape:export-ydpi="300"><tspan
+       sodipodi:role="line"
+       x="-6.4941497"
+       y="70.019531"
+       id="tspan301"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:100px;font-family:Righteous;-inkscape-font-specification:Righteous;fill:url(#linearGradient2506);fill-opacity:1;stroke:none;stroke-width:1.70747;stroke-opacity:1">DRU</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:100px;line-height:1.85;font-family:Righteous;-inkscape-font-specification:Righteous;letter-spacing:5px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.70747"
+     x="-6.4941497"
+     y="164.39133"
+     id="text2449"
+     transform="scale(0.91572786,1.0920275)"
+     inkscape:export-filename="LogoTextBlack"
+     inkscape:export-xdpi="300"
+     inkscape:export-ydpi="300"><tspan
+       sodipodi:role="line"
+       id="tspan2447"
+       x="-6.4941497"
+       y="164.39133"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:100px;font-family:Righteous;-inkscape-font-specification:Righteous;fill:#ffffff;fill-opacity:1;stroke-width:1.70747">FIGURES</tspan></text>
+</svg>
