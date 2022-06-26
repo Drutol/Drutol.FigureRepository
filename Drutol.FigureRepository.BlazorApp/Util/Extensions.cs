@@ -6,6 +6,8 @@ namespace Drutol.FigureRepository.BlazorApp.Util
 {
     public static class Extensions
     {
+        private static readonly Random Random = new Random();
+
         public static void OpenGallery(this IEnumerable<FigureMedia> media, IJSRuntime js, int index)
         {
             js.InvokeVoidAsync("openLightBox",
@@ -52,6 +54,21 @@ namespace Drutol.FigureRepository.BlazorApp.Util
                 FigurePhotoGravity.Bottom => "bottom",
                 _ => throw new ArgumentOutOfRangeException(nameof(gravity), gravity, null)
             };
+        }
+
+
+
+        public static List<T> Shuffle<T>(this List<T> list)
+        {
+            var n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                var k = Random.Next(n + 1);
+                (list[k], list[n]) = (list[n], list[k]);
+            }
+
+            return list;
         }
     }
 }

@@ -25,15 +25,15 @@
         color: var(--mud-palette-primary-darken) !important;
     }
 
+    #Gallery {
+        align-self: center;
+    }
+
 </style>
 
-<MudPaper Class="ma-8 pa-8" Elevation="3">
-    <MudGrid>
-        <MudItem xs="12" Class="border-l-2 ml-4 mud-border-primary">
-            <MudText Typo="Typo.h3" Align="Align.Left">Welcome!</MudText>
-        </MudItem>   
-
-        <MudItem Id="Gallery" xs="12" sm="6" Style="align-self: center">
+<MudGrid>
+    <MudItem Id="Gallery" xs="12" sm="6">
+        <MudPaper Elevation="3">
             <MudCarousel Id="Carousel" Style="height: 464px" ShowBullets="false" BulletsClass="CarouselBullet" ShowArrows="true" AutoCycle="true" TData="object" @bind-SelectedIndex="SelectedCarouselIndex">
                 @foreach (var photo in CarouselPhotos)
                 {
@@ -42,10 +42,15 @@
                     </MudCarouselItem>
                 }
             </MudCarousel>
-        </MudItem>
-        <MudItem xs="12" sm="6" Class="border-l-2 mt-4 mb-4 mud-border-primary d-flex flex-column">
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="6" Class="d-flex flex-column">
+        <MudPaper Elevation="3" Class="pa-8 ma-4">
             <MudStack Spacing="0">
-                <MudText Typo="Typo.body1">
+                <MudItem xs="12" Class="border-l-2 pl-4 mud-border-primary">
+                    <MudText Typo="Typo.h3" Align="Align.Left">Welcome!</MudText>
+                </MudItem>   
+                <MudText Typo="Typo.body1" Class="mt-4">
                     Welcome to my figure repository page. I'm hosting here figures I've sculpted in the past and published online.
                     It serves as:
                 </MudText>
@@ -69,7 +74,7 @@
                 <MudStack Class="mt-1" Row="true" AlignItems="AlignItems.Center">
                     <MudIcon Icon="@Icons.Filled.ChevronRight" Color="Color.Primary"/>
                     <MudText Typo="Typo.body2" Align="Align.Center"><strong>Pre-Supported Lychee Slicer Scenes</strong></MudText>
-                </MudStack>   
+                </MudStack>
                 <MudStack Class="mt-1" Row="true" AlignItems="AlignItems.Center">
                     <MudIcon Icon="@Icons.Filled.ChevronRight" Color="Color.Primary"/>
                     <MudText Typo="Typo.body2" Align="Align.Center"><strong>STLs</strong></MudText>
@@ -78,6 +83,7 @@
                 <MudText Class="mt-2" Typo="Typo.body1">
                     There are no physical options available. You can purchase the models via CGTrader listings or as NFTs on GameStop NFT marketplace.
                 </MudText>
+
             </MudStack>
 
             <MudSpacer/>
@@ -85,9 +91,10 @@
             <MudContainer Class="d-flex justify-end align-self-end">
                 <MudButton Variant="Variant.Filled" Href="/Figures"Color="Color.Primary" Size="Size.Large">Browse Figurines</MudButton>
             </MudContainer>
-        </MudItem>
-    </MudGrid>
-</MudPaper>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
 
 <MudPaper Class="ma-8 pa-8" Elevation="3">
     <MudItem Class="border-l-2 pl-4 mud-border-primary">
@@ -96,6 +103,8 @@
     
     <FaqList/>
 </MudPaper>
+
+
 
 @code {
     [CascadingParameter]
@@ -115,7 +124,8 @@
         CarouselPhotos = FigureProvider
             .Figures
             .SelectMany(figure => figure.Media).Where(media => media.Display.HasFlag(FigurePhotoIntendedDisplay.HomeShowcase))
-            .ToList();
+            .ToList()
+            .Shuffle();
     }
 
     public int SelectedCarouselIndex { get; set; }
