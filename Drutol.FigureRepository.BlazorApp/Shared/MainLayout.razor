@@ -14,16 +14,19 @@
 </style>
 
 <MudLayout>
-    <MudAppBar Elevation="3" Class="@(DarkMode ? string.Empty : "LightAppBar")">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        <div style="width: 10px"></div>
-        <MudImage Src="svg/LogoWebThick.svg" Height="50"/>
+    <MudAppBar Elevation="2" Class="@(DarkMode ? string.Empty : "LightAppBar")">
+        <MudHidden Breakpoint="Breakpoint.SmAndUp" @bind-IsHidden="IsExtraSmall">
+            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
+            <div style="width: 10px"></div>
+        </MudHidden>
+
+        <MudImage Src="svg/LogoWebThick.svg" Height="45"/>
         <div style="width: 10px"></div>
         <MudImage Src="@(DarkMode ? "svg/LogoTextWhite.svg" : "svg/LogoTextBlack.svg")" Height="40"/>
-        <MudSpacer />
-        <MudIconButton Icon="@(DarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)" Color="Color.Inherit" OnClick="@((e) => DarkMode = !DarkMode)" />
+        <MudSpacer/>
+        <MudIconButton Icon="@(DarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)" Color="Color.Inherit" OnClick="@((e) => DarkMode = !DarkMode)"/>
     </MudAppBar>
-    <MudDrawer @bind-Open="@_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="3">
+    <MudDrawer @bind-Open="@_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="1" Variant="@(IsExtraSmall ? DrawerVariant.Responsive : DrawerVariant.Persistent)" Breakpoint="Breakpoint.Xs"  DisableOverlay="false">
         <NavMenu/>
     </MudDrawer>
     <MudMainContent>
@@ -34,6 +37,16 @@
 </MudLayout>
 @code {
     bool _drawerOpen = true;
+
+    public bool IsExtraSmall
+    {
+        get => _isExtraSmall;
+        set
+        {
+            _isExtraSmall = value;
+            _drawerOpen = value;
+        }
+    }
 
     private readonly ThemeWrapper _wrapper;
 
@@ -52,6 +65,7 @@
     };
 
     private bool _darkMode;
+    private bool _isExtraSmall;
 
     public MainLayout()
     {
@@ -72,4 +86,5 @@
             StateHasChanged();
         }
     }
+
 }

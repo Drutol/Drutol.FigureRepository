@@ -1,8 +1,8 @@
 ﻿@using MudBlazor
 
-<MudNavMenu Bordered="true" Margin="Margin.Normal">
-    <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.House">Home</MudNavLink>
-    <MudNavGroup Title="Figures" Expanded="true"  HideExpandIcon="true" Icon="@Icons.Material.Filled.Man">
+<MudNavMenu Bordered="true" Rounded="true" Margin="Margin.Normal" Class="pa-2">
+    <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Index</MudNavLink>
+    <MudNavGroup Title="Figures" Expanded="true"  HideExpandIcon="true"  Icon="@Icons.Material.Filled.Man">
         <MudNavLink Href="/Figures" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.SpaceDashboard">Index</MudNavLink>
         <MudNavLink Href="/Figures/Ganyu" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.ChevronRight">Ganyu</MudNavLink>
         <MudNavLink Href="/Figures/Asuka" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.ChevronRight">Asuka</MudNavLink>
