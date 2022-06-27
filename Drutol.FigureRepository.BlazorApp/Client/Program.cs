@@ -1,4 +1,5 @@
 using Drutol.FigureRepository.BlazorApp.Infrastructure;
+using Drutol.FigureRepository.BlazorApp.Interfaces;
 using MetaMask.Blazor;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -15,7 +16,8 @@ public class Program
         builder.RootComponents.Add<App>("#app");
         builder.RootComponents.Add<HeadOutlet>("head::after");
 
-        builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5000"/*builder.HostEnvironment.BaseAddress*/) });
+        builder.Services.AddScoped<IApiHttpClient>(_ => new HttpClientWrapper(new HttpClient { BaseAddress = new Uri("http://localhost:5000") }));
+        builder.Services.AddScoped<IHostHttpClient>(_ => new HttpClientWrapper(new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) }));
         builder.Services.AddMudServices(configuration =>
         {
             configuration.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomLeft;

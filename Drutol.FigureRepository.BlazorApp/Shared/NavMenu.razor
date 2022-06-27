@@ -1,12 +1,19 @@
 ﻿@using MudBlazor
+@using Drutol.FigureRepository.BlazorApp.Interfaces
+
+@inject IHostHttpClient HttpClient;
+
+<style>
+
+</style>
 
 <MudNavMenu Bordered="true" Rounded="true" Margin="Margin.Normal" Class="pa-2">
     <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Index</MudNavLink>
-    <MudNavGroup Title="Figures" Expanded="true"  HideExpandIcon="true"  Icon="@Icons.Material.Filled.Man">
+    <MudNavGroup Title="Figures" Expanded="true" HideExpandIcon="true" Icon="@GanyuIconSvg" >
         <MudNavLink Href="/Figures" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.SpaceDashboard">Index</MudNavLink>
-        <MudNavLink Href="/Figures/Ganyu" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.ChevronRight">Ganyu</MudNavLink>
-        <MudNavLink Href="/Figures/Asuka" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.ChevronRight">Asuka</MudNavLink>
-        <MudNavLink Href="/Figures/Lumine" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.ChevronRight">Lumine</MudNavLink>
+        <MudNavLink Href="/Figures/Ganyu" Match="NavLinkMatch.Prefix" Icon="@GanyuIconSvg">Ganyu</MudNavLink>
+        <MudNavLink Href="/Figures/Asuka" Match="NavLinkMatch.Prefix" Icon="@AsukaIconSvg">Asuka</MudNavLink>
+        <MudNavLink Href="/Figures/Lumine" Match="NavLinkMatch.Prefix" Icon="@LumineIconSvg">Lumine</MudNavLink>
     </MudNavGroup>  
     <MudNavGroup Title="Help" Expanded="true"  HideExpandIcon="true" Icon="@Icons.Material.Filled.Help">
         <MudNavLink Href="/About" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Info">About</MudNavLink>
@@ -14,3 +21,19 @@
         <MudNavLink Href="/Faq" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.QuestionAnswer">FAQ</MudNavLink>
     </MudNavGroup>
 </MudNavMenu>
+
+@code
+{
+    public string GanyuIconSvg { get; set; }
+    public string AsukaIconSvg { get; set; }
+    public string LumineIconSvg { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        GanyuIconSvg = await HttpClient.Client.GetStringAsync("svg/GanyuIcon.svg");
+        AsukaIconSvg = await HttpClient.Client.GetStringAsync("svg/AsukaIcon.svg");
+        LumineIconSvg = await HttpClient.Client.GetStringAsync("svg/LumineIcon.svg");
+    }
+
+
+}

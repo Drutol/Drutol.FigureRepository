@@ -9,91 +9,10 @@
    height="215"
    viewBox="0 0 394.99997 215"
    id="svg31036"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <defs
-     id="defs31040">
-    <linearGradient
-       xlink:href="#linearGradient11459"
-       id="linearGradient11461"
-       x1="1031.8662"
-       y1="204.18036"
-       x2="1239.5669"
-       y2="89.673637"
-       gradientUnits="userSpaceOnUse" />
-    <linearGradient
-       id="linearGradient11459">
-      <stop
-         style="stop-color:#0bab8b;stop-opacity:1;"
-         offset="0"
-         id="stop11455" />
-      <stop
-         style="stop-color:#8bc34a;stop-opacity:1;"
-         offset="0.39722222"
-         id="stop13641" />
-      <stop
-         style="stop-color:#fffa51;stop-opacity:1;"
-         offset="1"
-         id="stop11457" />
-    </linearGradient>
-    <linearGradient
-       xlink:href="#linearGradient11459"
-       id="linearGradient19441"
-       gradientUnits="userSpaceOnUse"
-       x1="1031.8662"
-       y1="204.18036"
-       x2="1239.5669"
-       y2="89.673637" />
-    <linearGradient
-       xlink:href="#linearGradient11459"
-       id="linearGradient19443"
-       gradientUnits="userSpaceOnUse"
-       x1="1031.8662"
-       y1="204.18036"
-       x2="1239.5669"
-       y2="89.673637" />
-    <linearGradient
-       xlink:href="#linearGradient11459"
-       id="linearGradient19445"
-       gradientUnits="userSpaceOnUse"
-       x1="1031.8662"
-       y1="204.18036"
-       x2="1239.5669"
-       y2="89.673637" />
-    <linearGradient
-       xlink:href="#linearGradient11459"
-       id="linearGradient19447"
-       gradientUnits="userSpaceOnUse"
-       x1="1031.8662"
-       y1="204.18036"
-       x2="1239.5669"
-       y2="89.673637" />
-    <linearGradient
-       xlink:href="#linearGradient11459"
-       id="linearGradient19449"
-       gradientUnits="userSpaceOnUse"
-       x1="1031.8662"
-       y1="204.18036"
-       x2="1246.8129"
-       y2="92.491539" />
-    <linearGradient
-       xlink:href="#linearGradient11459"
-       id="linearGradient19451"
-       gradientUnits="userSpaceOnUse"
-       x1="1031.8662"
-       y1="204.18036"
-       x2="1246.8129"
-       y2="92.491539" />
-    <linearGradient
-       xlink:href="#linearGradient11459"
-       id="linearGradient19453"
-       gradientUnits="userSpaceOnUse"
-       x1="1031.8662"
-       y1="204.18036"
-       x2="1239.5669"
-       y2="89.673637" />
-  </defs>
+     id="defs31040" />
   <g
      aria-label="FIGURES"
      transform="matrix(0.91572786,0,0,1.0920275,-266.20694,-19.194399)"
@@ -130,35 +49,35 @@
   </g>
   <g
      id="blender_object_Stroke.002"
-     style="stroke:url(#linearGradient11461)"
+     style="stroke:#ffffff;stroke-opacity:1"
      transform="translate(-1037.0718,-91.509857)">
     <!--Layer: Lines-->
     <g
        id="Lines-8"
-       style="stroke:url(#linearGradient19453)">
+       style="stroke:#ffffff;stroke-opacity:1">
       <path
          id="polyline2"
-         style="fill:none;stroke:url(#linearGradient19441);stroke-width:6.44458;stroke-linecap:round"
+         style="fill:none;stroke:#ffffff;stroke-width:6.44458;stroke-linecap:round;stroke-opacity:1"
          d="m 1057.0065,106.06702 c 0,20.03632 0,40.07263 0,60.10895" />
       <path
          id="polyline4"
-         style="fill:none;stroke:url(#linearGradient19443);stroke-width:6.44446;stroke-linecap:round"
+         style="fill:none;stroke:#ffffff;stroke-width:6.44446;stroke-linecap:round;stroke-opacity:1"
          d="m 1040.294,96.379402 c 17.5153,-4.25614 37.2528,1.082448 49.6997,14.240758 8.1393,8.64572 10.2257,21.83519 6.1252,32.84074 -5.4581,15.37973 -18.0372,26.44702 -28.6958,38.24897 -5.6696,6.02297 -11.1644,12.20628 -16.6675,18.38069" />
       <path
          id="polyline6"
-         style="fill:none;stroke:url(#linearGradient19445);stroke-width:6.44446;stroke-linecap:round"
+         style="fill:none;stroke:#ffffff;stroke-width:6.44446;stroke-linecap:round;stroke-opacity:1"
          d="m 1121.669,95.362546 c 0,15.383694 0,30.767384 0,46.151074" />
       <path
          id="polyline8"
-         style="fill:none;stroke:url(#linearGradient19447);stroke-width:6.44434;stroke-linecap:round"
+         style="fill:none;stroke:#ffffff;stroke-width:6.44434;stroke-linecap:round;stroke-opacity:1"
          d="m 1133.9053,95.142759 c 8.6446,-0.976563 17.0097,4.80331 20.0552,12.775491 4.168,9.4891 0.4226,20.85214 -6.6977,27.86825 -4.1743,4.68169 -10.4297,9.33168 -9.8323,16.34863 1.7825,12.64287 10.1914,22.91726 18.2337,32.30253 4.5644,5.15208 8.6164,10.76708 13.6152,15.52047" />
       <path
          id="polyline10"
-         style="fill:none;stroke:url(#linearGradient19449);stroke-width:6.44434;stroke-linecap:round"
+         style="fill:none;stroke:#ffffff;stroke-width:6.44434;stroke-linecap:round;stroke-opacity:1"
          d="m 1190.093,95.210632 c -0.024,17.785708 0.098,35.572238 -0.1894,53.356468 -0.056,4.95021 -0.1117,9.90042 -0.1675,14.85063" />
       <path
          id="polyline12"
-         style="fill:none;stroke:url(#linearGradient19451);stroke-width:6.44458;stroke-linecap:round"
+         style="fill:none;stroke:#ffffff;stroke-width:6.44458;stroke-linecap:round;stroke-opacity:1"
          d="m 1189.8382,181.60744 c -0.2957,7.65559 6.8293,14.00287 13.9135,16.5197 8.2432,2.9286 18.3508,2.07499 26.1803,-1.82704 4.2087,-2.09751 8.4869,-6.15699 9.2573,-10.64511 1.0364,-6.03778 0.6375,-12.76264 0.7959,-19.24371 0.1582,-6.48107 0.2552,-71.679134 0.2552,-71.679134" />
     </g>
   </g>
