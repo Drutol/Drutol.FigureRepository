@@ -40,6 +40,7 @@ public class Program
         );
 
         builder.Services.AddScoped<FigureProvider>();
+        builder.Services.AddScoped<FigureIconProvider>();
 
 
         await builder.Build().RunAsync();

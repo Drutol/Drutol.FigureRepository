@@ -19,10 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\Lumine\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Drutol.FigureRepository.Shared\Drutol.FigureRepository.Shared.csproj" />
   </ItemGroup>
 
@@ -34,6 +30,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\svg\icons\GanyuIcon.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\svg\icons\MadokaIcon.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\svg\logo\LogoTextBlack.svg">
@@ -51,6 +50,10 @@
     <Content Update="wwwroot\svg\icons\LumineIcon.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\Madoka\Render\" />
   </ItemGroup>
 
 </Project>

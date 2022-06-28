@@ -5,7 +5,9 @@
 @using Drutol.FigureRepository.BlazorApp.Models
 @using Drutol.FigureRepository.BlazorApp.Models.Enums
 @using Drutol.FigureRepository.BlazorApp.Util
+
 @inject FigureProvider FigureProvider
+@inject FigureIconProvider FigureIconProvider
 @inject IJSRuntime JS
 
 <style>
@@ -37,17 +39,28 @@
             <MudCarousel Id="Carousel" Style="height: 464px" ShowBullets="false" BulletsClass="CarouselBullet" ShowArrows="true" AutoCycle="false" TData="object" @bind-SelectedIndex="SelectedCarouselIndex">
                 @foreach (var photo in CarouselPhotos)
                 {
+                    var figure = FigureDictionary[photo];
                     <MudCarouselItem Transition="Transition.Slide" Style="@($"background-color: {Theme.Palette.BackgroundGrey}")" Class="pa-8 d-flex justify-center rounded">
                         <MudPaper Elevation="3" Class="rounded"  Style="position: relative">
                             <MudImage Src="@photo.Url" Class="rounded" ObjectFit="ObjectFit.Cover" Height="400" @onclick="OnImageClick"/>
-                            <MudStack Row="true" Class="rounded pa-2" Style="background: linear-gradient(0deg, rgba(0,0,0,.8) 20%, rgba(0,0,0,0) 100%); position: absolute; bottom: 0; width: 100%; height: 15%;">
-                                <MudImage Src="/svg/icons/GanyuIcon.svg" Height="48" Style="filter: invert(100%);" ></MudImage>
-                                <MudStack Spacing="0">
-                                    <MudText Style="color: white" Typo="Typo.body1">@photo.Name</MudText>
-                                    <MudText Style="color: white"  Typo="Typo.caption">12/12/1212</MudText>
+                            <MudStack Row="true" Class="rounded pa-2" Style="background: linear-gradient(0deg, rgba(0,0,0,.8) 20%, rgba(0,0,0,0) 100%); position: absolute; bottom: 0; width: 100%; height: 20%;">
+                                <MudIcon Icon="@FigureIconProvider.GetForFigure(figure)" Size="Size.Large" Style="color: white; font-size: 4rem; "/>
+                                <MudStack Spacing="0" Style="align-self: center">
+                                    <MudText Style="color: white" Typo="Typo.body1">@figure.Name</MudText>
+                                    @{
+                                        var publishEvent = figure.Timeline.FirstOrDefault(entry => entry.Event == FigureTimelineEvent.Publish);
+                                    }
+                                    @if (publishEvent != null)
+                                    {
+                                        <MudText Typo="Typo.body2" Style="color:lightgrey; font-style: italic; font-size: .8rem">Published: @publishEvent.Date</MudText>
+                                    }
+                                    else
+                                    {
+                                        <MudText Typo="Typo.body2">Published: TBD</MudText>
+                                    }
                                 </MudStack>
                                 <MudSpacer/>
-                                <MudFab StartIcon="@Icons.Outlined.ReadMore" Size="Size.Small" Color="Color.Primary"/>
+                                <MudFab StartIcon="@Icons.Outlined.ReadMore" Size="Size.Small" Color="Color.Primary" Style="align-self: center"/>
                             </MudStack>
                         </MudPaper>
 
@@ -122,7 +135,8 @@
     [CascadingParameter]
     protected ThemeWrapper Theme { get; set; }
 
-    public List<FigureMedia> CarouselPhotos { get; set; }
+    public Dictionary<FigureMedia, Figure> FigureDictionary { get; } = new();
+    public List<FigureMedia> CarouselPhotos { get; } = new();
 
     private void OnImageClick()
     {
@@ -133,14 +147,20 @@
     {
         base.OnInitialized();
 
-        CarouselPhotos = FigureProvider
-            .Figures
-            .SelectMany(figure => figure.Media)
-            .Where(media => media.Display.HasFlag(FigurePhotoIntendedDisplay.HomeShowcase))
-            .ToList()
-            .Shuffle();
+        foreach (var figure in FigureProvider.Figures)
+        {
+            foreach (var figureMedium in figure.Media)
+            {
+                if (figureMedium.Display.HasFlag(FigurePhotoIntendedDisplay.HomeShowcase))
+                {
+                    CarouselPhotos.Add(figureMedium);
+                    FigureDictionary[figureMedium] = figure;
+                }
+            }
+        }
+
+        CarouselPhotos.Shuffle();
     }
 
     public int SelectedCarouselIndex { get; set; }
-
 }

@@ -7,9 +7,16 @@
 @inject IHostHttpClient HttpClient;
 @inject ISessionStorageService SessionStorage;
 @inject FigureProvider FigureProvider;
+@inject FigureIconProvider IconProvider;
 
 <style>
+    .FigureLink .mud-nav-link-icon {
+        font-size: 2.5rem;
+    }
 
+    .FigureLink .mud-nav-link-text {
+        align-self: center;
+    }
 </style>
 
 <MudNavMenu Bordered="true" Rounded="true" Margin="Margin.Normal" Class="pa-2">
@@ -18,10 +25,7 @@
     <MudNavLink Href="/Figures" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.SpaceDashboard">Figure Index</MudNavLink>
     @foreach (var figure in FigureProvider.Figures)
     {
-        if (!_iconCache.TryGetValue(figure, out var icon))
-            icon = Icons.Outlined.Refresh;
-
-        <MudNavLink Class="pl-4" Href="@($"/Figures/{figure.Name}")" Match="NavLinkMatch.Prefix" Icon="@icon">@figure.Name</MudNavLink>
+        <MudNavLink Class="pl-4 FigureLink" Href="@($"/Figures/{figure.Name}")" Match="NavLinkMatch.Prefix" Icon="@IconProvider.GetForFigure(figure)">@figure.Name</MudNavLink>
     }
 
     <MudNavLink Href="/About" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Info">About</MudNavLink>
@@ -32,26 +36,5 @@
 
 @code
 {
-    private Dictionary<Figure, string> _iconCache = new();
 
-    protected override async Task OnInitializedAsync()
-    {
-        foreach (var figure in FigureProvider.Figures)
-        {
-            _iconCache[figure] = await GetIcon(figure);
-        }
-    }
-
-    private async Task<string> GetIcon(Figure figure)
-    {
-        var key = $"svg/icons/{figure.Name}Icon.svg";
-
-        if (await SessionStorage.ContainKeyAsync(key))
-            return await SessionStorage.GetItemAsync<string>(key);
-
-        var svg = await HttpClient.Client.GetStringAsync(key);
-        await SessionStorage.SetItemAsStringAsync(key, svg);
-
-        return svg;
-    }
 }
