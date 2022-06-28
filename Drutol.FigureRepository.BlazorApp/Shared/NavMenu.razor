@@ -1,39 +1,57 @@
 ﻿@using MudBlazor
 @using Drutol.FigureRepository.BlazorApp.Interfaces
+@using Blazored.SessionStorage
+@using Drutol.FigureRepository.BlazorApp.Infrastructure
+@using Drutol.FigureRepository.BlazorApp.Models
 
 @inject IHostHttpClient HttpClient;
+@inject ISessionStorageService SessionStorage;
+@inject FigureProvider FigureProvider;
 
 <style>
 
 </style>
 
 <MudNavMenu Bordered="true" Rounded="true" Margin="Margin.Normal" Class="pa-2">
-    <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Index</MudNavLink>
-    <MudNavGroup Title="Figures" Expanded="true" HideExpandIcon="true" Icon="@GanyuIconSvg" >
-        <MudNavLink Href="/Figures" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.SpaceDashboard">Index</MudNavLink>
-        <MudNavLink Href="/Figures/Ganyu" Match="NavLinkMatch.Prefix" Icon="@GanyuIconSvg">Ganyu</MudNavLink>
-        <MudNavLink Href="/Figures/Asuka" Match="NavLinkMatch.Prefix" Icon="@AsukaIconSvg">Asuka</MudNavLink>
-        <MudNavLink Href="/Figures/Lumine" Match="NavLinkMatch.Prefix" Icon="@LumineIconSvg">Lumine</MudNavLink>
-    </MudNavGroup>  
-    <MudNavGroup Title="Help" Expanded="true"  HideExpandIcon="true" Icon="@Icons.Material.Filled.Help">
-        <MudNavLink Href="/About" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Info">About</MudNavLink>
-        <MudNavLink Href="/Contact" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.ContactPage">Contact</MudNavLink>
-        <MudNavLink Href="/Faq" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.QuestionAnswer">FAQ</MudNavLink>
-    </MudNavGroup>
+    <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Home">Index</MudNavLink>
+
+    <MudNavLink Href="/Figures" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.SpaceDashboard">Figure Index</MudNavLink>
+    @foreach (var figure in FigureProvider.Figures)
+    {
+        if (!_iconCache.TryGetValue(figure, out var icon))
+            icon = Icons.Outlined.Refresh;
+
+        <MudNavLink Class="pl-4" Href="@($"/Figures/{figure.Name}")" Match="NavLinkMatch.Prefix" Icon="@icon">@figure.Name</MudNavLink>
+    }
+
+    <MudNavLink Href="/About" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Info">About</MudNavLink>
+    <MudNavLink Href="/Contact" Class="pl-4" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.ContactPage">Contact</MudNavLink>
+    <MudNavLink Href="/Faq" Class="pl-4" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.QuestionAnswer">FAQ</MudNavLink>
+
 </MudNavMenu>
 
 @code
 {
-    public string GanyuIconSvg { get; set; }
-    public string AsukaIconSvg { get; set; }
-    public string LumineIconSvg { get; set; }
+    private Dictionary<Figure, string> _iconCache = new();
 
     protected override async Task OnInitializedAsync()
     {
-        GanyuIconSvg = await HttpClient.Client.GetStringAsync("svg/GanyuIcon.svg");
-        AsukaIconSvg = await HttpClient.Client.GetStringAsync("svg/AsukaIcon.svg");
-        LumineIconSvg = await HttpClient.Client.GetStringAsync("svg/LumineIcon.svg");
+        foreach (var figure in FigureProvider.Figures)
+        {
+            _iconCache[figure] = await GetIcon(figure);
+        }
     }
 
+    private async Task<string> GetIcon(Figure figure)
+    {
+        var key = $"svg/icons/{figure.Name}Icon.svg";
 
+        if (await SessionStorage.ContainKeyAsync(key))
+            return await SessionStorage.GetItemAsync<string>(key);
+
+        var svg = await HttpClient.Client.GetStringAsync(key);
+        await SessionStorage.SetItemAsStringAsync(key, svg);
+
+        return svg;
+    }
 }

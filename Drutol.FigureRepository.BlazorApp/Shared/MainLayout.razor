@@ -20,9 +20,9 @@
             <div style="width: 10px"></div>
         </MudHidden>
 
-        <MudImage Src="svg/LogoWebThick.svg" Height="45"/>
+        <MudImage Src="svg/logo/LogoWebThick.svg" Height="45"/>
         <div style="width: 10px"></div>
-        <MudImage Src="@(DarkMode ? "svg/LogoTextWhite.svg" : "svg/LogoTextBlack.svg")" Height="40"/>
+        <MudImage Src="@(DarkMode ? "svg/logo/LogoTextWhite.svg" : "svg/logo/LogoTextBlack.svg")" Height="40"/>
         <MudSpacer/>
         <MudIconButton Icon="@(DarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)" Color="Color.Inherit" OnClick="@((e) => DarkMode = !DarkMode)"/>
     </MudAppBar>

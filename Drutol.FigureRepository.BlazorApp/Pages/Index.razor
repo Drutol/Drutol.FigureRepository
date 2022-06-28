@@ -34,11 +34,23 @@
 <MudGrid>
     <MudItem Id="Gallery" xs="12" sm="6">
         <MudPaper Elevation="3">
-            <MudCarousel Id="Carousel" Style="height: 464px" ShowBullets="false" BulletsClass="CarouselBullet" ShowArrows="true" AutoCycle="true" TData="object" @bind-SelectedIndex="SelectedCarouselIndex">
+            <MudCarousel Id="Carousel" Style="height: 464px" ShowBullets="false" BulletsClass="CarouselBullet" ShowArrows="true" AutoCycle="false" TData="object" @bind-SelectedIndex="SelectedCarouselIndex">
                 @foreach (var photo in CarouselPhotos)
                 {
                     <MudCarouselItem Transition="Transition.Slide" Style="@($"background-color: {Theme.Palette.BackgroundGrey}")" Class="pa-8 d-flex justify-center rounded">
-                        <MudImage Src="@photo.Url" ObjectFit="ObjectFit.Cover" Class="rounded" Elevation="3" Height="400" data-pswp-src="@photo.Url" @onclick="OnImageClick"/>
+                        <MudPaper Elevation="3" Class="rounded"  Style="position: relative">
+                            <MudImage Src="@photo.Url" Class="rounded" ObjectFit="ObjectFit.Cover" Height="400" @onclick="OnImageClick"/>
+                            <MudStack Row="true" Class="rounded pa-2" Style="background: linear-gradient(0deg, rgba(0,0,0,.8) 20%, rgba(0,0,0,0) 100%); position: absolute; bottom: 0; width: 100%; height: 15%;">
+                                <MudImage Src="/svg/icons/GanyuIcon.svg" Height="48" Style="filter: invert(100%);" ></MudImage>
+                                <MudStack Spacing="0">
+                                    <MudText Style="color: white" Typo="Typo.body1">@photo.Name</MudText>
+                                    <MudText Style="color: white"  Typo="Typo.caption">12/12/1212</MudText>
+                                </MudStack>
+                                <MudSpacer/>
+                                <MudFab StartIcon="@Icons.Outlined.ReadMore" Size="Size.Small" Color="Color.Primary"/>
+                            </MudStack>
+                        </MudPaper>
+
                     </MudCarouselItem>
                 }
             </MudCarousel>
@@ -123,7 +135,8 @@
 
         CarouselPhotos = FigureProvider
             .Figures
-            .SelectMany(figure => figure.Media).Where(media => media.Display.HasFlag(FigurePhotoIntendedDisplay.HomeShowcase))
+            .SelectMany(figure => figure.Media)
+            .Where(media => media.Display.HasFlag(FigurePhotoIntendedDisplay.HomeShowcase))
             .ToList()
             .Shuffle();
     }

@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Blazored.SessionStorage" Version="2.2.0" />
     <PackageReference Include="Humanizer.Core" Version="2.14.1" />
     <PackageReference Include="MetaMask.Blazor" Version="1.6.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.5" />
@@ -29,25 +30,25 @@
     <Content Update="wwwroot\css\app.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\svg\AsukaIcon.svg">
+    <Content Update="wwwroot\svg\icons\AsukaIcon.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\svg\GanyuIcon.svg">
+    <Content Update="wwwroot\svg\icons\GanyuIcon.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\svg\LogoTextBlack.svg">
+    <Content Update="wwwroot\svg\logo\LogoTextBlack.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\svg\LogoTextWhite.svg">
+    <Content Update="wwwroot\svg\logo\LogoTextWhite.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\svg\LogoWeb.svg">
+    <Content Update="wwwroot\svg\logo\LogoWeb.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\svg\LogoWebThick.svg">
+    <Content Update="wwwroot\svg\logo\LogoWebThick.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\svg\LumineIcon.svg">
+    <Content Update="wwwroot\svg\icons\LumineIcon.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

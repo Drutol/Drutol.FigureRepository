@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Json;
 using System.Security.Claims;
 using System.Text.Json;
+using Drutol.FigureRepository.BlazorApp.Interfaces;
 using Drutol.FigureRepository.Shared.Blockchain;
 using MetaMask.Blazor;
 using MetaMask.Blazor.Enums;
@@ -31,7 +32,7 @@ namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
         public ISnackbar Snackbar { get; set; }  
         
         [Inject]
-        public HttpClient HttpClient { get; set; }
+        public IApiHttpClient HttpClient { get; set; }
 
         #region MetaMask
 
@@ -130,13 +131,13 @@ namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
             using var authStartContent = JsonContent.Create(new StartAuthenticationRequest(
                 (int)SelectedChain.Value, SelectedAccountAddress, Figure.NftDetails.TokenAddress));
             var response = await 
-                (await HttpClient.PostAsync("/api/auth/StartAuthentication", authStartContent)).Content.ReadFromJsonAsync<StartAuthenticationResult>();
+                (await HttpClient.Client.PostAsync("/api/auth/StartAuthentication", authStartContent)).Content.ReadFromJsonAsync<StartAuthenticationResult>();
             
             var signResult = await MetaMaskService.SignTypedDataV4(response.DataToSign.Trim('\''));
 
             var authFinishContent = JsonContent.Create(new FinishAuthenticationRequest(response.SessionGuid, signResult));
             var auth = await
-                (await HttpClient.PostAsync("/api/auth/FinishAuthentication", authFinishContent)).Content.ReadFromJsonAsync<FinishAuthenticationResult>();
+                (await HttpClient.Client.PostAsync("/api/auth/FinishAuthentication", authFinishContent)).Content.ReadFromJsonAsync<FinishAuthenticationResult>();
 
         }
 
