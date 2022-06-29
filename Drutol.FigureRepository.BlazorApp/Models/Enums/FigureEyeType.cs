@@ -5,5 +5,6 @@ public enum FigureEyeType
     None,
     FullDecals,
     IrisDecals,
-    FullSculpted
+    FullSculpted,
+    PartSculpted
 }

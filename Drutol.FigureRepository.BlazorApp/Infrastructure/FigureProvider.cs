@@ -12,6 +12,7 @@ public class FigureProvider
             Name = "Ganyu",
             Notes = "Printed back in the day on small Photon S printer.",
             Description = "Ganyu from GenshinImpact based on her Banner Art.",
+            InitialGalleryKindDisplay = FigureMediaKind.PrintPrototype,
             Media = new List<FigureMedia>
             {
                 #region Photos
@@ -19,24 +20,17 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Ganyu/Photos/Main.jpg",
-                    Name = "Main",
-                    IsPortraitOrientation = true,
                     Display = FigurePhotoIntendedDisplay.All,
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.PrintPrototype,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1080,
                     Height = 1440
                 },
                 new FigureMedia
                 {
                     Url = "images/Ganyu/Photos/BacklightSilhouette.jpg",
-                    Name = "Silhouette on lit background.",
-                    IsPortraitOrientation = true,
                     Display = FigurePhotoIntendedDisplay.All,
-                    Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.PrintPrototype,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1080,
                     Height = 1440
                 },
@@ -48,84 +42,63 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Ganyu/Sculpt/Front.jpg",
-                    Name = "Front",
-                    IsPortraitOrientation = true,
                     Display = FigurePhotoIntendedDisplay.All,
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.SculptRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1080,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Ganyu/Sculpt/Face.jpg",
-                    Name = "Face",
-                    IsPortraitOrientation = true,
                     Display = FigurePhotoIntendedDisplay.Gallery,
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.SculptRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1080,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Ganyu/Sculpt/FrontBottom.jpg",
-                    Name = "Bottom Closeup",
-                    IsPortraitOrientation = true,
                     Display = FigurePhotoIntendedDisplay.Gallery,
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.SculptRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1080,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Ganyu/Sculpt/LeftSide.jpg",
-                    Name = "Left Side",
-                    IsPortraitOrientation = true,
                     Display = FigurePhotoIntendedDisplay.Gallery,
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.SculptRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1080,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Ganyu/Sculpt/Base.jpg",
-                    Name = "Base",
-                    IsPortraitOrientation = true,
                     Display = FigurePhotoIntendedDisplay.Gallery,
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.SculptRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1080,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Ganyu/Sculpt/BackBottom.jpg",
-                    Name = "Back Bottom",
-                    IsPortraitOrientation = true,
                     Display = FigurePhotoIntendedDisplay.Gallery,
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.SculptRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1080,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Ganyu/Sculpt/Back.jpg",
-                    Name = "Back",
-                    IsPortraitOrientation = true,
                     Display = FigurePhotoIntendedDisplay.Gallery,
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.SculptRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1080,
                     Height = 1080
                 },
@@ -143,7 +116,7 @@ public class FigureProvider
                 {
                     Event = FigureTimelineEvent.SculptDone,
                     Date = new(2021, 2, 15)
-                },              
+                },
                 new()
                 {
                     Event = FigureTimelineEvent.PrintDone,
@@ -238,6 +211,7 @@ public class FigureProvider
         {
             Name = "Lumine",
             Description = "Lumine from GenshinImpact based on her scenic park collaboration artwork.",
+            InitialGalleryKindDisplay = FigureMediaKind.PrintPrototype,
             Media = new List<FigureMedia>
             {
                 #region Photos
@@ -245,11 +219,9 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Lumine/Photos/Prototype.jpg",
-                    IsPortraitOrientation = true,
                     Display = FigurePhotoIntendedDisplay.All,
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.PrintPrototype,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1080,
                     Height = 1440
                 },
@@ -261,66 +233,54 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Lumine/Render/Front.jpg",
-                    IsPortraitOrientation = true,
                     Display = FigurePhotoIntendedDisplay.All,
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.ShadedRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1080,
                     Height = 1080
-                },    
+                },
                 new FigureMedia
                 {
                     Url = "images/Lumine/Render/Back.jpg",
-                    IsPortraitOrientation = true,
                     Display = FigurePhotoIntendedDisplay.Gallery,
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.ShadedRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1080,
                     Height = 1080
-                },    
+                },
                 new FigureMedia
                 {
                     Url = "images/Lumine/Render/RightSide.jpg",
-                    IsPortraitOrientation = true,
                     Display = FigurePhotoIntendedDisplay.Gallery,
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.ShadedRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1080,
                     Height = 1080
-                },    
+                },
                 new FigureMedia
                 {
                     Url = "images/Lumine/Render/ShoesCloseup.jpg",
-                    IsPortraitOrientation = true,
                     Display = FigurePhotoIntendedDisplay.Gallery,
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.ShadedRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1080,
                     Height = 1080
-                },    
+                },
                 new FigureMedia
                 {
                     Url = "images/Lumine/Render/Side.jpg",
-                    IsPortraitOrientation = true,
                     Display = FigurePhotoIntendedDisplay.Gallery,
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.ShadedRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1080,
                     Height = 1080
-                },    
+                },
                 new FigureMedia
                 {
                     Url = "images/Lumine/Render/TopBody.jpg",
-                    IsPortraitOrientation = true,
                     Display = FigurePhotoIntendedDisplay.Gallery,
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.ShadedRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1080,
                     Height = 1080
                 },
@@ -403,7 +363,7 @@ public class FigureProvider
                 {
                     FigureDownloadType = FigureDownloadType.SlicedScenes,
                     Sha256 = "SHASHASHA256"
-                },      
+                },
                 new FigureDownloadResource
                 {
                     FigureDownloadType = FigureDownloadType.Stls,
@@ -424,6 +384,7 @@ public class FigureProvider
         {
             Name = "Asuka",
             Description = "Asuka from AoKana based on tapestry art in a different outfit.",
+            InitialGalleryKindDisplay = FigureMediaKind.Painted,
             Media = new()
             {
                 #region Photos
@@ -431,108 +392,72 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Asuka/Photos/FrontAlt.jpg",
-                    Name = "Front",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.All,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.Painted,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1619,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Asuka/Photos/Front.jpg",
-                    Name = "Front Alternative",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.Gallery,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.Painted,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1619,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Asuka/Photos/FrontRight.jpg",
-                    Name = "Front Right",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.All,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.Painted,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1619,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Asuka/Photos/LeftAlt.jpg",
-                    Name = "Left Alternative",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.Gallery | FigurePhotoIntendedDisplay.HomeShowcase,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.Painted,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1619,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Asuka/Photos/LeftBack.jpg",
-                    Name = "Back Left",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.Gallery,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.Painted,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1619,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Asuka/Photos/Left.jpg",
-                    Name = "Left",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.Gallery,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.Painted,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1619,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Asuka/Photos/Back.jpg",
-                    Name = "Back",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.Gallery,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.Painted,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1619,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Asuka/Photos/Right.jpg",
-                    Name = "Right",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.Gallery,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.Painted,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1619,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Asuka/Photos/RightDetail.jpg",
-                    Name = "Right Detail",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.Gallery,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.Painted,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1619,
                     Height = 1080
                 },
@@ -544,132 +469,88 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Asuka/Render/AsukaAltFrontBottom.jpg",
-                    Name = "Front Bottom",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.All,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.ShadedRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1920,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Asuka/Render/AsukaBackFlare.jpg",
-                    Name = "Back with Flare",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.Gallery | FigurePhotoIntendedDisplay.HomeShowcase,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.ShadedRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1920,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Asuka/Render/AsukaSideFar.jpg",
-                    Name = "Far Side",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.Gallery | FigurePhotoIntendedDisplay.HomeShowcase,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.ShadedRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1920,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Asuka/Render/AsukaBodyCloseup.jpg",
-                    Name = "Body Closeup",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.Gallery,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.ShadedRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1920,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Asuka/Render/AsukaBackCloseup.jpg",
-                    Name = "Back Closeup",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.Gallery,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.ShadedRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1920,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Asuka/Render/AsukaAltFaceCloseup.jpg",
-                    Name = "Face Closeup",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.Gallery,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.ShadedRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1920,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Asuka/Render/AsukaLeftSideCloseup.jpg",
-                    Name = "Left Closeup",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.Gallery,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.ShadedRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1920,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Asuka/Render/AsukaFrontRightBottom.jpg",
-                    Name = "Back Right",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.Gallery,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.ShadedRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1920,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Asuka/Render/AsukaAltBack.jpg",
-                    Name = "Back Alternative",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.Gallery,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.ShadedRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1920,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Asuka/Render/AsukaBootCloseup.jpg",
-                    Name = "Boot closeup",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.Gallery,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.ShadedRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1920,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Asuka/Render/AsukaAltRightSide.jpg",
-                    Name = "Right Side",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.Gallery,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.ShadedRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1920,
                     Height = 1080
                 },
@@ -681,96 +562,64 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Asuka/Sculpt/SculptMainAlt.jpg",
-                    Name = "Main",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.Gallery,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.SculptRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1920,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Asuka/Sculpt/SculptFront.jpg",
-                    Name = "Body",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.Gallery,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.SculptRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1920,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Asuka/Sculpt/SculptLeftCloseup.jpg",
-                    Name = "Left Closeup",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.Gallery,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.SculptRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1920,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Asuka/Sculpt/SculptFace.jpg",
-                    Name = "Face",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.Gallery,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.SculptRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1920,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Asuka/Sculpt/SculptBack.jpg",
-                    Name = "Back",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.Gallery,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.SculptRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1920,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Asuka/Sculpt/SculptShoeLeft.jpg",
-                    Name = "Boot Left",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.Gallery,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.SculptRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1920,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Asuka/Sculpt/SculptShoeDetailRight.jpg",
-                    Name = "Boot Right",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.Gallery,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.SculptRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1920,
                     Height = 1080
                 },
                 new FigureMedia
                 {
                     Url = "images/Asuka/Sculpt/SculptRightCloseup.jpg",
-                    Name = "Right Closeup",
-                    IsPortraitOrientation = false,
                     Display = FigurePhotoIntendedDisplay.Gallery,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.SculptRender,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1920,
                     Height = 1080
                 },
@@ -883,31 +732,214 @@ public class FigureProvider
         {
             Name = "Madoka",
             Description = "Madoka from AoKana based on her onsen CG artwork.",
+            InitialGalleryKindDisplay = FigureMediaKind.ShadedRender,
             Media = new List<FigureMedia>
             {
                 #region Photos
 
                 new FigureMedia
                 {
-                    Url = "images/Madoka/Photos/FrontAlt.jpg",
-                    Name = "Front",
-                    IsPortraitOrientation = false,
+                    Url = "images/Madoka/Photos/PrintPrototype.jpg",
                     Display = FigurePhotoIntendedDisplay.Gallery,
-                    Gravity = FigurePhotoGravity.Center,
                     MediaKind = FigureMediaKind.PrintPrototype,
-                    MediaType = FigureMediaType.Photo,
                     Width = 1080,
                     Height = 1440
                 },
 
                 #endregion
 
-                #region Sculpt
+                #region Render
 
-                
+                new FigureMedia
+                {
+                    Url = "images/Madoka/Render/Front.jpg",
+                    Display = FigurePhotoIntendedDisplay.All,
+                    MediaKind = FigureMediaKind.ShadedRender,
+                    Gravity = FigurePhotoGravity.Top,
+                    Width = 1080,
+                    Height = 1920
+                },
+                new FigureMedia
+                {
+                    Url = "images/Madoka/Render/FaceCloseup.jpg",
+                    Display = FigurePhotoIntendedDisplay.Gallery,
+                    MediaKind = FigureMediaKind.ShadedRender,
+                    Width = 1080,
+                    Height = 1920
+                },
+                new FigureMedia
+                {
+                    Url = "images/Madoka/Render/BottomLeft.jpg",
+                    Display = FigurePhotoIntendedDisplay.Gallery,
+                    MediaKind = FigureMediaKind.ShadedRender,
+                    Gravity = FigurePhotoGravity.Bottom,
+                    Width = 1080,
+                    Height = 1920
+                },
+                new FigureMedia
+                {
+                    Url = "images/Madoka/Render/Front.jpg",
+                    Display = FigurePhotoIntendedDisplay.Gallery,
+                    MediaKind = FigureMediaKind.ShadedRender,
+                    Gravity = FigurePhotoGravity.Top,
+                    Width = 1080,
+                    Height = 1920
+                },
+                new FigureMedia
+                {
+                    Url = "images/Madoka/Render/Bear.jpg",
+                    Display = FigurePhotoIntendedDisplay.Gallery,
+                    MediaKind = FigureMediaKind.ShadedRender,
+                    Width = 1920,
+                    Height = 1080
+                },
+                new FigureMedia
+                {
+                    Url = "images/Madoka/Render/Base.jpg",
+                    Display = FigurePhotoIntendedDisplay.Gallery,
+                    MediaKind = FigureMediaKind.ShadedRender,
+                    Width = 1920,
+                    Height = 1080
+                },
 
                 #endregion
-            }
+
+                #region Sculpt
+
+                new FigureMedia
+                {
+                    Url = "images/Madoka/Sculpt/Left.jpg",
+                    Display = FigurePhotoIntendedDisplay.Gallery,
+                    MediaKind = FigureMediaKind.SculptRender,
+                    Width = 1080,
+                    Height = 1080
+                },
+                new FigureMedia
+                {
+                    Url = "images/Madoka/Sculpt/LeftSide.jpg",
+                    Display = FigurePhotoIntendedDisplay.Gallery,
+                    MediaKind = FigureMediaKind.SculptRender,
+                    Width = 1080,
+                    Height = 1080
+                },
+                new FigureMedia
+                {
+                    Url = "images/Madoka/Sculpt/RightSide.jpg",
+                    Display = FigurePhotoIntendedDisplay.Gallery,
+                    MediaKind = FigureMediaKind.SculptRender,
+                    Width = 1080,
+                    Height = 1080
+                },
+                new FigureMedia
+                {
+                    Url = "images/Madoka/Sculpt/Andon.jpg",
+                    Display = FigurePhotoIntendedDisplay.Gallery,
+                    MediaKind = FigureMediaKind.SculptRender,
+                    Width = 1080,
+                    Height = 1080
+                },
+                new FigureMedia
+                {
+                    Url = "images/Madoka/Sculpt/Bonsai.jpg",
+                    Display = FigurePhotoIntendedDisplay.Gallery,
+                    MediaKind = FigureMediaKind.SculptRender,
+                    Width = 1080,
+                    Height = 1080
+                },
+
+                #endregion
+            },
+            FigureDimensions = new FigureDimensions
+            {
+                Width = 94,
+                Height = 257,
+                Length = 108,
+            },
+            PrintDetails = new FigurePrintDetails
+            {
+                BiggestPartDimension = new()
+                {
+                    Height = 210,
+                    Width = 55,
+                    Length = 57
+                },
+                PrintResinVolume = 408,
+                MaxNumberOfParts = 15,
+                MinNumberOfParts = 15,
+                NumberOfClearParts = 0,
+                NumberOfPrintBatches = 3,
+            },
+            TechnicalStatistics = new()
+            {
+                StlsSize = 1_150_818_060,
+                LycheeScenesSize = 415_004_928,
+                BlendFileSize = 1_671_331_840,
+                Vertices = 11_504_498,
+                Faces = 12_845_106,
+                Triangles = 23_009_872
+            },
+            Timeline = new()
+            {
+                new()
+                {
+                    Date = new DateOnly(2021, 3, 22),
+                    Event = FigureTimelineEvent.ProjectInception
+                },
+                new()
+                {
+                    Date = new(2022, 1, 30),
+                    Event = FigureTimelineEvent.SculptDone
+                },
+                new()
+                {
+                    Date = new(2022, 2, 14),
+                    Event = FigureTimelineEvent.PrintDone
+                }
+            },
+            ExternalLinks = new List<FigureExternalLink>
+            {
+                new()
+                {
+                    Url = "https://www.artstation.com/artwork/3qmJEm",
+                    Type = FigureExternalLinkType.ArtStation
+                },
+                new()
+                {
+                    Url = "https://twitter.com/Drutol/status/1487903753130893323",
+                    Type = FigureExternalLinkType.Twitter
+                },
+            },
+            NftDetails = new()
+            {
+                TokenAddress = "0x7267f3256289ad424835309275511C0BD225D6E1"
+            },
+            DownloadResources = new List<FigureDownloadResource>
+            {
+                new FigureDownloadResource
+                {
+                    FigureDownloadType = FigureDownloadType.BlenderScene,
+                    Sha256 = "SHASHASHA256"
+                },
+                new FigureDownloadResource
+                {
+                    FigureDownloadType = FigureDownloadType.SlicedScenes,
+                    Sha256 = "SHASHASHA256"
+                },
+                new FigureDownloadResource
+                {
+                    FigureDownloadType = FigureDownloadType.Stls,
+                    Sha256 = "SHASHASHA256"
+                },
+            },
+            FigureCharacter = new FigureCharacter
+            {
+                NameEnglish = "Aoyagi Madoka",
+                NameJapanese = "青柳 窓果",
+
+                OriginNameEnglish = "Aokana: Four Rhythm Across the Blue",
+                OriginNameJapanese = "蒼の彼方のフォーリズム"
+            },
+            EyeType = FigureEyeType.PartSculpted
         }
     };
 }

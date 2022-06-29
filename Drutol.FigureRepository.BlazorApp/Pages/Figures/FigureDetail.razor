@@ -14,19 +14,19 @@
 
 @if (Figure != null)
 {
-    <MudGrid Class="mt-2">
+    <MudGrid Style="width: 100% !important;" Spacing="0"> 
         <MudItem xs="12" sm="5" Class="pa-4 rounded" Style="@($"background-color: {Theme.Palette.BackgroundGrey}")">
-            <MudText Typo="Typo.h4" Class="border-l-2 ml-4 pl-4 mud-border-primary">Gallery</MudText>
+            <MudText Typo="Typo.h4" Class="border-l-2 pl-4 mud-border-primary">Gallery</MudText>
             <MudCarousel Id="Carousel" Style="height: 456px" ShowBullets="false" ShowArrows="true" AutoCycle="false" TData="object" @bind-SelectedIndex="CarouselSelectedIndex">
                 @foreach (var photo in GalleryItems)
                 {
                     <MudCarouselItem Transition="Transition.Slide" Class="pa-8 d-flex justify-center rounded">
-                        <MudImage Src="@photo.Url" ObjectFit="ObjectFit.Cover" Class="rounded" Elevation="3" Height="400" @onclick="() => OpenGallery(CarouselSelectedIndex)"/>
+                        <MudImage Src="@photo.Url" ObjectFit="ObjectFit.Cover" Class="rounded" Elevation="3" Height="400" Style="@(!photo.IsPortraitOrientation ? $"width: 100%;" : "")" @onclick="() => OpenGallery(CarouselSelectedIndex)"/>
                     </MudCarouselItem>
                 }
             </MudCarousel>
             <MudPaper Class="d-flex pa-2 mr-6 ml-6" Elevation="0" Square="true" Style="justify-content: center">
-                <MudChipSet SelectedValues="SelectedGalleryKind" SelectedValuesChanged="OnGalleryFilterChange" Filter="true" Mandatory="true">
+                <MudChipSet SelectedValues="@BoundGalleryKind"  SelectedValuesChanged="OnGalleryFilterChange" Filter="true" Mandatory="true">
                     @foreach (var kind in Enum.GetValues<FigureMediaKind>().Reverse())
                     {
                         @if (Figure.Media.Any(media => media.MediaKind == kind))
@@ -44,7 +44,7 @@
                                    Variant="Variant.Filled" Color="Color.Primary"
                                    OnClick="() => OpenGallery(photo)"
                                    DisableElevation="false">
-                            <MudImage Src="@photo.Url" ObjectFit="ObjectFit.Cover" Class="rounded align-center" Width="100" Height="100"/>
+                            <MudImage Src="@photo.Url" ObjectFit="ObjectFit.Cover" Class="rounded align-center" Style="@($"object-position: {photo.Gravity.ToCssValue()}")" Width="100" Height="100"/>
                         </MudButton>
                     </MudItem>
                 }
@@ -240,8 +240,9 @@ else
 
     public List<FigureMedia> GalleryItems { get; set; } = new();
     public Figure? Figure { get; set; }
-    public List<object> SelectedGalleryKind { get; set; }
+    public List<object> BoundGalleryKind { get; set; }
     public int CarouselSelectedIndex { get; set; }
+    public FigureMediaKind GalleryKind { get; set; }
 
     private readonly List<BreadcrumbItem> _breadcrumbs = new()
     {
@@ -252,7 +253,7 @@ else
 
     private void OnGalleryFilterChange(IEnumerable<object> filters)
     {
-        SelectedGalleryKind = filters.ToList();
+        BoundGalleryKind = filters.ToList();
         RefreshGallery();
     }
 
@@ -260,16 +261,20 @@ else
     {
         await base.OnParametersSetAsync();
 
-        if(_breadcrumbs.Count == 3)
+        if (_breadcrumbs.Count == 3)
             _breadcrumbs.RemoveAt(2);
         _breadcrumbs.Add(new BreadcrumbItem(Name, $"/Figures/{Name}"));
         Figure = FigureProvider.Figures.FirstOrDefault(figure => figure.Name.Equals(Name));
 
-        if(Figure == null)
+        if (Figure == null)
             return;
 
-        SelectedGalleryKind = new List<object> { Figure.Media.MaxBy(media => media.MediaKind).MediaKind };
+        GalleryKind = Figure.InitialGalleryKindDisplay ?? Figure.Media.MaxBy(media => media.MediaKind)!.MediaKind;
         RefreshGallery();
+        StateHasChanged();
+
+        await Task.Delay(200);
+        BoundGalleryKind = new List<object> { GalleryKind };
     }
 
     private void RefreshGallery()
@@ -277,8 +282,9 @@ else
         if(Figure == null)
             return;
 
-        var kind = (FigureMediaKind)SelectedGalleryKind.First();
+        var kind = GalleryKind;
         GalleryItems = Figure.Media.Where(media => media.MediaKind == kind).ToList();
+        CarouselSelectedIndex = 0;
     }
 
     private void OpenGallery(FigureMedia photo)

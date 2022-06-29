@@ -3,6 +3,7 @@
 @using Blazored.SessionStorage
 @using Drutol.FigureRepository.BlazorApp.Infrastructure
 @using Drutol.FigureRepository.BlazorApp.Models
+@using Drutol.FigureRepository.BlazorApp.Util
 
 @inject IHostHttpClient HttpClient;
 @inject ISessionStorageService SessionStorage;
@@ -17,6 +18,10 @@
     .FigureLink .mud-nav-link-text {
         align-self: center;
     }
+
+    .mud-nav-link.active {
+        background-color: @Theme.Palette.DrawerBackground.ColorDarken(.05) !important;
+    }
 </style>
 
 <MudNavMenu Bordered="true" Rounded="true" Margin="Margin.Normal" Class="pa-2">
@@ -25,7 +30,7 @@
     <MudNavLink Href="/Figures" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.SpaceDashboard">Figure Index</MudNavLink>
     @foreach (var figure in FigureProvider.Figures)
     {
-        <MudNavLink Class="pl-4 FigureLink" Href="@($"/Figures/{figure.Name}")" Match="NavLinkMatch.Prefix" Icon="@IconProvider.GetForFigure(figure)">@figure.Name</MudNavLink>
+        <MudNavLink Class="pl-4 FigureLink" Href="@($"/Figures/{figure.Name}")" Match="NavLinkMatch.Prefix" IconColor="Color.Inherit" Icon="@IconProvider.GetForFigure(figure)">@figure.Name</MudNavLink>
     }
 
     <MudNavLink Href="/About" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Info">About</MudNavLink>
@@ -36,5 +41,6 @@
 
 @code
 {
-
+    [CascadingParameter]
+    protected ThemeWrapper Theme { get; set; }
 }

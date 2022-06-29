@@ -27,7 +27,9 @@
         <MudIconButton Icon="@(DarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)" Color="Color.Inherit" OnClick="@((e) => DarkMode = !DarkMode)"/>
     </MudAppBar>
     <MudDrawer @bind-Open="@_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="1" Variant="@(IsExtraSmall ? DrawerVariant.Responsive : DrawerVariant.Persistent)" Breakpoint="Breakpoint.Xs"  DisableOverlay="false">
-        <NavMenu/>
+        <CascadingValue Value="_wrapper">
+            <NavMenu/>
+        </CascadingValue>
     </MudDrawer>
     <MudMainContent>
         <CascadingValue Value="_wrapper">
@@ -61,6 +63,7 @@
         PaletteDark =
         {
             Primary = Colors.LightGreen.Default,
+            DrawerBackground = "#202027"
         }
     };
 
