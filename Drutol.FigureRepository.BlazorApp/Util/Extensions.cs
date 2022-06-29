@@ -38,6 +38,16 @@ namespace Drutol.FigureRepository.BlazorApp.Util
             FigureMediaKind.WorkInProgress => "WIP",
             FigureMediaKind.Painted => "Painted",
             _ => throw new ArgumentOutOfRangeException(nameof(ev), ev, null)
+        };    
+        
+        public static string Str(this FigureEyeType ev) => ev switch
+        {
+            FigureEyeType.None => "None",
+            FigureEyeType.FullDecals => "Full Decals",
+            FigureEyeType.IrisDecals => "Iris Decals",
+            FigureEyeType.FullSculpted => "Full Sculpted",
+            FigureEyeType.PartSculpted => "Partially Sculpted",
+            _ => throw new ArgumentOutOfRangeException(nameof(ev), ev, null)
         };
 
         public static string TruncateAddress(this string str)

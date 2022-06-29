@@ -11,7 +11,7 @@ public record FigureMedia
     public int Height { get; set; }
 
     [JsonIgnore]
-    public bool IsPortraitOrientation => Height > Width;
+    public bool IsPortraitOrientation => Height >= Width;
 
     public FigureMediaKind MediaKind { get; init; }
     public FigureMediaType MediaType { get; init; } = FigureMediaType.Photo;

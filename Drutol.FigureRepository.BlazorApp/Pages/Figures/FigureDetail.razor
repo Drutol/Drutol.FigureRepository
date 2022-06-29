@@ -8,6 +8,7 @@
 @using Humanizer
 
 @inject FigureProvider FigureProvider;
+@inject FigureIconProvider FigureIconProvider;
 @inject IJSRuntime JS;
 
 <MudBreadcrumbs Items="_breadcrumbs"/>
@@ -103,17 +104,33 @@
                         </ChildContent>
                     </MudMenu>
                 </MudToolBar>
+            </MudPaper>      
+        
+            <MudPaper Elevation="2" Square="false" Class="ml-8 mr-8 mt-4 pa-4" >
+                <MudText Typo="Typo.h4" Class="border-l-2 pl-3 mud-border-primary">@Figure.Name</MudText>
+                <MudText Typo="Typo.body2" Class="mt-2 ml-4">@Figure.Description</MudText>
+                <MudGrid Class="mt-2">
+                    <MudItem xs="6">
+                        <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center">
+                            <MudIcon Icon="@FigureIconProvider.FigureCharacterIcon" Size="Size.Large" Color="Color.Surface"/>
+                            <MudText Typo="Typo.body2" Align="Align.Center">@Figure.FigureCharacter.NameEnglish<br/>@Figure.FigureCharacter.NameJapanese</MudText>
+                        </MudStack>
+                    </MudItem>       
+                    <MudItem xs="6">
+                        <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center">
+                            <MudIcon Icon="@Icons.Outlined.Public" Size="Size.Large"/>
+                            <MudText Typo="Typo.body2" Align="Align.Center">@Figure.FigureCharacter.OriginNameEnglish<br/>@Figure.FigureCharacter.OriginNameJapanese</MudText>
+                        </MudStack>
+                    </MudItem>
+                </MudGrid>
             </MudPaper>
 
             <MudPaper Elevation="3" Class="ml-8 mr-8 mt-4 pa-4">
-                <MudText Typo="Typo.h4" Class="mt-4 border-l-2 pl-4 mud-border-primary">@Figure.Name</MudText>
-                <MudText Typo="Typo.body1" Class="ml-4">@Figure.Description</MudText>
-
-                <MudContainer Class="d-flex flex-wrap flex-row mt-4" Style="justify-content: center">
+                <MudContainer Class="d-flex flex-wrap flex-row" Style="justify-content: center">
                     <MudItem xs="12" sm="7" Class="pb-4" Style="max-width: unset !important; flex-grow: 1 !important">
                         <MudGrid>
                             <MudItem xs="6">
-                                <MudStack>
+                                <MudStack Spacing="2">
                                     <MudStack Row="true" AlignItems="AlignItems.Center">
                                         <MudIcon Icon="@Icons.Filled.Straighten"/>
                                         <MudText Typo="Typo.h6" Align="Align.Center">Dimensions</MudText>
@@ -124,19 +141,19 @@
                                     <MudStack Row="true" AlignItems="AlignItems.Center">
                                         <MudTooltip Text="Maximum single part dimension at the default scale.">
                                             <MudText Typo="Typo.subtitle1" Align="Align.Center">
-                                                <span class="border-b-2 border-dashed mud-border-primary pb-1">
+                                                <span class="border-b-2 mud-border-primary pb-1">
                                                     Biggest Object
                                                 </span>
                                             </MudText>
                                         </MudTooltip>
                                     </MudStack>
-                                    <MudText Typo="Typo.body2"><strong>Width:</strong> @Figure.PrintDetails.BiggestPartDimension.Width.ToString("N0") mm</MudText>
-                                    <MudText Typo="Typo.body2"><strong>Height:</strong> @Figure.PrintDetails.BiggestPartDimension.Height.ToString("N0") mm</MudText>
-                                    <MudText Typo="Typo.body2"><strong>Length:</strong> @Figure.PrintDetails.BiggestPartDimension.Length.ToString("N0") mm</MudText>
+                                    <MudText Typo="Typo.body2"><strong>W/H/L:</strong> 
+                                        @Figure.PrintDetails.BiggestPartDimension.Width.ToString("N0")/@Figure.PrintDetails.BiggestPartDimension.Height.ToString("N0")/@Figure.PrintDetails.BiggestPartDimension.Length.ToString("N0") mm
+                                    </MudText>
                                 </MudStack>
                             </MudItem>
                             <MudItem xs="6">
-                                <MudStack>
+                                <MudStack Spacing="2">
                                     <MudStack Row="true" AlignItems="AlignItems.Center">
                                         <MudIcon Icon="@Icons.Filled.ViewInAr"/>
                                         <MudText Typo="Typo.h6" Align="Align.Center">Technicalities</MudText>
@@ -144,16 +161,15 @@
                                     <MudText Typo="Typo.body2"><strong>Blender Scene:</strong> @Figure.TechnicalStatistics.BlendFileSize.Bytes()</MudText>
                                     <MudText Typo="Typo.body2"><strong>Lychee Scenes:</strong> @Figure.TechnicalStatistics.LycheeScenesSize.Bytes()</MudText>
                                     <MudText Typo="Typo.body2"><strong>STLs:</strong> @Figure.TechnicalStatistics.StlsSize.Bytes()</MudText>
-                                    <MudText Typo="Typo.body2"><strong>Vertices:</strong> @Figure.TechnicalStatistics.Vertices.ToMetric(MetricNumeralFormats.WithSpace, 2)
-                                    </MudText>
-                                    <MudText Typo="Typo.body2"><strong>Faces:</strong> @Figure.TechnicalStatistics.Faces.ToMetric(MetricNumeralFormats.WithSpace, 2)</MudText>
+                                    <MudText Typo="Typo.body2"><strong>Vertices:</strong> @Figure.TechnicalStatistics.Vertices.ToMetric(MetricNumeralFormats.WithSpace, 2)</MudText>
+                                    <MudText Typo="Typo.body2"><strong>Eyes:</strong> @Figure.EyeType.Str()</MudText>
                                     <MudTooltip Text="@Figure.NftDetails.TokenAddress">
                                         <MudText Typo="Typo.body2"><strong>Token:</strong> @Figure.NftDetails.TokenAddress.TruncateAddress()</MudText>
                                     </MudTooltip>
                                 </MudStack>
                             </MudItem>
                             <MudItem xs="6">
-                                <MudStack>
+                                <MudStack Spacing="2">
                                     <MudStack Row="true" AlignItems="AlignItems.Center">
                                         <MudIcon Icon="@Icons.Filled.Print"/>
                                         <MudText Typo="Typo.h6" Align="Align.Center">Printing</MudText>
@@ -166,7 +182,7 @@
                                         else
                                         {
                                             <MudTooltip Text="Depending on your print max print volume there is variable number of parts prepared.">
-                                                <span class="border-b-2 border-dashed mud-border-primary">
+                                                <span class="border-b-2 mud-border-primary">
                                                     @($"{Figure.PrintDetails.MinNumberOfParts} - {Figure.PrintDetails.MaxNumberOfParts}")
                                                 </span>
                                             </MudTooltip>
@@ -174,7 +190,7 @@
                                     </MudText>
                                     <MudText Typo="Typo.body2">
                                         <MudTooltip Text="Some parts were designed to be printed clear (translucent). Separate kind of resin required.">
-                                            <span class="border-b-2 border-dashed mud-border-primary">
+                                            <span class="border-b-2 mud-border-primary">
                                                 <strong>Clear Parts: </strong>
                                             </span>
                                         </MudTooltip>
@@ -185,7 +201,7 @@
                                 </MudStack>
                             </MudItem>
                             <MudItem xs="6">
-                                <MudStack>
+                                <MudStack Spacing="2">
                                     <MudStack Row="true" AlignItems="AlignItems.Center">
                                         <MudIcon Icon="@Icons.Filled.Link"/>
                                         <MudText Typo="Typo.h6" Align="Align.Center">External Links</MudText>
@@ -199,7 +215,7 @@
                         </MudGrid>
                     </MudItem>
                     <MudItem xs="12" sm="5" Style="max-width: unset !important;">
-                        <MudStack Row="true" AlignItems="AlignItems.Center">
+                        <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center">
                             <MudIcon Icon="@Icons.Filled.EventRepeat"/>
                             <MudText Typo="Typo.h6" Align="Align.Center">Timeline</MudText>
                         </MudStack>
@@ -254,6 +270,8 @@ else
     private void OnGalleryFilterChange(IEnumerable<object> filters)
     {
         BoundGalleryKind = filters.ToList();
+        if(BoundGalleryKind.Any())
+            GalleryKind = (FigureMediaKind)BoundGalleryKind.First();
         RefreshGallery();
     }
 

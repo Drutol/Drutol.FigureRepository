@@ -6,5 +6,8 @@
         public string NameJapanese { get; init; }
         public string OriginNameEnglish { get; set; }
         public string OriginNameJapanese { get; set; }
+
+        public string CharacterUrl { get; set; }
+        public string OriginUrl { get; set; }
     }
 }

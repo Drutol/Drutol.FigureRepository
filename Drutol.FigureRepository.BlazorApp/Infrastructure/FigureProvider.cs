@@ -11,7 +11,9 @@ public class FigureProvider
         {
             Name = "Ganyu",
             Notes = "Printed back in the day on small Photon S printer.",
-            Description = "Ganyu from GenshinImpact based on her Banner Art.",
+            Description = "Ganyu based on her banner art sculpted with gorgeous base " +
+                          "with lilies in attempt to imitate mist gathering at her feet." +
+                          "Sculpted in dynamic pose with Quillin adapted for printing.",
             InitialGalleryKindDisplay = FigureMediaKind.PrintPrototype,
             Media = new List<FigureMedia>
             {
@@ -210,7 +212,10 @@ public class FigureProvider
         new Figure
         {
             Name = "Lumine",
-            Description = "Lumine from GenshinImpact based on her scenic park collaboration artwork.",
+            Description = "Lumine based on her scenic park collaboration artwork. " +
+                          "Having seen the base opportunity I instantly decided she will be the next project. " +
+                          "Sculpted in a pose where she flips her front hair while looking smug. " +
+                          "Comes with a number of details including custom engravings on the base.",
             InitialGalleryKindDisplay = FigureMediaKind.PrintPrototype,
             Media = new List<FigureMedia>
             {
@@ -383,7 +388,9 @@ public class FigureProvider
         new Figure
         {
             Name = "Asuka",
-            Description = "Asuka from AoKana based on tapestry art in a different outfit.",
+            Description = "Asuka based on the tapestry art. " +
+                          "Here she is re-imagined with more dynamic pose as if she was skimming at high speed on the sea pointing in a given direction. " +
+                          "Outfit was changed from swimsuit to flight suit with a few adjustments to make it more interesting, the flaps are semi transparent with red gradient now for example.",
             InitialGalleryKindDisplay = FigureMediaKind.Painted,
             Media = new()
             {
@@ -731,7 +738,10 @@ public class FigureProvider
         new Figure()
         {
             Name = "Madoka",
-            Description = "Madoka from AoKana based on her onsen CG artwork.",
+            Description = "Madoka based on her Onsen CG artwork. " +
+                          "It's a bit more risque figure but any naughty bits are not present. " +
+                          "She is talking on the phone with a smug aura around, with a cute bear keychain included. " +
+                          "The base is imagined to remind of the Onsen with wooden planks and paved path with bonsai tree and an Andon lamp.",
             InitialGalleryKindDisplay = FigureMediaKind.ShadedRender,
             Media = new List<FigureMedia>
             {
@@ -778,10 +788,9 @@ public class FigureProvider
                 },
                 new FigureMedia
                 {
-                    Url = "images/Madoka/Render/Front.jpg",
+                    Url = "images/Madoka/Render/BackRight.jpg",
                     Display = FigurePhotoIntendedDisplay.Gallery,
                     MediaKind = FigureMediaKind.ShadedRender,
-                    Gravity = FigurePhotoGravity.Top,
                     Width = 1080,
                     Height = 1920
                 },
