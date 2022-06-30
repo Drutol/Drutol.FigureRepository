@@ -86,7 +86,7 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
             return new FinishAuthenticationResult(FinishAuthenticationResult.StatusCode.InvalidSignedData);
 
         var service = new ERC721ContractService(
-            new EthApiContractService(new RpcClient(new Uri("http://127.0.0.1:7545"))),
+            new EthApiContractService(new RpcClient(new Uri(_configuration.Value.RpcUrl))),
             activeSession.Request.TokenAddress);
 
         var amount = await service

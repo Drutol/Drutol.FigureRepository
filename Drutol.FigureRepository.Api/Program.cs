@@ -25,6 +25,8 @@ public class Program
         app.MapControllers();
         app.UseCors(policyBuilder => policyBuilder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
+        app.Services.GetRequiredService<IBlockchainAuthProvider>().Initialize();
+
         app.Run();
     }
 }

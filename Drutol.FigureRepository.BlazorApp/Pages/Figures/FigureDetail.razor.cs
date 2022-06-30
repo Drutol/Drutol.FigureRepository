@@ -1,8 +1,13 @@
-﻿using System.Net.Http.Json;
+﻿using System.Diagnostics;
+using System.Net.Http.Json;
+using System.Numerics;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using Drutol.FigureRepository.BlazorApp.Interfaces;
 using Drutol.FigureRepository.Shared.Blockchain;
+using LoopringSharp;
 using MetaMask.Blazor;
 using MetaMask.Blazor.Enums;
 using Microsoft.AspNetCore.Components;
@@ -11,6 +16,7 @@ using MudBlazor;
 using Nethereum.Hex.HexConvertors.Extensions;
 using Nethereum.RPC.Web3;
 using Nethereum.Util;
+using PoseidonSharp;
 
 namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
 {
@@ -89,7 +95,7 @@ namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
                 IsFigureOwned = false;
                 return;
             }
-
+https://ethereum.stackexchange.com/questions/111241/how-do-you-verify-a-metamask-signature-on-the-server-side
             try
             {
                 var sha = Sha3Keccack.Current.CalculateHash("balanceOf(address)");
@@ -101,6 +107,21 @@ namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
                     data = $"0x{methodSignature}{methodArgument}"
                 }, "latest");
                 var amount = (int)result.GetString().HexToBigInteger(false);
+
+                //ethereum.request({
+                //    method: 'personal_sign',
+                //        params: ['Sign this message to access Loopring Exchange: 0x0BABA1Ad5bE3a5C0a66E7ac838a129Bf948f1eA4 with key nonce: 0', '0x59eb7c1e8e357ef2b4eb7532cab64c6538292ac6']
+                //});
+
+                var messageToSign = "Sign this message to access Loopring Exchange: 0x0BABA1Ad5bE3a5C0a66E7ac838a129Bf948f1eA4 with key nonce: 0";
+                var l2Key = await MetaMaskService.GenericRpc("Message", messageToSign);
+                Console.WriteLine($"L2: {l2Key}");
+                var key = EDDSAHelper.RipKeyAppart((l2Key, $"0x59Eb7C1E8e357eF2b4EB7532CaB64c6538292AC6"));
+                var signature = EDDSAHelper.EddsaSignUrl(key.secretKey, HttpMethod.Get, new List<(string Key, string Value)>
+                {
+                    ("accountId", "152955")
+                }, null, "apiKey", "https://api.loopring.network/api/v3/");
+                Console.WriteLine($"Sig: {signature}");
 
                 OwnedTokensCount = amount;
                 IsFigureOwned = amount > 0;
