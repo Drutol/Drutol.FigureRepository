@@ -24,6 +24,7 @@ namespace Drutol.FigureRepository.Api.Infrastructure;
 public class BlockchainAuthProvider : IBlockchainAuthProvider
 {
     private readonly ILogger<BlockchainAuthProvider> _logger;
+    private readonly Func<StartAuthenticationRequest, BlockchainAuthSession> _authSessionFactory;
     private readonly IOptions<BlockchainAuthConfig> _configuration;
 
     private readonly ConcurrentDictionary<Guid, BlockchainAuthSession> _sessions = new();
@@ -31,9 +32,11 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
 
     public BlockchainAuthProvider(
         ILogger<BlockchainAuthProvider> logger,
+        Func<StartAuthenticationRequest, BlockchainAuthSession> authSessionFactory,
         IOptions<BlockchainAuthConfig> configuration)
     {
         _logger = logger;
+        _authSessionFactory = authSessionFactory;
         _configuration = configuration;
     }
 
@@ -46,27 +49,26 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
             TaskScheduler.Default);
     }
 
-    public ValueTask<StartAuthenticationResult> StartAuthentication(StartAuthenticationRequest startAuthenticationRequest)
+    public async ValueTask<StartAuthenticationResult> StartAuthentication(
+        StartAuthenticationRequest startAuthenticationRequest)
     {
         var activeSession = _sessions.Values.FirstOrDefault(session => session.Request == startAuthenticationRequest);
 
         if (activeSession != default)
         {
-            return ValueTask.FromResult(
-                new StartAuthenticationResult(
+            return new StartAuthenticationResult(
                     activeSession.SessionGuid,
-                    activeSession.GetSerializedDataToSign(),
-                    StartAuthenticationResult.StatusCode.Ok));
+                    await activeSession.GetSerializedDataToSign(),
+                    StartAuthenticationResult.StatusCode.Ok);
         }
 
-        var session = new BlockchainAuthSession(startAuthenticationRequest);
+        var session = _authSessionFactory(startAuthenticationRequest);
         _sessions[session.SessionGuid] = session;
 
-        return ValueTask.FromResult(
-            new StartAuthenticationResult(
+        return new StartAuthenticationResult(
                 session.SessionGuid,
-                session.GetSerializedDataToSign(),
-                StartAuthenticationResult.StatusCode.Ok));
+                await session.GetSerializedDataToSign(),
+                StartAuthenticationResult.StatusCode.Ok);
     }
 
     public async ValueTask<FinishAuthenticationResult> FinishAuthentication(FinishAuthenticationRequest finishAuthenticationRequest)

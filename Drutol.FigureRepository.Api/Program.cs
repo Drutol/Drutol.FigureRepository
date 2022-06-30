@@ -1,3 +1,5 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Drutol.FigureRepository.Api.Infrastructure;
 using Drutol.FigureRepository.Api.Interfaces;
 using Drutol.FigureRepository.Api.Models.Configuration;
@@ -9,13 +11,13 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory(ConfigurationAction));
 
         // Add services to the container.
 
         builder.Services.AddControllers();
         builder.Services.Configure<BlockchainAuthConfig>(builder.Configuration.GetSection(nameof(BlockchainAuthConfig)));
 
-        builder.Services.AddSingleton<IBlockchainAuthProvider, BlockchainAuthProvider>();
 
         var app = builder.Build();
 
@@ -28,5 +30,13 @@ public class Program
         app.Services.GetRequiredService<IBlockchainAuthProvider>().Initialize();
 
         app.Run();
+    }
+
+    private static void ConfigurationAction(ContainerBuilder builder)
+    {
+        builder.RegisterType<BlockchainAuthProvider>().AsImplementedInterfaces().SingleInstance();
+        builder.RegisterType<LoopringCommunicator>().AsImplementedInterfaces().SingleInstance();
+
+        builder.RegisterType<BlockchainAuthSession>().AsImplementedInterfaces();
     }
 }

@@ -95,18 +95,18 @@ namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
                 IsFigureOwned = false;
                 return;
             }
-https://ethereum.stackexchange.com/questions/111241/how-do-you-verify-a-metamask-signature-on-the-server-side
+
             try
             {
-                var sha = Sha3Keccack.Current.CalculateHash("balanceOf(address)");
-                var methodSignature = sha.Substring(0, 8); //first 4 bytes make the function signature
-                var methodArgument = SelectedAccountAddress[2..].PadLeft(64, '0'); //arguments have to be encoded as 32 bytes
-                var result = (JsonElement)await MetaMaskService.GenericRpc("eth_call", new
-                {
-                    to = Figure.NftDetails.TokenAddress,
-                    data = $"0x{methodSignature}{methodArgument}"
-                }, "latest");
-                var amount = (int)result.GetString().HexToBigInteger(false);
+                //var sha = Sha3Keccack.Current.CalculateHash("balanceOf(address)");
+                //var methodSignature = sha.Substring(0, 8); //first 4 bytes make the function signature
+                //var methodArgument = SelectedAccountAddress[2..].PadLeft(64, '0'); //arguments have to be encoded as 32 bytes
+                //var result = (JsonElement)await MetaMaskService.GenericRpc("eth_call", new
+                //{
+                //    to = Figure.NftDetails.TokenAddress,
+                //    data = $"0x{methodSignature}{methodArgument}"
+                //}, "latest");
+                //var amount = (int)result.GetString().HexToBigInteger(false);
 
                 //ethereum.request({
                 //    method: 'personal_sign',
@@ -114,7 +114,10 @@ https://ethereum.stackexchange.com/questions/111241/how-do-you-verify-a-metamask
                 //});
 
                 var messageToSign = "Sign this message to access Loopring Exchange: 0x0BABA1Ad5bE3a5C0a66E7ac838a129Bf948f1eA4 with key nonce: 0";
-                var l2Key = await MetaMaskService.GenericRpc("Message", messageToSign);
+                var l2Key = await MetaMaskService.GenericRpc("personal_sign", new string[]
+                {
+
+                });
                 Console.WriteLine($"L2: {l2Key}");
                 var key = EDDSAHelper.RipKeyAppart((l2Key, $"0x59Eb7C1E8e357eF2b4EB7532CaB64c6538292AC6"));
                 var signature = EDDSAHelper.EddsaSignUrl(key.secretKey, HttpMethod.Get, new List<(string Key, string Value)>

@@ -22,13 +22,21 @@ namespace Drutol.FigureRepository.Api.Infrastructure
             }
         };
 
-        public string GetSerializedDataToSign()
+        public async ValueTask<string> GetSerializedDataToSign()
         {
-            var typedData = GetTypedData();
-            var node = JsonSerializer.SerializeToNode(typedData, SerializerOptions)!;
-            node[nameof(TypedData<Domain>.Message).ToLower()] = JsonSerializer.SerializeToNode(GetMessage(), SerializerOptions);
+            if (Request.Type == StartAuthenticationRequest.AuthenticationType.Mainnet)
+            {
+                var typedData = GetTypedData();
+                var node = JsonSerializer.SerializeToNode(typedData, SerializerOptions)!;
+                node[nameof(TypedData<Domain>.Message).ToLower()] = JsonSerializer.SerializeToNode(GetMessage(), SerializerOptions);
 
-            return node.ToJsonString(SerializerOptions);
+                return node.ToJsonString(SerializerOptions);
+            }
+            else if(Request.Type == StartAuthenticationRequest.AuthenticationType.Loopring)
+            {
+                return $"Sign this message to access Loopring Exchange: {} with key nonce: 0"
+            }
+
         }
 
         public TypedData<DomainWithSalt> GetTypedData()

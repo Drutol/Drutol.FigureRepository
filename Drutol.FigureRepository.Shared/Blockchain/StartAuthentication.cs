@@ -4,6 +4,19 @@ using System.Text;
 
 namespace Drutol.FigureRepository.Shared.Blockchain
 {
+    public record StartAuthenticationRequest(
+        StartAuthenticationRequest.AuthenticationType Type,
+        int ChainId,
+        string WalletAddress,
+        string TokenAddress)
+    {
+        public enum AuthenticationType
+        {
+            Mainnet,
+            Loopring
+        }
+    }
+
     public record StartAuthenticationResult(Guid SessionGuid, string DataToSign, StartAuthenticationResult.StatusCode Status)
     {
         public enum StatusCode
