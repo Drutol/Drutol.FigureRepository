@@ -1,4 +1,4 @@
-﻿namespace Drutol.FigureRepository.BlazorApp.Models.Enums;
+﻿namespace Drutol.FigureRepository.Shared.Models.Enums;
 
 public enum FigurePhotoGravity
 {

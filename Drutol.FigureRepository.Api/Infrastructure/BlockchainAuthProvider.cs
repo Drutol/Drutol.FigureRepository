@@ -7,6 +7,8 @@ using System.Text.Json;
 using Drutol.FigureRepository.Api.Interfaces;
 using Drutol.FigureRepository.Api.Models.Configuration;
 using Drutol.FigureRepository.Shared.Blockchain;
+using Drutol.FigureRepository.Shared.Blockchain.Loopring;
+using LoopringSharp;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Nethereum.Contracts.Services;
@@ -24,6 +26,7 @@ namespace Drutol.FigureRepository.Api.Infrastructure;
 public class BlockchainAuthProvider : IBlockchainAuthProvider
 {
     private readonly ILogger<BlockchainAuthProvider> _logger;
+    private readonly ILoopringCommunicator _loopringCommunicator;
     private readonly Func<StartAuthenticationRequest, BlockchainAuthSession> _authSessionFactory;
     private readonly IOptions<BlockchainAuthConfig> _configuration;
 
@@ -32,10 +35,12 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
 
     public BlockchainAuthProvider(
         ILogger<BlockchainAuthProvider> logger,
+        ILoopringCommunicator loopringCommunicator,
         Func<StartAuthenticationRequest, BlockchainAuthSession> authSessionFactory,
         IOptions<BlockchainAuthConfig> configuration)
     {
         _logger = logger;
+        _loopringCommunicator = loopringCommunicator;
         _authSessionFactory = authSessionFactory;
         _configuration = configuration;
     }
@@ -79,23 +84,39 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
                 new FinishAuthenticationResult(FinishAuthenticationResult.StatusCode.SessionDoesNotExist);
         }
 
-        var walletAddress = Eip712TypedDataSigner.Current.RecoverFromSignatureV4(
-            activeSession.GetMessage(),
-            activeSession.GetTypedData(),
-            finishAuthenticationRequest.SignedDataHash);
+        int ownedAmount = 0;
+        if (activeSession.Request.Type == StartAuthenticationRequest.AuthenticationType.Loopring)
+        {
+            ownedAmount = await _loopringCommunicator.GetBalances(
+                    finishAuthenticationRequest.SignedDataHash,
+                    activeSession.Request.WalletAddress,
+                    activeSession.LoopringAccount.AccountId,
+                    activeSession.Request.TokenId) switch
+                {
+                    INftBalancesResponseModel.Success success => int.Parse(success.NftData[0].Total),
+                    _ => 0
+                };
+        }
+        else if (activeSession.Request.Type == StartAuthenticationRequest.AuthenticationType.Mainnet)
+        {
+            var walletAddress = Eip712TypedDataSigner.Current.RecoverFromSignatureV4(
+                activeSession.GetMessage(),
+                activeSession.GetTypedData(),
+                finishAuthenticationRequest.SignedDataHash);
 
-        if(!walletAddress.Equals(activeSession.Request.WalletAddress, StringComparison.OrdinalIgnoreCase))
-            return new FinishAuthenticationResult(FinishAuthenticationResult.StatusCode.InvalidSignedData);
+            if (!walletAddress.Equals(activeSession.Request.WalletAddress, StringComparison.OrdinalIgnoreCase))
+                return new FinishAuthenticationResult(FinishAuthenticationResult.StatusCode.InvalidSignedData);
 
-        var service = new ERC721ContractService(
-            new EthApiContractService(new RpcClient(new Uri(_configuration.Value.RpcUrl))),
-            activeSession.Request.TokenAddress);
+            var service = new ERC721ContractService(
+                new EthApiContractService(new RpcClient(new Uri(_configuration.Value.RpcUrl))),
+                activeSession.Request.TokenAddress);
 
-        var amount = await service
-            .BalanceOfQueryAsync(walletAddress, BlockParameter.CreateLatest())
-            .ConfigureAwait(false);
+            var amount = await service
+                .BalanceOfQueryAsync(walletAddress, BlockParameter.CreateLatest())
+                .ConfigureAwait(false);
+        }
 
-        if (amount > 0)
+        if (ownedAmount > 0)
         {
             return new FinishAuthenticationResult(
                 FinishAuthenticationResult.StatusCode.Ok,

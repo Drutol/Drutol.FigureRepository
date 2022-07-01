@@ -1,5 +1,5 @@
-﻿using Drutol.FigureRepository.BlazorApp.Models;
-using Drutol.FigureRepository.BlazorApp.Models.Enums;
+﻿using Drutol.FigureRepository.Shared.Models;
+using Drutol.FigureRepository.Shared.Models.Enums;
 
 namespace Drutol.FigureRepository.BlazorApp.Infrastructure;
 
@@ -177,10 +177,7 @@ public class FigureProvider
                     Url = "https://www.artstation.com/artwork/DAQ49A"
                 }
             },
-            NftDetails = new()
-            {
-                TokenAddress = "0x7267f3256289ad424835309275511C0BD225D6E1"
-            },
+            NftDetails = new("0x7267f3256289ad424835309275511C0BD225D6E1"),
             DownloadResources = new List<FigureDownloadResource>
             {
                 new FigureDownloadResource
@@ -331,10 +328,7 @@ public class FigureProvider
                 NumberOfPrintBatches = 5,
                 PrintResinVolume = 942
             },
-            NftDetails = new()
-            {
-                TokenAddress = "0x7267f3256289ad424835309275511C0BD225D6E1"
-            },
+            NftDetails = new("0x7267f3256289ad424835309275511C0BD225D6E1"),
             TechnicalStatistics = new FigureTechnicalStatistics
             {
                 LycheeScenesSize = 450_092_877,
@@ -703,10 +697,7 @@ public class FigureProvider
                 NumberOfPrintBatches = 6,
                 PrintResinVolume = 1148,
             },
-            NftDetails = new()
-            {
-                TokenAddress = "0x7267f3256289ad424835309275511C0BD225D6E1"
-            },
+            NftDetails = new("0x7267f3256289ad424835309275511C0BD225D6E1"),
             DownloadResources = new List<FigureDownloadResource>
             {
                 new FigureDownloadResource
@@ -918,10 +909,7 @@ public class FigureProvider
                     Type = FigureExternalLinkType.Twitter
                 },
             },
-            NftDetails = new()
-            {
-                TokenAddress = "0x9d226054324360d8eeb024f66731d6c5e44e8c6f"
-            },
+            NftDetails = new("0x7267f3256289ad424835309275511C0BD225D6E1"),
             DownloadResources = new List<FigureDownloadResource>
             {
                 new FigureDownloadResource

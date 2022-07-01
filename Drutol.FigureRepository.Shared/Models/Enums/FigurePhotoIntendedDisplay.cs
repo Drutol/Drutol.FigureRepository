@@ -1,4 +1,6 @@
-﻿namespace Drutol.FigureRepository.BlazorApp.Models.Enums
+﻿using System;
+
+namespace Drutol.FigureRepository.Shared.Models.Enums
 {
     [Flags]
     public enum FigurePhotoIntendedDisplay

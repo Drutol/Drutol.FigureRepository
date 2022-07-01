@@ -1,6 +1,7 @@
-﻿using Drutol.FigureRepository.BlazorApp.Models.Enums;
+﻿using System;
+using Drutol.FigureRepository.Shared.Models.Enums;
 
-namespace Drutol.FigureRepository.BlazorApp.Models
+namespace Drutol.FigureRepository.Shared.Models
 {
     public record FigureTimelineEntry
     {

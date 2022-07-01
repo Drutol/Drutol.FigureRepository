@@ -1,4 +1,4 @@
-﻿namespace Drutol.FigureRepository.BlazorApp.Models;
+﻿namespace Drutol.FigureRepository.Shared.Models;
 
 public record FigureDimensions
 {

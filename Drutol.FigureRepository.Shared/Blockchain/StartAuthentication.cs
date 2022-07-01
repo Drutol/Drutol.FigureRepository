@@ -8,7 +8,7 @@ namespace Drutol.FigureRepository.Shared.Blockchain
         StartAuthenticationRequest.AuthenticationType Type,
         int ChainId,
         string WalletAddress,
-        string TokenAddress)
+        Guid FigureGuid)
     {
         public enum AuthenticationType
         {

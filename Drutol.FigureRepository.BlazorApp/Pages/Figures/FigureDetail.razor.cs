@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.Json;
 using Drutol.FigureRepository.BlazorApp.Interfaces;
 using Drutol.FigureRepository.Shared.Blockchain;
+using Drutol.FigureRepository.Shared.Blockchain.Loopring;
 using LoopringSharp;
 using MetaMask.Blazor;
 using MetaMask.Blazor.Enums;
@@ -29,7 +30,12 @@ namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
         public Chain? SelectedChain { get; set; }
         public bool HasMetaMask { get; set; }
         public bool IsFigureOwned { get; set; }
-        public int OwnedTokensCount { get; set; }
+        public bool CanCheckOwnership { get; set; }
+
+        private readonly HttpClient _loopringClient = new HttpClient
+        {
+            BaseAddress = new Uri("https://api.loopring.network/api/v3/")
+        };
 
         [Inject]
         public MetaMaskService MetaMaskService { get; set; } 
@@ -48,7 +54,7 @@ namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
                 return;
 
             await UpdateSelectedNetwork();
-            await UpdateOwnership();
+            await UpdateCanCheckOwnership();
             Snackbar.Add($"Changed MetaMask chain to: {arg}", Severity.Info);
             StateHasChanged();
         }
@@ -59,7 +65,7 @@ namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
                 return;
 
             await UpdateSelectedAddress();
-            await UpdateOwnership();
+            await UpdateCanCheckOwnership();
             Snackbar.Add($"Changed MetaMask account to: {arg}", Severity.Info);
             StateHasChanged();
         }
@@ -72,7 +78,7 @@ namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
                 await MetaMaskService.ConnectMetaMask();
                 Snackbar.Add("Successfully connected with MetaMask!", Severity.Success);
                 await UpdateSelectedAddress();
-                await UpdateOwnership();
+                await UpdateCanCheckOwnership();
                 await UpdateSelectedNetwork();
                 EthereumAvailable = true;
             }
@@ -87,11 +93,33 @@ namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
             }
         }
 
-        private async Task UpdateOwnership()
+        private async Task UpdateCanCheckOwnership()
         {
             if (Figure == null || string.IsNullOrEmpty(SelectedAccountAddress))
             {
-                OwnedTokensCount = 0;
+                IsFigureOwned = false;
+                return;
+            }
+
+            try
+            {
+                CanCheckOwnership = await GetLoopringAccount(SelectedAccountAddress) switch
+                {
+                    IAccountResponseModel.Success => true,
+                    _ => false,
+                };
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                CanCheckOwnership = false;
+            }
+        }
+        
+        private async Task UpdateOwnership()
+        {
+            if (Figure == null || string.IsNullOrEmpty(SelectedAccountAddress) || !CanCheckOwnership)
+            {
                 IsFigureOwned = false;
                 return;
             }
@@ -113,26 +141,27 @@ namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
                 //        params: ['Sign this message to access Loopring Exchange: 0x0BABA1Ad5bE3a5C0a66E7ac838a129Bf948f1eA4 with key nonce: 0', '0x59eb7c1e8e357ef2b4eb7532cab64c6538292ac6']
                 //});
 
-                var messageToSign = "Sign this message to access Loopring Exchange: 0x0BABA1Ad5bE3a5C0a66E7ac838a129Bf948f1eA4 with key nonce: 0";
-                var l2Key = await MetaMaskService.GenericRpc("personal_sign", new string[]
-                {
+                using var authStartContent = JsonContent.Create(new StartAuthenticationRequest(
+                    StartAuthenticationRequest.AuthenticationType.Loopring,
+                    ((int?)SelectedChain) ?? 0,
+                    SelectedAccountAddress,
+                    Figure.Guid));
+                var response = await
+                    (await HttpClient.Client.PostAsync("/api/auth/StartAuthentication", authStartContent)).Content.ReadFromJsonAsync<StartAuthenticationResult>();
 
+                var signature = (JsonElement)await MetaMaskService.GenericRpc("personal_sign", new string[]
+                {
+                    response.DataToSign,
+                    SelectedAccountAddress
                 });
-                Console.WriteLine($"L2: {l2Key}");
-                var key = EDDSAHelper.RipKeyAppart((l2Key, $"0x59Eb7C1E8e357eF2b4EB7532CaB64c6538292AC6"));
-                var signature = EDDSAHelper.EddsaSignUrl(key.secretKey, HttpMethod.Get, new List<(string Key, string Value)>
-                {
-                    ("accountId", "152955")
-                }, null, "apiKey", "https://api.loopring.network/api/v3/");
-                Console.WriteLine($"Sig: {signature}");
 
-                OwnedTokensCount = amount;
-                IsFigureOwned = amount > 0;
+                var authFinishContent = JsonContent.Create(new FinishAuthenticationRequest(response.SessionGuid, signature.GetString()));
+                var auth = await
+                    (await HttpClient.Client.PostAsync("/api/auth/FinishAuthentication", authFinishContent)).Content.ReadFromJsonAsync<FinishAuthenticationResult>();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                OwnedTokensCount = 0;
                 IsFigureOwned = false;
             }
         }
@@ -153,7 +182,10 @@ namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
         private async void Download(MouseEventArgs obj)
         {
             using var authStartContent = JsonContent.Create(new StartAuthenticationRequest(
-                (int)SelectedChain.Value, SelectedAccountAddress, Figure.NftDetails.TokenAddress));
+                StartAuthenticationRequest.AuthenticationType.Loopring,
+                (int)SelectedChain.Value,
+                SelectedAccountAddress,
+                Figure.Guid));
             var response = await 
                 (await HttpClient.Client.PostAsync("/api/auth/StartAuthentication", authStartContent)).Content.ReadFromJsonAsync<StartAuthenticationResult>();
             
@@ -162,7 +194,6 @@ namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
             var authFinishContent = JsonContent.Create(new FinishAuthenticationRequest(response.SessionGuid, signResult));
             var auth = await
                 (await HttpClient.Client.PostAsync("/api/auth/FinishAuthentication", authFinishContent)).Content.ReadFromJsonAsync<FinishAuthenticationResult>();
-
         }
 
         protected override async Task OnInitializedAsync()
@@ -181,11 +212,28 @@ namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
                 EthereumAvailable = true;
                 await UpdateSelectedAddress();
                 await UpdateSelectedNetwork();
-                await UpdateOwnership();
+                await UpdateCanCheckOwnership();
             }
         }
 
-        
+        private async ValueTask<IAccountResponseModel> GetLoopringAccount(string walletAddress)
+        {
+            try
+            {
+                var result = await _loopringClient
+                    .GetFromJsonAsync<IAccountResponseModel.Success>($"account?owner={walletAddress}")
+                    .ConfigureAwait(false);
+
+                if (result == null)
+                    return new IAccountResponseModel.Fail();
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                return new IAccountResponseModel.Fail();
+            }
+        }
 
         public void Dispose()
         {

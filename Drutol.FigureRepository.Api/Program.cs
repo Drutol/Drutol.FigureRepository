@@ -37,6 +37,6 @@ public class Program
         builder.RegisterType<BlockchainAuthProvider>().AsImplementedInterfaces().SingleInstance();
         builder.RegisterType<LoopringCommunicator>().AsImplementedInterfaces().SingleInstance();
 
-        builder.RegisterType<BlockchainAuthSession>().AsImplementedInterfaces();
+        builder.RegisterType<BlockchainAuthSession>().AsSelf();
     }
 }

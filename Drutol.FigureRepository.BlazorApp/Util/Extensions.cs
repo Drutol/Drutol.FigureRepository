@@ -1,5 +1,5 @@
-﻿using Drutol.FigureRepository.BlazorApp.Models;
-using Drutol.FigureRepository.BlazorApp.Models.Enums;
+﻿using Drutol.FigureRepository.Shared.Models;
+using Drutol.FigureRepository.Shared.Models.Enums;
 using Microsoft.JSInterop;
 
 namespace Drutol.FigureRepository.BlazorApp.Util

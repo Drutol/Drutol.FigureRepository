@@ -1,10 +1,12 @@
-﻿using Drutol.FigureRepository.BlazorApp.Models.Enums;
+﻿using System;
+using System.Collections.Generic;
+using Drutol.FigureRepository.Shared.Models.Enums;
 
-namespace Drutol.FigureRepository.BlazorApp.Models;
+namespace Drutol.FigureRepository.Shared.Models;
 
 public record Figure
 {
-    public long Id { get; init; }
+    public Guid Guid { get; init; }
     public string Name { get; init; }
     public string Flavour { get; init; }
     public string Description { get; init; }
