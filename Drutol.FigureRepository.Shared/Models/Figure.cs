@@ -19,6 +19,7 @@ public record Figure
     public FigureDimensions FigureDimensions { get; init; }
     public FigureNftDetails NftDetails { get; init; }
     public FigurePrintDetails PrintDetails { get; init; }
+    public FigureCheckoutDetails CheckoutDetails { get; init; }
 
     public List<FigureMedia> Media { get; init; }
     public List<FigureExternalLink> ExternalLinks { get; init; }

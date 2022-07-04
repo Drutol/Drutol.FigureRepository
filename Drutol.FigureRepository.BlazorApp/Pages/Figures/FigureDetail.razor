@@ -87,9 +87,14 @@
                     }
                     else
                     {
-                        <MudTooltip  Text="You don't own an NFT of this figure yet.">
-                            <MudFab Class="mr-2" StartIcon="@Icons.Filled.AddShoppingCart" Color="Color.Info" Size="Size.Small"/>
-                        </MudTooltip>
+                        <MudMenu Size="Size.Large" AnchorOrigin="Origin.BottomCenter" PopoverClass="pr-2 pl-2">
+                            <ActivatorContent>
+                                <MudFab Class="mr-2" StartIcon="@Icons.Filled.AddShoppingCart" Color="Color.Info" Size="Size.Small" OnClick="OnBuyMenuOpened"/>
+                            </ActivatorContent>
+                            <ChildContent>
+                                <div id="paypal-buttons"></div>
+                            </ChildContent>
+                        </MudMenu>
                     }
                     <MudMenu Size="Size.Large" AnchorOrigin="Origin.BottomCenter" PopoverClass="pr-2 pl-2">
                         <ActivatorContent>

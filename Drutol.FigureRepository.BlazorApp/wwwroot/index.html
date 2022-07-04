@@ -2,86 +2,62 @@
 <html lang="en" style="height: 100%">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title>Drutol.FigureRepository.BlazorApp</title>
-    <base href="/" />
-    <link href="css\app.css" rel="stylesheet" />
-    <link href="Drutol.FigureRepository.BlazorApp.styles.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
+    <base href="/"/>
+    <link href="css\app.css" rel="stylesheet"/>
+    <link href="Drutol.FigureRepository.BlazorApp.styles.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
+    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet"/>
     <link href="photoswipe/photoswipe.css" rel="stylesheet">
-    
+
     <style>
         @keyframes flickerAnimation {
-            0% {
-                opacity: 1;
-            }
+            0% { opacity: 1; }
 
-            50% {
-                opacity: .1;
-            }
+            50% { opacity: .1; }
 
-            100% {
-                opacity: 1;
-            }
+            100% { opacity: 1; }
         }
 
         @-o-keyframes flickerAnimation {
-            0% {
-                opacity: 1;
-            }
+            0% { opacity: 1; }
 
-            50% {
-                opacity: .1;
-            }
+            50% { opacity: .1; }
 
-            100% {
-                opacity: 1;
-            }
+            100% { opacity: 1; }
         }
 
         @-moz-keyframes flickerAnimation {
-            0% {
-                opacity: 1;
-            }
+            0% { opacity: 1; }
 
-            50% {
-                opacity: .1;
-            }
+            50% { opacity: .1; }
 
-            100% {
-                opacity: 1;
-            }
+            100% { opacity: 1; }
         }
 
         @-webkit-keyframes flickerAnimation {
-            0% {
-                opacity: 1;
-            }
+            0% { opacity: 1; }
 
-            50% {
-                opacity: .1;
-            }
+            50% { opacity: .1; }
 
-            100% {
-                opacity: 1;
-            }
+            100% { opacity: 1; }
         }
 
         .animate-flicker {
-            -webkit-animation: flickerAnimation 2s infinite;
             -moz-animation: flickerAnimation 2s infinite;
             -o-animation: flickerAnimation 2s infinite;
+            -webkit-animation: flickerAnimation 2s infinite;
             animation: flickerAnimation 2s infinite;
         }
     </style>
 </head>
 
 <body style="height: 100%">
-<div id="app" style="height: 100%; display: flex">
+<div id="app" style="display: flex; height: 100%;">
     <div style="margin: auto" class="animate-flicker">
-        <img src="svg\logo\LogoWeb.svg" />
+        <img src="svg\logo\LogoWeb.svg"/>
     </div>
 </div>
 
@@ -93,6 +69,14 @@
 <script src="_framework/blazor.webassembly.js"></script>
 <script src="_content/MudBlazor/MudBlazor.min.js"></script>
 <script src="js/photoswipeIntegration.js" type="module"></script>
+<script src="js/braintreeIntegration.js" type="module"></script>
+
+<!-- Load the required checkout.js script -->
+<script src="https://www.paypalobjects.com/api/checkout.js" data-version-4></script>
+
+<!-- Load the required Braintree components. -->
+<script src="https://js.braintreegateway.com/web/3.85.3/js/client.min.js"></script>
+<script src="https://js.braintreegateway.com/web/3.85.3/js/paypal-checkout.min.js"></script>
 
 </body>
 </html>

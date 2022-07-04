@@ -8,6 +8,7 @@ namespace Drutol.FigureRepository.Api.DataAccess.Seeding
     {
         public Figure Figure { get; } = new Figure
         {
+            Guid = Guid.Parse("046BA215-AE76-44E4-BB14-01BBEAB30527"),
             Name = "Ganyu",
             Notes = "Printed back in the day on small Photon S printer.",
             Description = "Ganyu based on her banner art sculpted with gorgeous base " +
@@ -180,6 +181,10 @@ namespace Drutol.FigureRepository.Api.DataAccess.Seeding
             NftDetails = new("0xb06146103f0b05e55c7b8ccf4dcd8df70b5a105c")
             {
                 TokenId = 32769
+            },
+            CheckoutDetails = new FigureCheckoutDetails
+            {
+                Price = 40m
             },
             DownloadResources = new List<FigureDownloadResource>
             {

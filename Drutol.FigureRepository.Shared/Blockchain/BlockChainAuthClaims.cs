@@ -6,6 +6,6 @@ namespace Drutol.FigureRepository.Shared.Blockchain
 {
     public static class BlockChainAuthClaims
     {
-        public static readonly string TokenOwnerClaim = nameof(TokenOwnerClaim);
+        public static readonly string FigureOwnerClaim = nameof(FigureOwnerClaim);
     }
 }

@@ -8,6 +8,7 @@ using Drutol.FigureRepository.Api.Interfaces;
 using Drutol.FigureRepository.Api.Models.Configuration;
 using Drutol.FigureRepository.Shared.Blockchain;
 using Drutol.FigureRepository.Shared.Blockchain.Loopring;
+using Drutol.FigureRepository.Shared.Models;
 using LoopringSharp;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -91,7 +92,7 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
                     finishAuthenticationRequest.SignedDataHash,
                     activeSession.Request.WalletAddress,
                     activeSession.LoopringAccount.AccountId,
-                    activeSession.Request.TokenId) switch
+                    activeSession.Figure.NftDetails.TokenId) switch
                 {
                     INftBalancesResponseModel.Success success => int.Parse(success.NftData[0].Total),
                     _ => 0
@@ -99,28 +100,28 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
         }
         else if (activeSession.Request.Type == StartAuthenticationRequest.AuthenticationType.Mainnet)
         {
-            var walletAddress = Eip712TypedDataSigner.Current.RecoverFromSignatureV4(
-                activeSession.GetMessage(),
-                activeSession.GetTypedData(),
-                finishAuthenticationRequest.SignedDataHash);
+            //var walletAddress = Eip712TypedDataSigner.Current.RecoverFromSignatureV4(
+            //    activeSession.GetMessage(),
+            //    activeSession.GetTypedData(),
+            //    finishAuthenticationRequest.SignedDataHash);
 
-            if (!walletAddress.Equals(activeSession.Request.WalletAddress, StringComparison.OrdinalIgnoreCase))
-                return new FinishAuthenticationResult(FinishAuthenticationResult.StatusCode.InvalidSignedData);
+            //if (!walletAddress.Equals(activeSession.Request.WalletAddress, StringComparison.OrdinalIgnoreCase))
+            //    return new FinishAuthenticationResult(FinishAuthenticationResult.StatusCode.InvalidSignedData);
 
-            var service = new ERC721ContractService(
-                new EthApiContractService(new RpcClient(new Uri(_configuration.Value.RpcUrl))),
-                activeSession.Request.TokenAddress);
+            //var service = new ERC721ContractService(
+            //    new EthApiContractService(new RpcClient(new Uri(_configuration.Value.RpcUrl))),
+            //    activeSession.Request.TokenAddress);
 
-            var amount = await service
-                .BalanceOfQueryAsync(walletAddress, BlockParameter.CreateLatest())
-                .ConfigureAwait(false);
+            //var amount = await service
+            //    .BalanceOfQueryAsync(walletAddress, BlockParameter.CreateLatest())
+            //    .ConfigureAwait(false);
         }
 
         if (ownedAmount > 0)
         {
             return new FinishAuthenticationResult(
                 FinishAuthenticationResult.StatusCode.Ok,
-                GenerateJwtForToken(activeSession.Request.TokenAddress));
+                GenerateJwtForFigure(activeSession.Figure));
         }
         else
         {
@@ -129,7 +130,7 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
         }
     }
 
-    private string GenerateJwtForToken(string token)
+    private string GenerateJwtForFigure(Figure figure)
     {
         var jwtHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_configuration.Value.JwtSigningKey);
@@ -141,7 +142,7 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
                 SecurityAlgorithms.HmacSha256Signature),
             Claims = new Dictionary<string, object>
             {
-                {BlockChainAuthClaims.TokenOwnerClaim, token}
+                {BlockChainAuthClaims.FigureOwnerClaim, figure.Guid}
             }
         };
 

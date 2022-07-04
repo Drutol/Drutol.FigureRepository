@@ -8,6 +8,7 @@ namespace Drutol.FigureRepository.Api.DataAccess.Seeding
     {
         public Figure Figure { get; } = new Figure
         {
+            Guid = Guid.Parse("E46284DB-90D7-4A2B-BA97-36C599C1FA87"),
             Name = "Lumine",
             Description = "Lumine based on her scenic park collaboration artwork. " +
                           "Having seen the base opportunity I instantly decided she will be the next project. " +
@@ -171,6 +172,10 @@ namespace Drutol.FigureRepository.Api.DataAccess.Seeding
                     FigureDownloadType = FigureDownloadType.Stls,
                     Sha256 = "SHASHASHA256"
                 },
+            },
+            CheckoutDetails = new FigureCheckoutDetails
+            {
+                Price = 40m
             },
             FigureCharacter = new FigureCharacter
             {

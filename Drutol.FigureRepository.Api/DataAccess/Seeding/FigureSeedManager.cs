@@ -3,8 +3,10 @@ using Drutol.FigureRepository.Shared.Models;
 
 namespace Drutol.FigureRepository.Api.DataAccess.Seeding
 {
-    public class FigureSeedManager
+    public class FigureSeedManager : IFigureSeedManager
     {
+        public Figure this[Guid index] => Figures.First(figure => figure.Guid == index);
+
         public List<Figure> Figures { get; } = new();
         private readonly IList<IFigureSeed> _seeds;
 

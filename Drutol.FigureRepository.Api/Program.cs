@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Drutol.FigureRepository.Api.DataAccess.Seeding;
 using Drutol.FigureRepository.Api.Infrastructure;
 using Drutol.FigureRepository.Api.Interfaces;
 using Drutol.FigureRepository.Api.Models.Configuration;
@@ -17,6 +18,7 @@ public class Program
 
         builder.Services.AddControllers();
         builder.Services.Configure<BlockchainAuthConfig>(builder.Configuration.GetSection(nameof(BlockchainAuthConfig)));
+        builder.Services.Configure<BraintreeConfiguration>(builder.Configuration.GetSection(nameof(BraintreeConfiguration)));
 
 
         var app = builder.Build();
@@ -36,6 +38,14 @@ public class Program
     {
         builder.RegisterType<BlockchainAuthProvider>().AsImplementedInterfaces().SingleInstance();
         builder.RegisterType<LoopringCommunicator>().AsImplementedInterfaces().SingleInstance();
+
+        builder.RegisterType<BraintreeProvider>().AsImplementedInterfaces().SingleInstance();
+        builder.RegisterType<FigureSeedManager>().AsImplementedInterfaces().SingleInstance();
+
+        builder.RegisterType<GanyuFigureSeed>().AsImplementedInterfaces().SingleInstance();
+        builder.RegisterType<AsukaFigureSeed>().AsImplementedInterfaces().SingleInstance();
+        builder.RegisterType<LumineFigureSeed>().AsImplementedInterfaces().SingleInstance();
+        builder.RegisterType<MadokaFigureSeed>().AsImplementedInterfaces().SingleInstance();
 
         builder.RegisterType<BlockchainAuthSession>().AsSelf();
     }

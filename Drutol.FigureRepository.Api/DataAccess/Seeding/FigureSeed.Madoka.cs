@@ -8,6 +8,7 @@ namespace Drutol.FigureRepository.Api.DataAccess.Seeding
     {
         public Figure Figure { get; } = new Figure()
         {
+            Guid = Guid.Parse("8EE2F4AC-40F9-4FD7-A551-FE679A015ED7"),
             Name = "Madoka",
             Description = "Madoka based on her Onsen CG artwork. " +
                           "It's a bit more risque figure but any naughty bits are not present. " +
@@ -210,6 +211,10 @@ namespace Drutol.FigureRepository.Api.DataAccess.Seeding
                     FigureDownloadType = FigureDownloadType.Stls,
                     Sha256 = "SHASHASHA256"
                 },
+            },
+            CheckoutDetails = new FigureCheckoutDetails
+            {
+                Price = 40m
             },
             FigureCharacter = new FigureCharacter
             {

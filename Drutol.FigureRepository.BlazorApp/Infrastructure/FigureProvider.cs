@@ -8,7 +8,8 @@ public class FigureProvider
     public List<Figure> Figures { get; } = new()
     {
         new Figure
-        {
+        {           
+            Guid = Guid.Parse("046BA215-AE76-44E4-BB14-01BBEAB30527"),
             Name = "Ganyu",
             Notes = "Printed back in the day on small Photon S printer.",
             Description = "Ganyu based on her banner art sculpted with gorgeous base " +
@@ -207,7 +208,8 @@ public class FigureProvider
             EyeType = FigureEyeType.FullSculpted
         },
         new Figure
-        {
+        {           
+            Guid = Guid.Parse("E46284DB-90D7-4A2B-BA97-36C599C1FA87"),
             Name = "Lumine",
             Description = "Lumine based on her scenic park collaboration artwork. " +
                           "Having seen the base opportunity I instantly decided she will be the next project. " +
@@ -369,6 +371,10 @@ public class FigureProvider
                     Sha256 = "SHASHASHA256"
                 },
             },
+            CheckoutDetails = new FigureCheckoutDetails
+            {
+                Price = 40m
+            },
             FigureCharacter = new FigureCharacter
             {
                 NameEnglish = "Lumine",
@@ -381,6 +387,7 @@ public class FigureProvider
         },
         new Figure
         {
+            Guid = Guid.Parse("DF7449B8-4915-487A-A244-0E2E4C0B55E2"),
             Name = "Asuka",
             Description = "Asuka based on the tapestry art. " +
                           "Here she is re-imagined with more dynamic pose as if she was skimming at high speed on the sea pointing in a given direction. " +
@@ -697,6 +704,10 @@ public class FigureProvider
                 NumberOfPrintBatches = 6,
                 PrintResinVolume = 1148,
             },
+            CheckoutDetails = new FigureCheckoutDetails
+            {
+                Price = 40m
+            },
             NftDetails = new("0x7267f3256289ad424835309275511C0BD225D6E1"),
             DownloadResources = new List<FigureDownloadResource>
             {
@@ -727,7 +738,8 @@ public class FigureProvider
             EyeType = FigureEyeType.IrisDecals
         },
         new Figure()
-        {
+        {           
+            Guid = Guid.Parse("8EE2F4AC-40F9-4FD7-A551-FE679A015ED7"),
             Name = "Madoka",
             Description = "Madoka based on her Onsen CG artwork. " +
                           "It's a bit more risque figure but any naughty bits are not present. " +
@@ -927,6 +939,10 @@ public class FigureProvider
                     FigureDownloadType = FigureDownloadType.Stls,
                     Sha256 = "SHASHASHA256"
                 },
+            },     
+            CheckoutDetails = new FigureCheckoutDetails
+            {
+                Price = 40m
             },
             FigureCharacter = new FigureCharacter
             {

@@ -1,5 +1,6 @@
 ﻿using Drutol.FigureRepository.Api.Interfaces;
 using Drutol.FigureRepository.Shared.Models;
+using Drutol.FigureRepository.Shared.Models.Enums;
 
 namespace Drutol.FigureRepository.Api.DataAccess.Seeding
 {
@@ -7,6 +8,7 @@ namespace Drutol.FigureRepository.Api.DataAccess.Seeding
     {
         public Figure Figure { get; } = new Figure
         {
+            Guid = Guid.Parse("DF7449B8-4915-487A-A244-0E2E4C0B55E2"),
             Name = "Asuka",
             Description = "Asuka based on the tapestry art. " +
                           "Here she is re-imagined with more dynamic pose as if she was skimming at high speed on the sea pointing in a given direction. " +
@@ -345,6 +347,10 @@ namespace Drutol.FigureRepository.Api.DataAccess.Seeding
                     Sha256 = "SHASHASHA256"
                 },
             },
+            CheckoutDetails = new FigureCheckoutDetails
+            {
+                Price = 40m
+            },
             FigureCharacter = new FigureCharacter
             {
                 NameEnglish = "Kurashina Asuka",
@@ -354,6 +360,6 @@ namespace Drutol.FigureRepository.Api.DataAccess.Seeding
                 OriginNameJapanese = "蒼の彼方のフォーリズム"
             },
             EyeType = FigureEyeType.IrisDecals
-        },
+        };
     }
 }

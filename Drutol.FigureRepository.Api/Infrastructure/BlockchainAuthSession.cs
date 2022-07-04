@@ -1,10 +1,12 @@
 ﻿using System.Text.Json;
+using Drutol.FigureRepository.Api.DataAccess.Seeding;
 using Drutol.FigureRepository.Api.Interfaces;
 using Drutol.FigureRepository.Api.Models.Blockchain;
 using Drutol.FigureRepository.Api.Models.Configuration;
 using Drutol.FigureRepository.Api.Util;
 using Drutol.FigureRepository.Shared.Blockchain;
 using Drutol.FigureRepository.Shared.Blockchain.Loopring;
+using Drutol.FigureRepository.Shared.Models;
 using Microsoft.Extensions.Options;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.KeyStore.Crypto;
@@ -14,11 +16,13 @@ namespace Drutol.FigureRepository.Api.Infrastructure
 {
     public record BlockchainAuthSession(
         StartAuthenticationRequest Request,
+        IFigureSeedManager FigureSeedManager,
         IOptions<BlockchainAuthConfig> Config,
         ILoopringCommunicator LoopringCommunicator)
     {
         public Guid SessionGuid { get; } = Guid.NewGuid();
         public DateTime ExpiresAt { get; } = DateTime.UtcNow.Add(TimeSpan.FromMinutes(10));
+        public Figure Figure { get; } = FigureSeedManager.Figures.First(figure => figure.Guid == Request.FigureGuid);
 
         public IAccountResponseModel.Success LoopringAccount { get; private set; }
 
@@ -69,7 +73,7 @@ namespace Drutol.FigureRepository.Api.Infrastructure
                     Name = "figure.drutol.com",
                     Version = "1",
                     ChainId = Request.ChainId,
-                    VerifyingContract = Request.TokenAddress,
+                    VerifyingContract = Figure.NftDetails.TokenAddress,
                     Salt = RandomBytesGenerator.GenerateRandomSalt()
                 },
                 Types = MemberDescriptionFactory.GetTypesMemberDescription(typeof(Domain), typeof(AddressOwnerMessage)),
