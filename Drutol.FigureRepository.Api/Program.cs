@@ -18,7 +18,7 @@ public class Program
 
         builder.Services.AddControllers();
         builder.Services.Configure<BlockchainAuthConfig>(builder.Configuration.GetSection(nameof(BlockchainAuthConfig)));
-        builder.Services.Configure<BraintreeConfiguration>(builder.Configuration.GetSection(nameof(BraintreeConfiguration)));
+        builder.Services.Configure<PaypalCheckoutConfiguration>(builder.Configuration.GetSection(nameof(PaypalCheckoutConfiguration)));
 
 
         var app = builder.Build();
@@ -39,7 +39,7 @@ public class Program
         builder.RegisterType<BlockchainAuthProvider>().AsImplementedInterfaces().SingleInstance();
         builder.RegisterType<LoopringCommunicator>().AsImplementedInterfaces().SingleInstance();
 
-        builder.RegisterType<BraintreeProvider>().AsImplementedInterfaces().SingleInstance();
+        builder.RegisterType<PaypalCheckoutProvider>().AsImplementedInterfaces().SingleInstance();
         builder.RegisterType<FigureSeedManager>().AsImplementedInterfaces().SingleInstance();
 
         builder.RegisterType<GanyuFigureSeed>().AsImplementedInterfaces().SingleInstance();

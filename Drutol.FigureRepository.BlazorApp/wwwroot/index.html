@@ -55,28 +55,23 @@
 </head>
 
 <body style="height: 100%">
-<div id="app" style="display: flex; height: 100%;">
-    <div style="margin: auto" class="animate-flicker">
-        <img src="svg\logo\LogoWeb.svg"/>
+    <div id="app" style="display: flex; height: 100%;">
+        <div style="margin: auto" class="animate-flicker">
+            <img src="svg\logo\LogoWeb.svg" />
+        </div>
     </div>
-</div>
 
-<div id="blazor-error-ui">
-    An unhandled error has occurred.
-    <a href="" class="reload">Reload</a>
-    <a class="dismiss">🗙</a>
-</div>
-<script src="_framework/blazor.webassembly.js"></script>
-<script src="_content/MudBlazor/MudBlazor.min.js"></script>
-<script src="js/photoswipeIntegration.js" type="module"></script>
-<script src="js/braintreeIntegration.js" type="module"></script>
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <script src="_framework/blazor.webassembly.js"></script>
+    <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+    <script src="js/photoswipeIntegration.js" type="module"></script>
+    <script src="js/paypalIntegration.js" type="module"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"></script>
 
-<!-- Load the required checkout.js script -->
-<script src="https://www.paypalobjects.com/api/checkout.js" data-version-4></script>
-
-<!-- Load the required Braintree components. -->
-<script src="https://js.braintreegateway.com/web/3.85.3/js/client.min.js"></script>
-<script src="https://js.braintreegateway.com/web/3.85.3/js/paypal-checkout.min.js"></script>
 
 </body>
 </html>
