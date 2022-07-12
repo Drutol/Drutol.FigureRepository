@@ -21,14 +21,8 @@ using PoseidonSharp;
 
 namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
 {
-    public partial class FigureDetail : IDisposable
+    public partial class FigureDetail 
     {
-        private bool _connectingToMetaMask;
-
-        public bool EthereumAvailable { get; set; }
-        public string SelectedAccountAddress { get; set; }
-        public Chain? SelectedChain { get; set; }
-        public bool HasMetaMask { get; set; }
         public bool IsFigureOwned { get; set; }
         public bool CanCheckOwnership { get; set; }
 
@@ -37,65 +31,14 @@ namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
             BaseAddress = new Uri("https://api.loopring.network/api/v3/")
         };
 
-        [Inject]
-        public MetaMaskService MetaMaskService { get; set; } 
-        
-        [Inject]
-        public ISnackbar Snackbar { get; set; }  
+        [Inject] public IWalletProvider WalletProvider { get; set; }
         
         [Inject]
         public IApiHttpClient HttpClient { get; set; }
 
-        #region MetaMask
-
-        private async Task MetaMaskChainChangedEvent((long, Chain) arg)
-        {
-            if (_connectingToMetaMask)
-                return;
-
-            await UpdateSelectedNetwork();
-            await UpdateCanCheckOwnership();
-            Snackbar.Add($"Changed MetaMask chain to: {arg}", Severity.Info);
-            StateHasChanged();
-        }
-
-        private async Task MetaMaskAccountChangedEvent(string arg)
-        {
-            if (_connectingToMetaMask)
-                return;
-
-            await UpdateSelectedAddress();
-            await UpdateCanCheckOwnership();
-            Snackbar.Add($"Changed MetaMask account to: {arg}", Severity.Info);
-            StateHasChanged();
-        }
-
-        public async Task ConnectMetaMask()
-        {
-            try
-            {
-                _connectingToMetaMask = true;
-                await MetaMaskService.ConnectMetaMask();
-                Snackbar.Add("Successfully connected with MetaMask!", Severity.Success);
-                await UpdateSelectedAddress();
-                await UpdateCanCheckOwnership();
-                await UpdateSelectedNetwork();
-                EthereumAvailable = true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-                Snackbar.Add($"Cancelled MetaMask wallet connection.", Severity.Warning);
-            }
-            finally
-            {
-                _connectingToMetaMask = false;
-            }
-        }
-
         private async Task UpdateCanCheckOwnership()
         {
-            if (Figure == null || string.IsNullOrEmpty(SelectedAccountAddress))
+            if (Figure == null || string.IsNullOrEmpty(WalletProvider.SelectedAccountAddress))
             {
                 IsFigureOwned = false;
                 return;
@@ -103,7 +46,7 @@ namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
 
             try
             {
-                CanCheckOwnership = await GetLoopringAccount(SelectedAccountAddress) switch
+                CanCheckOwnership = await GetLoopringAccount(WalletProvider.SelectedAccountAddress) switch
                 {
                     IAccountResponseModel.Success => true,
                     _ => false,
@@ -115,10 +58,10 @@ namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
                 CanCheckOwnership = false;
             }
         }
-        
+
         private async Task UpdateOwnership()
         {
-            if (Figure == null || string.IsNullOrEmpty(SelectedAccountAddress) || !CanCheckOwnership)
+            if (Figure == null || string.IsNullOrEmpty(WalletProvider.SelectedAccountAddress) || !CanCheckOwnership)
             {
                 IsFigureOwned = false;
                 return;
@@ -129,7 +72,7 @@ namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
                 //var sha = Sha3Keccack.Current.CalculateHash("balanceOf(address)");
                 //var methodSignature = sha.Substring(0, 8); //first 4 bytes make the function signature
                 //var methodArgument = SelectedAccountAddress[2..].PadLeft(64, '0'); //arguments have to be encoded as 32 bytes
-                //var result = (JsonElement)await MetaMaskService.GenericRpc("eth_call", new
+                //var result = (JsonElement)await _metaMaskService.GenericRpc("eth_call", new
                 //{
                 //    to = Figure.NftDetails.TokenAddress,
                 //    data = $"0x{methodSignature}{methodArgument}"
@@ -143,19 +86,15 @@ namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
 
                 using var authStartContent = JsonContent.Create(new StartAuthenticationRequest(
                     StartAuthenticationRequest.AuthenticationType.Loopring,
-                    ((int?)SelectedChain) ?? 0,
-                    SelectedAccountAddress,
+                    ((int?)WalletProvider.SelectedChain) ?? 0,
+                    WalletProvider.SelectedAccountAddress,
                     Figure.Guid));
                 var response = await
                     (await HttpClient.Client.PostAsync("/api/auth/StartAuthentication", authStartContent)).Content.ReadFromJsonAsync<StartAuthenticationResult>();
 
-                var signature = (JsonElement)await MetaMaskService.GenericRpc("personal_sign", new string[]
-                {
-                    response.DataToSign,
-                    SelectedAccountAddress
-                });
+                var signature = await WalletProvider.PersonalSign(response.DataToSign);
 
-                var authFinishContent = JsonContent.Create(new FinishAuthenticationRequest(response.SessionGuid, signature.GetString()));
+                var authFinishContent = JsonContent.Create(new FinishAuthenticationRequest(response.SessionGuid, signature));
                 var auth = await
                     (await HttpClient.Client.PostAsync("/api/auth/FinishAuthentication", authFinishContent)).Content.ReadFromJsonAsync<FinishAuthenticationResult>();
             }
@@ -166,55 +105,23 @@ namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
             }
         }
 
-        public async Task UpdateSelectedAddress()
-        {
-            SelectedAccountAddress = await MetaMaskService.GetSelectedAddress();
-        }
-
-        public async Task UpdateSelectedNetwork()
-        {
-            var chainInfo = await MetaMaskService.GetSelectedChain();
-            SelectedChain = chainInfo.chain;
-        }
-
-        #endregion
-
         private async void Download(MouseEventArgs obj)
         {
             using var authStartContent = JsonContent.Create(new StartAuthenticationRequest(
                 StartAuthenticationRequest.AuthenticationType.Loopring,
-                (int)SelectedChain.Value,
-                SelectedAccountAddress,
+                (int)WalletProvider.SelectedChain.Value,
+                WalletProvider.SelectedAccountAddress,
                 Figure.Guid));
             var response = await 
                 (await HttpClient.Client.PostAsync("/api/auth/StartAuthentication", authStartContent)).Content.ReadFromJsonAsync<StartAuthenticationResult>();
             
-            var signResult = await MetaMaskService.SignTypedDataV4(response.DataToSign.Trim('\''));
+            var signResult = await WalletProvider.SignTypedDataV4(response.DataToSign);
 
             var authFinishContent = JsonContent.Create(new FinishAuthenticationRequest(response.SessionGuid, signResult));
             var auth = await
                 (await HttpClient.Client.PostAsync("/api/auth/FinishAuthentication", authFinishContent)).Content.ReadFromJsonAsync<FinishAuthenticationResult>();
         }
 
-        protected override async Task OnInitializedAsync()
-        {
-            MetaMaskService.AccountChangedEvent += MetaMaskAccountChangedEvent;
-            MetaMaskService.ChainChangedEvent += MetaMaskChainChangedEvent;
-
-            HasMetaMask = await MetaMaskService.HasMetaMask();
-            if (HasMetaMask)
-            {
-                await MetaMaskService.ListenToEvents();
-            }
-
-            if (await MetaMaskService.IsSiteConnected())
-            {
-                EthereumAvailable = true;
-                await UpdateSelectedAddress();
-                await UpdateSelectedNetwork();
-                await UpdateCanCheckOwnership();
-            }
-        }
 
         private async ValueTask<IAccountResponseModel> GetLoopringAccount(string walletAddress)
         {
@@ -233,12 +140,6 @@ namespace Drutol.FigureRepository.BlazorApp.Pages.Figures
             {
                 return new IAccountResponseModel.Fail();
             }
-        }
-
-        public void Dispose()
-        {
-            MetaMaskService.AccountChangedEvent -= MetaMaskAccountChangedEvent;
-            MetaMaskService.ChainChangedEvent -= MetaMaskChainChangedEvent;
         }
     }
 }

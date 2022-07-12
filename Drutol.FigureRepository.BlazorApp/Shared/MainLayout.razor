@@ -7,14 +7,8 @@
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<style>
-    .LightAppBar {
-
-    }
-</style>
-
 <MudLayout>
-    <MudAppBar Elevation="2" Class="@(DarkMode ? string.Empty : "LightAppBar")">
+    <MudAppBar Elevation="2">
         <MudHidden Breakpoint="Breakpoint.SmAndUp" @bind-IsHidden="IsExtraSmall">
             <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
             <div style="width: 10px"></div>
@@ -24,6 +18,30 @@
         <div style="width: 10px"></div>
         <MudImage Src="@(DarkMode ? "svg/logo/LogoTextWhite.svg" : "svg/logo/LogoTextBlack.svg")" Height="40"/>
         <MudSpacer/>
+        @if (WalletProvider.EthereumAvailable)
+        {
+            <MudStack Spacing="0" Class="ml-4 mr-6">
+                <MudText Typo="Typo.button" Color="Color.Primary">My Address</MudText>
+                <MudTooltip Text="@WalletProvider.SelectedAccountAddress">
+                    <MudText Typo="Typo.body2" Class="mud-text-secondary">@WalletProvider.SelectedAccountAddress.TruncateAddress()</MudText>
+                </MudTooltip>
+            </MudStack>
+        }
+        <MudMenu Size="Size.Large" PopoverClass="pr-2 pl-2" Class="mr-4">
+            <ActivatorContent>
+                <MudButton StartIcon="@Icons.Material.Outlined.AccountBalanceWallet" Color="Color.Inherit">Wallet</MudButton>
+            </ActivatorContent>
+            <ChildContent>
+                <MudButton OnClick="ConnectMetaMask">
+                    <MudImage Src="svg/wallet/MetaMask.svg" Width="30" Height="30" Class="mr-2"/>
+                    Connect MetaMask
+                </MudButton>  
+                <MudButton OnClick="ConnectMetaMask">
+                    <MudImage Src="svg/wallet/Gme.svg" Width="30" Height="30" Class="mr-2"/>
+                    Connect GameStop
+                </MudButton>
+            </ChildContent>
+        </MudMenu>
         <MudIconButton Icon="@(DarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)" Color="Color.Inherit" OnClick="@((e) => DarkMode = !DarkMode)"/>
     </MudAppBar>
     <MudDrawer @bind-Open="@_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="1" Variant="@(IsExtraSmall ? DrawerVariant.Responsive : DrawerVariant.Persistent)" Breakpoint="Breakpoint.Xs"  DisableOverlay="false">
