@@ -4,5 +4,5 @@ namespace Drutol.FigureRepository.Shared.Checkout
 {
     public record CheckoutOrderRequest(Guid FigureGuid, string WalletAddress);
 
-    public record CheckoutOrderResponse(string OrderId);
+    public record CheckoutOrderResponse(bool Success, string OrderId = null);
 }

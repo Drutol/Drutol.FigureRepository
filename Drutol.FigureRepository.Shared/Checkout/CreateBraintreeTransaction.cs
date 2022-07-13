@@ -1,6 +1,16 @@
 ﻿namespace Drutol.FigureRepository.Shared.Checkout
 {
-    public record CheckoutTransactionRequest(string OrderId);
+    public record CheckoutTransactionRequest(string CheckoutId);
 
-    public record CheckoutTransactionResponse();
+    public record CheckoutTransactionResponse(CheckoutTransactionResponse.StatusCode Status)
+    {
+        public enum StatusCode
+        {
+            Ok,
+            DeliveryPending,
+            OrderNotFound,
+            PayPalError,
+            Error
+        }
+    }
 }

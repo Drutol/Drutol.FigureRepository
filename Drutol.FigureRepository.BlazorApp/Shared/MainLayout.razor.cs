@@ -15,6 +15,11 @@ namespace Drutol.FigureRepository.BlazorApp.Shared
     {
         [Inject] public IWalletProvider WalletProvider { get; set; }
 
+        protected override async Task OnInitializedAsync()
+        {
+            await WalletProvider.Initialize();
+        }
+
         private async Task ConnectMetaMask()
         {
             await WalletProvider.ConnectMetaMask();

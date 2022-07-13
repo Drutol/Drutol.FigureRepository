@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Drutol.FigureRepository.Api.DataAccess;
 using Drutol.FigureRepository.Api.DataAccess.Seeding;
 using Drutol.FigureRepository.Api.Infrastructure;
 using Drutol.FigureRepository.Api.Interfaces;
@@ -19,7 +20,7 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.Configure<BlockchainAuthConfig>(builder.Configuration.GetSection(nameof(BlockchainAuthConfig)));
         builder.Services.Configure<PaypalCheckoutConfiguration>(builder.Configuration.GetSection(nameof(PaypalCheckoutConfiguration)));
-
+        builder.Services.Configure<CheckoutDatabaseConfiguration>(builder.Configuration.GetSection(nameof(CheckoutDatabaseConfiguration)));
 
         var app = builder.Build();
 
@@ -38,6 +39,8 @@ public class Program
     {
         builder.RegisterType<BlockchainAuthProvider>().AsImplementedInterfaces().SingleInstance();
         builder.RegisterType<LoopringCommunicator>().AsImplementedInterfaces().SingleInstance();
+
+        builder.RegisterType<CheckoutDatabase>().AsImplementedInterfaces().SingleInstance();
 
         builder.RegisterType<PaypalCheckoutProvider>().AsImplementedInterfaces().SingleInstance();
         builder.RegisterType<FigureSeedManager>().AsImplementedInterfaces().SingleInstance();

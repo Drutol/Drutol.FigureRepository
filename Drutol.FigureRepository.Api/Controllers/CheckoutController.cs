@@ -20,15 +20,13 @@ namespace Drutol.FigureRepository.Api.Controllers
         [HttpPost("order")]
         public async Task<CheckoutOrderResponse> GetOrder(CheckoutOrderRequest request)
         {
-            var response = await _checkoutProvider.CreateOrder(request);
-            return response;
+            return await _checkoutProvider.CreateOrder(request);
         } 
         
         [HttpPost("transaction")]
         public async Task<CheckoutTransactionResponse> Transact(CheckoutTransactionRequest transactionRequest)
         {
-            var token = await _checkoutProvider.CreateTransaction(transactionRequest);
-            return new CheckoutTransactionResponse();
+            return await _checkoutProvider.CreateTransaction(transactionRequest);
         }
     }
 }
