@@ -28,6 +28,7 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
 {
     private readonly ILogger<BlockchainAuthProvider> _logger;
     private readonly ILoopringCommunicator _loopringCommunicator;
+    private readonly IDownloadTokenGenerator _downloadTokenGenerator;
     private readonly Func<StartAuthenticationRequest, BlockchainAuthSession> _authSessionFactory;
     private readonly IOptions<BlockchainAuthConfig> _configuration;
 
@@ -37,11 +38,13 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
     public BlockchainAuthProvider(
         ILogger<BlockchainAuthProvider> logger,
         ILoopringCommunicator loopringCommunicator,
+        IDownloadTokenGenerator downloadTokenGenerator,
         Func<StartAuthenticationRequest, BlockchainAuthSession> authSessionFactory,
         IOptions<BlockchainAuthConfig> configuration)
     {
         _logger = logger;
         _loopringCommunicator = loopringCommunicator;
+        _downloadTokenGenerator = downloadTokenGenerator;
         _authSessionFactory = authSessionFactory;
         _configuration = configuration;
     }
@@ -121,33 +124,13 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
         {
             return new FinishAuthenticationResult(
                 FinishAuthenticationResult.StatusCode.Ok,
-                GenerateJwtForFigure(activeSession.Figure));
+                _downloadTokenGenerator.GenerateDownloadTokenForFigure(activeSession.Figure));
         }
         else
         {
             return new FinishAuthenticationResult(
                 FinishAuthenticationResult.StatusCode.NotAnOwner);
         }
-    }
-
-    private string GenerateJwtForFigure(Figure figure)
-    {
-        var jwtHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_configuration.Value.JwtSigningKey);
-        var tokenDescriptor = new SecurityTokenDescriptor
-        {
-            Expires = DateTime.UtcNow.AddMinutes(10),
-            SigningCredentials = new SigningCredentials(
-                new SymmetricSecurityKey(key),
-                SecurityAlgorithms.HmacSha256Signature),
-            Claims = new Dictionary<string, object>
-            {
-                {BlockChainAuthClaims.FigureOwnerClaim, figure.Guid}
-            }
-        };
-
-        var jwt = jwtHandler.CreateToken(tokenDescriptor);
-        return jwtHandler.WriteToken(jwt);
     }
 
     private async void AuthSessionsCleanLoop()
@@ -163,5 +146,4 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
             }
         }
     }
-
 }

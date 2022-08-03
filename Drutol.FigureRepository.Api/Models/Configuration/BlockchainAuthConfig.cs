@@ -6,5 +6,9 @@
         public string RpcUrl { get; set; }
         public string LoopringApiUrl { get; set; }
         public string LoopringExchangeAddress { get; set; }
+
+        public int SourceAccountId { get; set; }
+        public string SourceAccountAddress { get; set; }
+        public string SourceAccountL2Key { get; set; }
     }
 }

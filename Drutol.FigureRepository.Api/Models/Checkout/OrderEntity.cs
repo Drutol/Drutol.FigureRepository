@@ -9,6 +9,7 @@
         public decimal Price { get; set; }
 
         public string WalletAddress { get; set; }
+        public int AccountId { get; set; }
         public bool IncludesWalletActivation { get; set; }
         public decimal WalletActivationFee { get; set; }
 
@@ -31,5 +32,6 @@
     {
         public OrderStatus StatusChange { get; init; }
         public DateTime DateTime { get; init; }
+        public string Data { get; set; }
     }
 }

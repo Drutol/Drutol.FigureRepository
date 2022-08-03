@@ -6,9 +6,11 @@
 
         Paid = 10,
 
-        WalletActivated = 20,
+        Delivered = 20,
+        DeliveryPending = 21,
 
-        Delivered = 30,
-        DeliveryPending = 31
+        Error = 1000,
+        PayPalError = 1001,
+        
     }
 }

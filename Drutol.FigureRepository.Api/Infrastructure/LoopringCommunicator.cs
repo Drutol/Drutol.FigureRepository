@@ -1,119 +1,167 @@
 ﻿using Drutol.FigureRepository.Api.Interfaces;
+using Drutol.FigureRepository.Api.Models.Checkout;
 using Drutol.FigureRepository.Api.Models.Configuration;
 using Drutol.FigureRepository.Shared.Blockchain.Loopring;
 using LoopringSharp;
 using Microsoft.Extensions.Options;
 
-namespace Drutol.FigureRepository.Api.Infrastructure
+namespace Drutol.FigureRepository.Api.Infrastructure;
+
+public class LoopringCommunicator : ILoopringCommunicator
 {
-    public class LoopringCommunicator : ILoopringCommunicator
+    private readonly ILogger<LoopringCommunicator> _logger;
+    private readonly IOptions<BlockchainAuthConfig> _config;
+    private readonly HttpClient _client;
+
+    public LoopringCommunicator(
+        ILogger<LoopringCommunicator> logger,
+        IOptions<BlockchainAuthConfig> config)
     {
-        private readonly ILogger<LoopringCommunicator> _logger;
-        private readonly IOptions<BlockchainAuthConfig> _config;
-        private readonly HttpClient _client;
-
-        public LoopringCommunicator(
-            ILogger<LoopringCommunicator> logger,
-            IOptions<BlockchainAuthConfig> config)
+        _logger = logger;
+        _config = config;
+        _client = new HttpClient
         {
-            _logger = logger;
-            _config = config;
-            _client = new HttpClient
-            {
-                BaseAddress = new Uri(_config.Value.LoopringApiUrl)
-            };
-        }
+            BaseAddress = new Uri(_config.Value.LoopringApiUrl)
+        };
+    }
 
-        public async ValueTask<IAccountResponseModel> GetAccount(string walletAddress)
+    public async ValueTask<IAccountResponseModel> GetAccount(string walletAddress)
+    {
+        try
         {
-            try
-            {
-                var result = await _client
-                    .GetFromJsonAsync<IAccountResponseModel.Success>($"account?owner={walletAddress}")
-                    .ConfigureAwait(false);
+            var result = await _client
+                .GetFromJsonAsync<IAccountResponseModel.Success>($"account?owner={walletAddress}")
+                .ConfigureAwait(false);
 
-                if (result == null)
-                    return new IAccountResponseModel.Fail();
-
-                return result;
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "Failed to obtain account.");
+            if (result == null)
                 return new IAccountResponseModel.Fail();
-            }
+
+            return result;
         }
-
-        public async ValueTask<INftBalancesResponseModel> GetBalances(string signedDataHash, string walletAddress, int accountId, int tokenId)
+        catch (Exception e)
         {
-            try
-            {
-                return await GetApiKey(signedDataHash, walletAddress, accountId) switch
-                {
-                    IApiKeyResponseModel.Success success => await GetBalances(success.ApiKey).ConfigureAwait(false),
-                    IApiKeyResponseModel.Fail fail => new INftBalancesResponseModel.Fail(),
-                    _ => new INftBalancesResponseModel.Fail()
-                };
-
-                async ValueTask<INftBalancesResponseModel> GetBalances(string apiKey)
-                {
-                    var result = await _client
-                        .SendAsync(new HttpRequestMessage(HttpMethod.Get, $"user/nft/balances?accountId={accountId}&tokenIds={tokenId}")
-                        {
-                            Headers =
-                            {
-                                { "X-API-KEY", apiKey }
-                            }
-                        }).ConfigureAwait(false);
-
-                    var model = await result.Content.ReadFromJsonAsync<INftBalancesResponseModel.Success>()
-                        .ConfigureAwait(false);
-
-                    if (model == null)
-                        return new INftBalancesResponseModel.Fail();
-
-                    return model;
-                }
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "Failed to obtain nft balances.");
-                return new INftBalancesResponseModel.Fail();
-            }
+            _logger.LogError(e, "Failed to obtain account.");
+            return new IAccountResponseModel.Fail();
         }
+    }
 
-        private async ValueTask<IApiKeyResponseModel> GetApiKey(string signedDataHash, string walletAddress, int accountId)
+    public async ValueTask<INftBalancesResponseModel> GetBalances(string signedDataHash, string walletAddress, int accountId, int tokenId)
+    {
+        try
         {
-            var key = EDDSAHelper.RipKeyAppart((signedDataHash, walletAddress));
-            var signature = EDDSAHelper.EddsaSignUrl(key.secretKey, HttpMethod.Get, new List<(string Key, string Value)>
+            return await GetApiKey(signedDataHash, walletAddress, accountId) switch
             {
-                ("accountId", accountId.ToString())
-            }, null, "apiKey", _config.Value.LoopringApiUrl);
+                IApiKeyResponseModel.Success success => await GetBalances(success.ApiKey).ConfigureAwait(false),
+                IApiKeyResponseModel.Fail fail => new INftBalancesResponseModel.Fail(),
+                _ => new INftBalancesResponseModel.Fail()
+            };
 
-            try
+            async ValueTask<INftBalancesResponseModel> GetBalances(string apiKey)
             {
                 var result = await _client
-                    .SendAsync(new HttpRequestMessage(HttpMethod.Get, $"apiKey?accountId={accountId}")
+                    .SendAsync(new HttpRequestMessage(HttpMethod.Get, $"user/nft/balances?accountId={accountId}&tokenIds={tokenId}")
                     {
                         Headers =
                         {
-                            { "X-API-SIG", signature }
+                            { "X-API-KEY", apiKey }
                         }
                     }).ConfigureAwait(false);
 
-                var model = await result.Content.ReadFromJsonAsync<IApiKeyResponseModel.Success>()
+                var model = await result.Content.ReadFromJsonAsync<INftBalancesResponseModel.Success>()
                     .ConfigureAwait(false);
 
                 if (model == null)
-                    return new IApiKeyResponseModel.Fail();
+                    return new INftBalancesResponseModel.Fail();
 
                 return model;
             }
-            catch (Exception e)
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to obtain nft balances.");
+            return new INftBalancesResponseModel.Fail();
+        }
+    }
+
+    public async ValueTask<IGetOffchainFeeResponseModel> GetOffchainFee(string apiKey, int accountId, NftTransferType type, string nftTokenAddress, int amount)
+    {
+        var result = await _client
+            .SendAsync(new HttpRequestMessage(HttpMethod.Get, $"user/nft/offchainFee?accountId={accountId}&requestType={type}&tokenSymbol={nftTokenAddress}&amount={amount}")
             {
-                _logger.LogError(e, "Failed to obtain api key.");
+                Headers =
+                {
+                    { "X-API-KEY", apiKey }
+                }
+            }).ConfigureAwait(false);
+
+        var model = await result.Content
+            .ReadFromJsonAsync<IGetOffchainFeeResponseModel.Success>()
+            .ConfigureAwait(false);
+
+        if (model == null)
+            return new IGetOffchainFeeResponseModel.Fail();
+
+        return model;
+    }
+
+    public async ValueTask<IGetStorageIdResponseModel> GetStorageId(string apiKey, int accountId)
+    {
+        var result = await _client
+            .SendAsync(new HttpRequestMessage(HttpMethod.Get, $"storageId?accountId={accountId}&sellTokenId=0")
+            {
+                Headers =
+                {
+                    { "X-API-KEY", apiKey }
+                }
+            }).ConfigureAwait(false);
+
+        var model = await result.Content
+            .ReadFromJsonAsync<IGetStorageIdResponseModel.Success>()
+            .ConfigureAwait(false);
+
+        if (model == null)
+            return new IGetStorageIdResponseModel.Fail();
+
+        return model;
+    }
+
+    public async ValueTask<IApiKeyResponseModel> GetApiKey(string signedDataHash, string walletAddress, int accountId)
+    {
+        var key = EDDSAHelper.RipKeyAppart((signedDataHash, walletAddress));
+        var signature = EDDSAHelper.EddsaSignUrl(
+            key.secretKey,
+            HttpMethod.Get,
+            new List<(string Key, string Value)>
+            {
+                ("accountId", accountId.ToString())
+            },
+            null,
+            "apiKey",
+            _config.Value.LoopringApiUrl);
+
+        try
+        {
+            var result = await _client
+                .SendAsync(new HttpRequestMessage(HttpMethod.Get, $"apiKey?accountId={accountId}")
+                {
+                    Headers =
+                    {
+                        { "X-API-SIG", signature }
+                    }
+                }).ConfigureAwait(false);
+
+            var model = await result.Content.ReadFromJsonAsync<IApiKeyResponseModel.Success>()
+                .ConfigureAwait(false);
+
+            if (model == null)
                 return new IApiKeyResponseModel.Fail();
-            }
+
+            return model;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to obtain api key.");
+            return new IApiKeyResponseModel.Fail();
         }
     }
 }

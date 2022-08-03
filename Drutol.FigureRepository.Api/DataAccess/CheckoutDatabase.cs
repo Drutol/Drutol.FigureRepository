@@ -56,5 +56,11 @@ namespace Drutol.FigureRepository.Api.DataAccess
         {
             return ValueTask.FromResult(_database.GetCollection<OrderEntity>().FindOne(entity => entity.CheckoutId == checkoutId))!;
         }
+
+        public ValueTask UpdateOrder(OrderEntity orderEntity)
+        {
+            _database.GetCollection<OrderEntity>().Update(orderEntity);
+            return ValueTask.CompletedTask;
+        }
     }
 }

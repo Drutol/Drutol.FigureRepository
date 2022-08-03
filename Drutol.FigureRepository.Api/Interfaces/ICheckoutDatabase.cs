@@ -6,4 +6,5 @@ public interface ICheckoutDatabase
 {
     ValueTask<bool> CreateOrder(OrderEntity order);
     ValueTask<OrderEntity?> GetOrderByCheckoutId(string checkoutId);
+    ValueTask UpdateOrder(OrderEntity orderEntity);
 }

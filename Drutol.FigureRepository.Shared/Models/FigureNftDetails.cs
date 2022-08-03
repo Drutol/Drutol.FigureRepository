@@ -3,5 +3,6 @@
     public record FigureNftDetails(string TokenAddress)
     {
         public int TokenId { get; init; }
+        public string TokenNftData { get; set; }
     }
 }
