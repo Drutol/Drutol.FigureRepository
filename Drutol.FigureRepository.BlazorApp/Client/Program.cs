@@ -39,10 +39,9 @@ public class Program
             }
         );
 
-        builder.Services.AddScoped<FigureProvider>();
-        builder.Services.AddScoped<FigureIconProvider>();
+        builder.Services.AddScoped<IFigureProvider, FigureProvider>();
+        builder.Services.AddScoped<IFigureIconProvider, FigureIconProvider>();
         builder.Services.AddScoped<IWalletProvider, WalletProvider>();
-
 
         await builder.Build().RunAsync();
     }

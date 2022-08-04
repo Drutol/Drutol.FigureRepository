@@ -6,8 +6,8 @@
 
 @inject IHostHttpClient HttpClient;
 @inject ISessionStorageService SessionStorage;
-@inject FigureProvider FigureProvider;
-@inject FigureIconProvider IconProvider;
+@inject IFigureProvider FigureProvider;
+@inject IFigureIconProvider IconProvider;
 
 <style>
     .FigureLink .mud-nav-link-icon {
@@ -27,10 +27,26 @@
     <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Home">Index</MudNavLink>
 
     <MudNavLink Href="/Figures" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.SpaceDashboard">Figure Index</MudNavLink>
-    @foreach (var figure in FigureProvider.Figures)
+    @if (FiguresReady)
     {
-        <MudNavLink Class="pl-4 FigureLink" Href="@($"/Figures/{figure.Name}")" Match="NavLinkMatch.Prefix" IconColor="Color.Inherit" Icon="@IconProvider.GetForFigure(figure)">@figure.Name</MudNavLink>
+        @foreach (var figure in FigureProvider.Figures)
+        {
+            <MudNavLink Class="pl-4 FigureLink" Href="@($"/Figures/{figure.Name}")" Match="NavLinkMatch.Prefix" IconColor="Color.Inherit" Icon="@IconProvider.GetForFigure(figure)">@figure.Name</MudNavLink>
+        }
     }
+    else
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            <MudNavLink Class="pl-4 FigureLink" Disabled="true">
+                <MudStack Row="true" AlignItems="AlignItems.Center">
+                    <MudSkeleton SkeletonType="SkeletonType.Circle" Width="36px" Height="36px"/>
+                    <MudSkeleton SkeletonType="SkeletonType.Text" Style="flex-grow: 1"/>
+                </MudStack>
+            </MudNavLink>
+        }
+    }
+
 
     <MudNavLink Href="/About" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Info">About</MudNavLink>
     <MudNavLink Href="/Contact" Class="pl-4" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.ContactPage">Contact</MudNavLink>
@@ -42,4 +58,14 @@
 {
     [CascadingParameter]
     protected ThemeWrapper Theme { get; set; }
+
+    public bool FiguresReady { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!FigureProvider.DataReady.Task.IsCompleted)
+            await FigureProvider.DataReady.Task;
+
+        FiguresReady = true;
+    }
 }

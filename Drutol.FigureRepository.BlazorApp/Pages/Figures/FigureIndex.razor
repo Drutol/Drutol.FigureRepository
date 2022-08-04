@@ -2,10 +2,11 @@
 
 @using MudBlazor;
 @using Drutol.FigureRepository.BlazorApp.Infrastructure
+@using Drutol.FigureRepository.BlazorApp.Interfaces
 @using Drutol.FigureRepository.BlazorApp.Util
 @using Drutol.FigureRepository.Shared.Models.Enums
 
-@inject FigureProvider FigureProvider;
+@inject IFigureProvider FigureProvider;
 
 <MudBreadcrumbs Items="_breadcrumbs"/>
 
@@ -38,7 +39,7 @@
                         }
                         @if (publishEvent != null)
                         {
-                            <MudText Typo="Typo.body2" Class="mt-2">Published: @publishEvent.Date</MudText>
+                            <MudText Typo="Typo.body2" Class="mt-2">Published: @publishEvent.Date.ToString("d")</MudText>
                         }
                         else
                         {

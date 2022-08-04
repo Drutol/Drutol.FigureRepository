@@ -23,59 +23,60 @@ public class LumineFigureSeed : IFigureSeed
             {
                 Url = "images/Lumine/Photos/Main.jpg",
                 Display = FigurePhotoIntendedDisplay.All,
-                MediaKind = FigureMediaKind.PrintPrototype,
-                Width = 1080,
-                Height = 1618
+                MediaKind = FigureMediaKind.Painted,
+                Height = 1080,
+                Width = 1618
             },
             new()
             {
                 Url = "images/Lumine/Photos/Front.jpg",
-                MediaKind = FigureMediaKind.PrintPrototype,
-                Width = 1080,
-                Height = 1618
+                MediaKind = FigureMediaKind.Painted,
+                Height = 1080,
+                Width = 1618
             },        
             new()
             {
                 Url = "images/Lumine/Photos/FrontClose.jpg",
-                MediaKind = FigureMediaKind.PrintPrototype,
-                Width = 1080,
-                Height = 1618
+                MediaKind = FigureMediaKind.Painted,
+                Height = 1080,
+                Width = 1618
             },      
             new()
             {
                 Url = "images/Lumine/Photos/Face.jpg",
-                MediaKind = FigureMediaKind.PrintPrototype,
-                Width = 1080,
-                Height = 1080
+                MediaKind = FigureMediaKind.Painted,
+                Height = 1080,
+                Width = 1080
             },      
             new()
             {
                 Url = "images/Lumine/Photos/DarkLight.jpg",
-                MediaKind = FigureMediaKind.PrintPrototype,
-                Width = 1080,
-                Height = 1618
+                Display = FigurePhotoIntendedDisplay.All,
+                MediaKind = FigureMediaKind.Painted,
+                Height = 1080,
+                Width = 1618
             },      
             new()
             {
                 Url = "images/Lumine/Photos/Base.jpg",
-                MediaKind = FigureMediaKind.PrintPrototype,
-                Width = 1080,
-                Height = 1618
+                MediaKind = FigureMediaKind.Painted,
+                Height = 1080,
+                Width = 1618
             },    
             new()
             {
                 Url = "images/Lumine/Photos/Back.jpg",
-                MediaKind = FigureMediaKind.PrintPrototype,
-                Width = 1080,
-                Height = 1618
+                MediaKind = FigureMediaKind.Painted,
+                Height = 1080,
+                Width = 1618
             },  
             new()
             {
                 Url = "images/Lumine/Photos/Skew.jpg",
                 Gravity = FigurePhotoGravity.Top,
-                MediaKind = FigureMediaKind.PrintPrototype,
-                Width = 1080,
-                Height = 1618
+                MediaKind = FigureMediaKind.Painted,
+                Height = 1080,
+                Width = 1618
             },
 
             #endregion
@@ -98,7 +99,6 @@ public class LumineFigureSeed : IFigureSeed
             new()
             {
                 Url = "images/Lumine/Render/Main.jpg",
-                Display = FigurePhotoIntendedDisplay.All,
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1080,
@@ -176,17 +176,17 @@ public class LumineFigureSeed : IFigureSeed
             new()
             {
                 Event = FigureTimelineEvent.ProjectInception,
-                Date = new DateOnly(2021, 4, 26)
+                Date = new DateTime(2021, 4, 26)
             },
             new()
             {
                 Event = FigureTimelineEvent.SculptDone,
-                Date = new DateOnly(2021, 11, 10)
+                Date = new DateTime(2021, 11, 10)
             },
             new()
             {
                 Event = FigureTimelineEvent.PrintDone,
-                Date = new DateOnly(2021, 11, 28)
+                Date = new DateTime(2021, 11, 28)
             }
         },
         FigureDimensions = new FigureDimensions

@@ -152,7 +152,7 @@ public class MadokaFigureSeed : IFigureSeed
         {
             new()
             {
-                Date = new DateOnly(2021, 3, 22),
+                Date = new DateTime(2021, 3, 22),
                 Event = FigureTimelineEvent.ProjectInception
             },
             new()

@@ -5,6 +5,6 @@ namespace Drutol.FigureRepository.Shared.Models;
 
 public record FigureTimelineEntry
 {
-    public DateOnly Date { get; init; }
+    public DateTime Date { get; init; }
     public FigureTimelineEvent Event { get; init; }
 }

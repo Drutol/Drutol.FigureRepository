@@ -121,7 +121,7 @@ public class GanyuFigureSeed : IFigureSeed
             new()
             {
                 Event = FigureTimelineEvent.Publish,
-                Date = new DateOnly(2021, 3, 13)
+                Date = new DateTime(2021, 3, 13)
             }
         },
         FigureDimensions = new()
