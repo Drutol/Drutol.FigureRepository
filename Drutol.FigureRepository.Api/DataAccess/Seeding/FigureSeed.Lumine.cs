@@ -6,7 +6,7 @@ namespace Drutol.FigureRepository.Api.DataAccess.Seeding;
 
 public class LumineFigureSeed : IFigureSeed
 {
-    public Figure Figure { get; } = new Figure
+    public Figure Figure { get; } = new()
     {
         Guid = Guid.Parse("E46284DB-90D7-4A2B-BA97-36C599C1FA87"),
         Name = "Lumine",
@@ -14,15 +14,77 @@ public class LumineFigureSeed : IFigureSeed
                       "Having seen the base opportunity I instantly decided she will be the next project. " +
                       "Sculpted in a pose where she flips her front hair while looking smug. " +
                       "Comes with a number of details including custom engravings on the base.",
-        InitialGalleryKindDisplay = FigureMediaKind.PrintPrototype,
+        InitialGalleryKindDisplay = FigureMediaKind.Painted,
         Media = new List<FigureMedia>
         {
             #region Photos
 
-            new FigureMedia
+            new()
+            {
+                Url = "images/Lumine/Photos/Main.jpg",
+                Display = FigurePhotoIntendedDisplay.All,
+                MediaKind = FigureMediaKind.PrintPrototype,
+                Width = 1080,
+                Height = 1618
+            },
+            new()
+            {
+                Url = "images/Lumine/Photos/Front.jpg",
+                MediaKind = FigureMediaKind.PrintPrototype,
+                Width = 1080,
+                Height = 1618
+            },        
+            new()
+            {
+                Url = "images/Lumine/Photos/FrontClose.jpg",
+                MediaKind = FigureMediaKind.PrintPrototype,
+                Width = 1080,
+                Height = 1618
+            },      
+            new()
+            {
+                Url = "images/Lumine/Photos/Face.jpg",
+                MediaKind = FigureMediaKind.PrintPrototype,
+                Width = 1080,
+                Height = 1080
+            },      
+            new()
+            {
+                Url = "images/Lumine/Photos/DarkLight.jpg",
+                MediaKind = FigureMediaKind.PrintPrototype,
+                Width = 1080,
+                Height = 1618
+            },      
+            new()
+            {
+                Url = "images/Lumine/Photos/Base.jpg",
+                MediaKind = FigureMediaKind.PrintPrototype,
+                Width = 1080,
+                Height = 1618
+            },    
+            new()
+            {
+                Url = "images/Lumine/Photos/Back.jpg",
+                MediaKind = FigureMediaKind.PrintPrototype,
+                Width = 1080,
+                Height = 1618
+            },  
+            new()
+            {
+                Url = "images/Lumine/Photos/Skew.jpg",
+                Gravity = FigurePhotoGravity.Top,
+                MediaKind = FigureMediaKind.PrintPrototype,
+                Width = 1080,
+                Height = 1618
+            },
+
+            #endregion
+
+            #region Prototype
+
+            new()
             {
                 Url = "images/Lumine/Photos/Prototype.jpg",
-                Display = FigurePhotoIntendedDisplay.All,
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.PrintPrototype,
                 Width = 1080,
@@ -33,55 +95,74 @@ public class LumineFigureSeed : IFigureSeed
 
             #region Render
 
-            new FigureMedia
+            new()
             {
-                Url = "images/Lumine/Render/Front.jpg",
+                Url = "images/Lumine/Render/Main.jpg",
                 Display = FigurePhotoIntendedDisplay.All,
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1080,
+                Height = 1920
+            },
+            new()
+            {
+                Url = "images/Lumine/Render/FaceCloseup.jpg",
+                Gravity = FigurePhotoGravity.Top,
+                MediaKind = FigureMediaKind.ShadedRender,
+                Width = 1080,
                 Height = 1080
             },
-            new FigureMedia
+            new()
+            {
+                Url = "images/Lumine/Render/BodyCloseup.jpg",
+                Gravity = FigurePhotoGravity.Top,
+                MediaKind = FigureMediaKind.ShadedRender,
+                Width = 1080,
+                Height = 1080
+            },
+            new()
+            {
+                Url = "images/Lumine/Render/FrontLeft.jpg",
+                Gravity = FigurePhotoGravity.Top,
+                MediaKind = FigureMediaKind.ShadedRender,
+                Width = 1080,
+                Height = 1080
+            },  
+            new()
+            {
+                Url = "images/Lumine/Render/FrontCloseup.jpg",
+                Gravity = FigurePhotoGravity.Top,
+                MediaKind = FigureMediaKind.ShadedRender,
+                Width = 1080,
+                Height = 1080
+            },
+            new()
+            {
+                Url = "images/Lumine/Render/LeftRightSide.jpg",
+                Gravity = FigurePhotoGravity.Top,
+                MediaKind = FigureMediaKind.ShadedRender,
+                Width = 1080,
+                Height = 1080
+            },
+            new()
+            {
+                Url = "images/Lumine/Render/LeftSide.jpg",
+                Gravity = FigurePhotoGravity.Top,
+                MediaKind = FigureMediaKind.ShadedRender,
+                Width = 1080,
+                Height = 1080
+            },
+            new()
+            {
+                Url = "images/Lumine/Render/LegsCloseup.jpg",
+                Gravity = FigurePhotoGravity.Top,
+                MediaKind = FigureMediaKind.ShadedRender,
+                Width = 1080,
+                Height = 1080
+            },    
+            new()
             {
                 Url = "images/Lumine/Render/Back.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
-                Gravity = FigurePhotoGravity.Top,
-                MediaKind = FigureMediaKind.ShadedRender,
-                Width = 1080,
-                Height = 1080
-            },
-            new FigureMedia
-            {
-                Url = "images/Lumine/Render/RightSide.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
-                Gravity = FigurePhotoGravity.Top,
-                MediaKind = FigureMediaKind.ShadedRender,
-                Width = 1080,
-                Height = 1080
-            },
-            new FigureMedia
-            {
-                Url = "images/Lumine/Render/ShoesCloseup.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
-                Gravity = FigurePhotoGravity.Top,
-                MediaKind = FigureMediaKind.ShadedRender,
-                Width = 1080,
-                Height = 1080
-            },
-            new FigureMedia
-            {
-                Url = "images/Lumine/Render/Side.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
-                Gravity = FigurePhotoGravity.Top,
-                MediaKind = FigureMediaKind.ShadedRender,
-                Width = 1080,
-                Height = 1080
-            },
-            new FigureMedia
-            {
-                Url = "images/Lumine/Render/TopBody.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1080,
@@ -89,33 +170,32 @@ public class LumineFigureSeed : IFigureSeed
             },
 
             #endregion
-
         },
         Timeline = new List<FigureTimelineEntry>
         {
             new()
             {
                 Event = FigureTimelineEvent.ProjectInception,
-                Date = new(2021, 4, 26)
+                Date = new DateOnly(2021, 4, 26)
             },
-            new FigureTimelineEntry
+            new()
             {
                 Event = FigureTimelineEvent.SculptDone,
-                Date = new(2021, 11, 10)
+                Date = new DateOnly(2021, 11, 10)
             },
-            new FigureTimelineEntry
+            new()
             {
                 Event = FigureTimelineEvent.PrintDone,
-                Date = new(2021, 11, 28)
+                Date = new DateOnly(2021, 11, 28)
             }
         },
-        FigureDimensions = new FigureDimensions()
+        FigureDimensions = new FigureDimensions
         {
             Width = 207,
             Height = 270,
             Length = 150
         },
-        PrintDetails = new FigurePrintDetails()
+        PrintDetails = new FigurePrintDetails
         {
             BiggestPartDimension = new FigureDimensions
             {
@@ -129,7 +209,7 @@ public class LumineFigureSeed : IFigureSeed
             NumberOfPrintBatches = 5,
             PrintResinVolume = 942
         },
-        NftDetails = new("0xb90810d7a02287b28dd1afabe2aa4d031d29bee2")
+        NftDetails = new FigureNftDetails("0xb90810d7a02287b28dd1afabe2aa4d031d29bee2")
         {
             TokenId = 32771,
             NftData = "0x0a979c7308097d7847e8b8a4979546757774877131d695f208889d628bd05d36",
@@ -155,25 +235,25 @@ public class LumineFigureSeed : IFigureSeed
             {
                 Url = "https://twitter.com/Drutol/status/1464873712474337283",
                 Type = FigureExternalLinkType.Twitter
-            },
+            }
         },
         DownloadResources = new List<FigureDownloadResource>
         {
-            new FigureDownloadResource
+            new()
             {
                 FigureDownloadType = FigureDownloadType.BlenderScene,
                 Sha256 = "SHASHASHA256"
             },
-            new FigureDownloadResource
+            new()
             {
                 FigureDownloadType = FigureDownloadType.SlicedScenes,
                 Sha256 = "SHASHASHA256"
             },
-            new FigureDownloadResource
+            new()
             {
                 FigureDownloadType = FigureDownloadType.Stls,
                 Sha256 = "SHASHASHA256"
-            },
+            }
         },
         CheckoutDetails = new FigureCheckoutDetails
         {

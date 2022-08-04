@@ -29,7 +29,7 @@ public class AsukaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Asuka/Photos/Front.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
+
                 MediaKind = FigureMediaKind.Painted,
                 Width = 1619,
                 Height = 1080
@@ -53,7 +53,7 @@ public class AsukaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Asuka/Photos/LeftBack.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
+
                 MediaKind = FigureMediaKind.Painted,
                 Width = 1619,
                 Height = 1080
@@ -61,7 +61,7 @@ public class AsukaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Asuka/Photos/Left.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
+
                 MediaKind = FigureMediaKind.Painted,
                 Width = 1619,
                 Height = 1080
@@ -69,7 +69,7 @@ public class AsukaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Asuka/Photos/Back.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
+
                 MediaKind = FigureMediaKind.Painted,
                 Width = 1619,
                 Height = 1080
@@ -77,7 +77,7 @@ public class AsukaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Asuka/Photos/Right.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
+
                 MediaKind = FigureMediaKind.Painted,
                 Width = 1619,
                 Height = 1080
@@ -85,7 +85,7 @@ public class AsukaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Asuka/Photos/RightDetail.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
+
                 MediaKind = FigureMediaKind.Painted,
                 Width = 1619,
                 Height = 1080
@@ -122,7 +122,7 @@ public class AsukaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Asuka/Render/AsukaBodyCloseup.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
+
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1920,
                 Height = 1080
@@ -130,7 +130,7 @@ public class AsukaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Asuka/Render/AsukaBackCloseup.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
+
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1920,
                 Height = 1080
@@ -138,7 +138,7 @@ public class AsukaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Asuka/Render/AsukaAltFaceCloseup.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
+
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1920,
                 Height = 1080
@@ -146,7 +146,7 @@ public class AsukaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Asuka/Render/AsukaLeftSideCloseup.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
+
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1920,
                 Height = 1080
@@ -154,7 +154,7 @@ public class AsukaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Asuka/Render/AsukaFrontRightBottom.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
+
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1920,
                 Height = 1080
@@ -162,7 +162,7 @@ public class AsukaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Asuka/Render/AsukaAltBack.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
+
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1920,
                 Height = 1080
@@ -170,7 +170,7 @@ public class AsukaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Asuka/Render/AsukaBootCloseup.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
+
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1920,
                 Height = 1080
@@ -178,7 +178,7 @@ public class AsukaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Asuka/Render/AsukaAltRightSide.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
+
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1920,
                 Height = 1080
@@ -191,7 +191,7 @@ public class AsukaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Asuka/Sculpt/SculptMainAlt.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
+
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1920,
                 Height = 1080
@@ -199,7 +199,7 @@ public class AsukaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Asuka/Sculpt/SculptFront.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
+
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1920,
                 Height = 1080
@@ -207,7 +207,7 @@ public class AsukaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Asuka/Sculpt/SculptLeftCloseup.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
+
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1920,
                 Height = 1080
@@ -215,7 +215,7 @@ public class AsukaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Asuka/Sculpt/SculptFace.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
+
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1920,
                 Height = 1080
@@ -223,7 +223,7 @@ public class AsukaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Asuka/Sculpt/SculptBack.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
+
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1920,
                 Height = 1080
@@ -231,7 +231,7 @@ public class AsukaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Asuka/Sculpt/SculptShoeLeft.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
+
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1920,
                 Height = 1080
@@ -239,7 +239,7 @@ public class AsukaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Asuka/Sculpt/SculptShoeDetailRight.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
+
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1920,
                 Height = 1080
@@ -247,7 +247,7 @@ public class AsukaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Asuka/Sculpt/SculptRightCloseup.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
+
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1920,
                 Height = 1080

@@ -53,7 +53,6 @@ public class GanyuFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Ganyu/Sculpt/Face.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1080,
@@ -62,7 +61,6 @@ public class GanyuFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Ganyu/Sculpt/FrontBottom.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1080,
@@ -71,7 +69,6 @@ public class GanyuFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Ganyu/Sculpt/LeftSide.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1080,
@@ -80,7 +77,6 @@ public class GanyuFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Ganyu/Sculpt/Base.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1080,
@@ -89,7 +85,6 @@ public class GanyuFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Ganyu/Sculpt/BackBottom.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1080,
@@ -98,7 +93,6 @@ public class GanyuFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Ganyu/Sculpt/Back.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1080,

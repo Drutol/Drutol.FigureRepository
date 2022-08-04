@@ -22,7 +22,6 @@ public class MadokaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Madoka/Photos/PrintPrototype.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
                 MediaKind = FigureMediaKind.PrintPrototype,
                 Width = 1080,
                 Height = 1440
@@ -44,7 +43,6 @@ public class MadokaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Madoka/Render/FaceCloseup.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1080,
                 Height = 1920
@@ -52,7 +50,6 @@ public class MadokaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Madoka/Render/BottomLeft.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
                 MediaKind = FigureMediaKind.ShadedRender,
                 Gravity = FigurePhotoGravity.Bottom,
                 Width = 1080,
@@ -61,7 +58,6 @@ public class MadokaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Madoka/Render/BackRight.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1080,
                 Height = 1920
@@ -69,7 +65,6 @@ public class MadokaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Madoka/Render/Bear.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1920,
                 Height = 1080
@@ -77,7 +72,6 @@ public class MadokaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Madoka/Render/Base.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1920,
                 Height = 1080
@@ -90,7 +84,6 @@ public class MadokaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Madoka/Sculpt/Left.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1080,
                 Height = 1080
@@ -98,7 +91,6 @@ public class MadokaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Madoka/Sculpt/LeftSide.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1080,
                 Height = 1080
@@ -106,7 +98,6 @@ public class MadokaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Madoka/Sculpt/RightSide.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1080,
                 Height = 1080
@@ -114,7 +105,6 @@ public class MadokaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Madoka/Sculpt/Andon.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1080,
                 Height = 1080
@@ -122,7 +112,6 @@ public class MadokaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Madoka/Sculpt/Bonsai.jpg",
-                Display = FigurePhotoIntendedDisplay.Gallery,
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1080,
                 Height = 1080

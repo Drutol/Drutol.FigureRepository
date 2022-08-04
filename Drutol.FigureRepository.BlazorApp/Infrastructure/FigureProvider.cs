@@ -54,7 +54,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Ganyu/Sculpt/Face.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.SculptRender,
                     Width = 1080,
@@ -63,7 +63,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Ganyu/Sculpt/FrontBottom.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.SculptRender,
                     Width = 1080,
@@ -72,7 +72,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Ganyu/Sculpt/LeftSide.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.SculptRender,
                     Width = 1080,
@@ -81,7 +81,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Ganyu/Sculpt/Base.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.SculptRender,
                     Width = 1080,
@@ -90,7 +90,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Ganyu/Sculpt/BackBottom.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.SculptRender,
                     Width = 1080,
@@ -99,7 +99,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Ganyu/Sculpt/Back.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.SculptRender,
                     Width = 1080,
@@ -246,7 +246,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Lumine/Render/Back.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.ShadedRender,
                     Width = 1080,
@@ -255,7 +255,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Lumine/Render/RightSide.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.ShadedRender,
                     Width = 1080,
@@ -264,7 +264,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Lumine/Render/ShoesCloseup.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.ShadedRender,
                     Width = 1080,
@@ -273,7 +273,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Lumine/Render/Side.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.ShadedRender,
                     Width = 1080,
@@ -282,7 +282,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Lumine/Render/TopBody.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     Gravity = FigurePhotoGravity.Top,
                     MediaKind = FigureMediaKind.ShadedRender,
                     Width = 1080,
@@ -408,7 +408,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Asuka/Photos/Front.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.Painted,
                     Width = 1619,
                     Height = 1080
@@ -432,7 +432,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Asuka/Photos/LeftBack.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.Painted,
                     Width = 1619,
                     Height = 1080
@@ -440,7 +440,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Asuka/Photos/Left.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.Painted,
                     Width = 1619,
                     Height = 1080
@@ -448,7 +448,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Asuka/Photos/Back.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.Painted,
                     Width = 1619,
                     Height = 1080
@@ -456,7 +456,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Asuka/Photos/Right.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.Painted,
                     Width = 1619,
                     Height = 1080
@@ -464,7 +464,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Asuka/Photos/RightDetail.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.Painted,
                     Width = 1619,
                     Height = 1080
@@ -501,7 +501,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Asuka/Render/AsukaBodyCloseup.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.ShadedRender,
                     Width = 1920,
                     Height = 1080
@@ -509,7 +509,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Asuka/Render/AsukaBackCloseup.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.ShadedRender,
                     Width = 1920,
                     Height = 1080
@@ -517,7 +517,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Asuka/Render/AsukaAltFaceCloseup.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.ShadedRender,
                     Width = 1920,
                     Height = 1080
@@ -525,7 +525,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Asuka/Render/AsukaLeftSideCloseup.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.ShadedRender,
                     Width = 1920,
                     Height = 1080
@@ -533,7 +533,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Asuka/Render/AsukaFrontRightBottom.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.ShadedRender,
                     Width = 1920,
                     Height = 1080
@@ -541,7 +541,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Asuka/Render/AsukaAltBack.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.ShadedRender,
                     Width = 1920,
                     Height = 1080
@@ -549,7 +549,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Asuka/Render/AsukaBootCloseup.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.ShadedRender,
                     Width = 1920,
                     Height = 1080
@@ -557,7 +557,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Asuka/Render/AsukaAltRightSide.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.ShadedRender,
                     Width = 1920,
                     Height = 1080
@@ -570,7 +570,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Asuka/Sculpt/SculptMainAlt.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.SculptRender,
                     Width = 1920,
                     Height = 1080
@@ -578,7 +578,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Asuka/Sculpt/SculptFront.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.SculptRender,
                     Width = 1920,
                     Height = 1080
@@ -586,7 +586,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Asuka/Sculpt/SculptLeftCloseup.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.SculptRender,
                     Width = 1920,
                     Height = 1080
@@ -594,7 +594,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Asuka/Sculpt/SculptFace.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.SculptRender,
                     Width = 1920,
                     Height = 1080
@@ -602,7 +602,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Asuka/Sculpt/SculptBack.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.SculptRender,
                     Width = 1920,
                     Height = 1080
@@ -610,7 +610,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Asuka/Sculpt/SculptShoeLeft.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.SculptRender,
                     Width = 1920,
                     Height = 1080
@@ -618,7 +618,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Asuka/Sculpt/SculptShoeDetailRight.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.SculptRender,
                     Width = 1920,
                     Height = 1080
@@ -626,7 +626,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Asuka/Sculpt/SculptRightCloseup.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.SculptRender,
                     Width = 1920,
                     Height = 1080
@@ -753,7 +753,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Madoka/Photos/PrintPrototype.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.PrintPrototype,
                     Width = 1080,
                     Height = 1440
@@ -775,7 +775,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Madoka/Render/FaceCloseup.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.ShadedRender,
                     Width = 1080,
                     Height = 1920
@@ -783,7 +783,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Madoka/Render/BottomLeft.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.ShadedRender,
                     Gravity = FigurePhotoGravity.Bottom,
                     Width = 1080,
@@ -792,7 +792,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Madoka/Render/BackRight.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.ShadedRender,
                     Width = 1080,
                     Height = 1920
@@ -800,7 +800,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Madoka/Render/Bear.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.ShadedRender,
                     Width = 1920,
                     Height = 1080
@@ -808,7 +808,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Madoka/Render/Base.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.ShadedRender,
                     Width = 1920,
                     Height = 1080
@@ -821,7 +821,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Madoka/Sculpt/Left.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.SculptRender,
                     Width = 1080,
                     Height = 1080
@@ -829,7 +829,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Madoka/Sculpt/LeftSide.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.SculptRender,
                     Width = 1080,
                     Height = 1080
@@ -837,7 +837,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Madoka/Sculpt/RightSide.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.SculptRender,
                     Width = 1080,
                     Height = 1080
@@ -845,7 +845,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Madoka/Sculpt/Andon.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.SculptRender,
                     Width = 1080,
                     Height = 1080
@@ -853,7 +853,7 @@ public class FigureProvider
                 new FigureMedia
                 {
                     Url = "images/Madoka/Sculpt/Bonsai.jpg",
-                    Display = FigurePhotoIntendedDisplay.Gallery,
+    
                     MediaKind = FigureMediaKind.SculptRender,
                     Width = 1080,
                     Height = 1080
