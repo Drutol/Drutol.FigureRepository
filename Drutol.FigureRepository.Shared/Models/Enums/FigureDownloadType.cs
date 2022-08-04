@@ -1,9 +1,8 @@
-﻿namespace Drutol.FigureRepository.Shared.Models.Enums
+﻿namespace Drutol.FigureRepository.Shared.Models.Enums;
+
+public enum FigureDownloadType
 {
-    public enum FigureDownloadType
-    {
-        BlenderScene,
-        SlicedScenes,
-        Stls
-    }
+    BlenderScene,
+    SlicedScenes,
+    Stls
 }

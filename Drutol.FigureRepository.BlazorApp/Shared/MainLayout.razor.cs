@@ -9,20 +9,19 @@ using MetaMask.Blazor.Enums;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace Drutol.FigureRepository.BlazorApp.Shared
+namespace Drutol.FigureRepository.BlazorApp.Shared;
+
+public partial class MainLayout
 {
-    public partial class MainLayout
+    [Inject] public IWalletProvider WalletProvider { get; set; }
+
+    protected override async Task OnInitializedAsync()
     {
-        [Inject] public IWalletProvider WalletProvider { get; set; }
+        await WalletProvider.Initialize();
+    }
 
-        protected override async Task OnInitializedAsync()
-        {
-            await WalletProvider.Initialize();
-        }
-
-        private async Task ConnectMetaMask()
-        {
-            await WalletProvider.ConnectMetaMask();
-        }
+    private async Task ConnectMetaMask()
+    {
+        await WalletProvider.ConnectMetaMask();
     }
 }

@@ -1,9 +1,8 @@
 ﻿using Drutol.FigureRepository.Shared.Models;
 
-namespace Drutol.FigureRepository.Api.Interfaces
+namespace Drutol.FigureRepository.Api.Interfaces;
+
+public interface IFigureSeed
 {
-    public interface IFigureSeed
-    {
-        Figure Figure { get; }
-    }
+    Figure Figure { get; }
 }

@@ -44,6 +44,7 @@ public class Program
 
         builder.RegisterType<PaypalCheckoutProvider>().AsImplementedInterfaces().SingleInstance();
         builder.RegisterType<FigureSeedManager>().AsImplementedInterfaces().SingleInstance();
+        builder.RegisterType<NftTransferProvider>().AsImplementedInterfaces().SingleInstance();
 
         builder.RegisterType<GanyuFigureSeed>().AsImplementedInterfaces().SingleInstance();
         builder.RegisterType<AsukaFigureSeed>().AsImplementedInterfaces().SingleInstance();

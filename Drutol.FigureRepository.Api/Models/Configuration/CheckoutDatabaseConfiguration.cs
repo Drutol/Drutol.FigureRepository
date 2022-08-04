@@ -1,7 +1,6 @@
-﻿namespace Drutol.FigureRepository.Api.Models.Configuration
+﻿namespace Drutol.FigureRepository.Api.Models.Configuration;
+
+public class CheckoutDatabaseConfiguration
 {
-    public class CheckoutDatabaseConfiguration
-    {
-        public string ConnectionString { get; set; }
-    }
+    public string ConnectionString { get; set; }
 }

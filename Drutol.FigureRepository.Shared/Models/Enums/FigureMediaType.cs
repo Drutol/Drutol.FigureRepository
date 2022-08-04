@@ -1,8 +1,7 @@
-﻿namespace Drutol.FigureRepository.Shared.Models.Enums
+﻿namespace Drutol.FigureRepository.Shared.Models.Enums;
+
+public enum FigureMediaType
 {
-    public enum FigureMediaType
-    {
-        Photo,
-        Turntable
-    }
+    Photo,
+    Turntable
 }

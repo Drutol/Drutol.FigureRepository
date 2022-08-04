@@ -1,7 +1,6 @@
-﻿namespace Drutol.FigureRepository.BlazorApp.Interfaces
+﻿namespace Drutol.FigureRepository.BlazorApp.Interfaces;
+
+public interface IHttpClient
 {
-    public interface IHttpClient
-    {
-        HttpClient Client { get; }
-    }
+    HttpClient Client { get; }
 }

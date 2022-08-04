@@ -5,34 +5,33 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Drutol.FigureRepository.Shared.Blockchain.Loopring
+namespace Drutol.FigureRepository.Shared.Blockchain.Loopring;
+
+public interface IGetOffchainFeeResponseModel
 {
-    public interface IGetOffchainFeeResponseModel
+    public record Fail : LoopringFailResponseModel, IGetOffchainFeeResponseModel;
+
+    public record Success : IGetOffchainFeeResponseModel
     {
-        public record Fail : IGetOffchainFeeResponseModel;
+        [JsonPropertyName("gasPrice")]
+        public string GasPrice { get; set; }
 
-        public record Success : IGetOffchainFeeResponseModel
+        [JsonPropertyName("fees")]
+        public List<Fee> Fees { get; set; }
+
+        public class Fee
         {
-            [JsonPropertyName("gasPrice")]
-            public string GasPrice { get; set; }
+            [JsonPropertyName("token")]
+            public string Token { get; set; }
 
-            [JsonPropertyName("fees")]
-            public List<Fee> Fees { get; set; }
+            [JsonPropertyName("tokenId")]
+            public int TokenId { get; set; }
 
-            public class Fee
-            {
-                [JsonPropertyName("token")]
-                public string Token { get; set; }
+            [JsonPropertyName("fee")]
+            public string RequiredFee { get; set; }
 
-                [JsonPropertyName("tokenId")]
-                public int TokenId { get; set; }
-
-                [JsonPropertyName("fee")]
-                public string RequiredFee { get; set; }
-
-                [JsonPropertyName("discount")]
-                public int Discount { get; set; }
-            }
+            [JsonPropertyName("discount")]
+            public int Discount { get; set; }
         }
     }
 }

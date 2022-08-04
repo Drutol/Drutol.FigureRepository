@@ -39,11 +39,13 @@ public record BlockchainAuthSession(
     {
         if (Request.Type == StartAuthenticationRequest.AuthenticationType.Mainnet)
         {
-            var typedData = GetTypedData();
-            var node = JsonSerializer.SerializeToNode(typedData, SerializerOptions)!;
-            node[nameof(TypedData<Domain>.Message).ToLower()] = JsonSerializer.SerializeToNode(GetMessage(), SerializerOptions);
+            throw new NotImplementedException();
 
-            return node.ToJsonString(SerializerOptions);
+            //var typedData = GetTypedData();
+            //var node = JsonSerializer.SerializeToNode(typedData, SerializerOptions)!;
+            //node[nameof(TypedData<Domain>.Message).ToLower()] = JsonSerializer.SerializeToNode(GetMessage(), SerializerOptions);
+
+            //return node.ToJsonString(SerializerOptions);
         } 
 
         if(Request.Type == StartAuthenticationRequest.AuthenticationType.Loopring)
@@ -64,22 +66,22 @@ public record BlockchainAuthSession(
         return string.Empty;
     }
 
-    public TypedData<DomainWithSalt> GetTypedData()
-    {
-        return new TypedData<DomainWithSalt>
-        {
-            Domain = new DomainWithSalt
-            {
-                Name = "figure.drutol.com",
-                Version = "1",
-                ChainId = Request.ChainId,
-                VerifyingContract = Figure.NftDetails.TokenAddress,
-                Salt = RandomBytesGenerator.GenerateRandomSalt()
-            },
-            Types = MemberDescriptionFactory.GetTypesMemberDescription(typeof(Domain), typeof(AddressOwnerMessage)),
-            PrimaryType = nameof(AddressOwnerMessage),
-        };
-    }
+    //public TypedData<DomainWithSalt> GetTypedData()
+    //{
+    //    return new TypedData<DomainWithSalt>
+    //    {
+    //        Domain = new DomainWithSalt
+    //        {
+    //            Name = "figure.drutol.com",
+    //            Version = "1",
+    //            ChainId = Request.ChainId,
+    //            VerifyingContract = Figure.NftDetails.TokenAddress,
+    //            Salt = RandomBytesGenerator.GenerateRandomSalt()
+    //        },
+    //        Types = MemberDescriptionFactory.GetTypesMemberDescription(typeof(Domain), typeof(AddressOwnerMessage)),
+    //        PrimaryType = nameof(AddressOwnerMessage),
+    //    };
+    //}
 
     public AddressOwnerMessage GetMessage() => new()
     {

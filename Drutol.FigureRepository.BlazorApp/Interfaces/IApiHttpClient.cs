@@ -1,6 +1,5 @@
-﻿namespace Drutol.FigureRepository.BlazorApp.Interfaces
+﻿namespace Drutol.FigureRepository.BlazorApp.Interfaces;
+
+public interface IApiHttpClient : IHttpClient
 {
-    public interface IApiHttpClient : IHttpClient
-    {
-    }
 }

@@ -19,6 +19,7 @@ public class PaypalCheckoutProvider : ICheckoutProvider
     private readonly IFigureSeedManager _figureSeedManager;
     private readonly ICheckoutDatabase _checkoutDatabase;
     private readonly IDownloadTokenGenerator _downloadTokenGenerator;
+    private readonly INftTransferProvider _nftTransferProvider;
     private readonly ILoopringCommunicator _loopringCommunicator;
     private readonly IOptions<PaypalCheckoutConfiguration> _config;
     private readonly PayPalHttpClient _payPal;
@@ -28,6 +29,7 @@ public class PaypalCheckoutProvider : ICheckoutProvider
         IFigureSeedManager figureSeedManager,
         ICheckoutDatabase checkoutDatabase,
         IDownloadTokenGenerator downloadTokenGenerator,
+        INftTransferProvider nftTransferProvider,
         ILoopringCommunicator loopringCommunicator,
         IOptions<PaypalCheckoutConfiguration> config)
     {
@@ -35,6 +37,7 @@ public class PaypalCheckoutProvider : ICheckoutProvider
         _figureSeedManager = figureSeedManager;
         _checkoutDatabase = checkoutDatabase;
         _downloadTokenGenerator = downloadTokenGenerator;
+        _nftTransferProvider = nftTransferProvider;
         _loopringCommunicator = loopringCommunicator;
         _config = config;
 
@@ -147,7 +150,9 @@ public class PaypalCheckoutProvider : ICheckoutProvider
                         _downloadTokenGenerator.GenerateDownloadTokenForFigure(
                             _figureSeedManager[orderEntity.FigureId]);
 
-                    if (await _loopringCommunicator.TransferFigureNft(orderEntity))
+                    var transferResult = await _nftTransferProvider.TransferNft(orderEntity);
+
+                    if (transferResult.Success)
                     {
                         orderEntity.Status = OrderStatus.Delivered;
                         orderEntity.Events.Add(new OrderEvent
@@ -155,6 +160,10 @@ public class PaypalCheckoutProvider : ICheckoutProvider
                             DateTime = DateTime.UtcNow,
                             StatusChange = OrderStatus.Delivered
                         });
+
+                        orderEntity.TransactionHash = transferResult.Hash;
+                        orderEntity.PaidFee = transferResult.Fee;
+
                         return new(
                             CheckoutTransactionResponse.StatusCode.Ok,
                             downloadToken);

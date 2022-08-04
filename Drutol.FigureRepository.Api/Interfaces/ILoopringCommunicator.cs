@@ -1,5 +1,6 @@
 ﻿using Drutol.FigureRepository.Api.Models.Checkout;
 using Drutol.FigureRepository.Shared.Blockchain.Loopring;
+using Drutol.FigureRepository.Shared.Blockchain.Loopring.Nft;
 
 namespace Drutol.FigureRepository.Api.Interfaces;
 
@@ -13,16 +14,5 @@ public interface ILoopringCommunicator
 
     ValueTask<IApiKeyResponseModel> GetApiKey(string signedDataHash, string walletAddress, int accountId);
 
-    ValueTask<ITransferNftResponseModel> TransferFigureNft(
-        int sourceAccountId,
-        string sourceAccountAddress,
-        int targetAccountId,
-        string targetAccountAddress,
-        int tokenId,
-        string tokenNftData,
-        int amount,
-        string maxFee,
-        int storageId,
-        bool activateTargetAccount);
-
+    ValueTask<ITransferNftResponseModel> TransferFigureNft(string apiKey, TransferNftRequestModel requestModel);
 }

@@ -1,10 +1,9 @@
-﻿namespace Drutol.FigureRepository.Shared.Models.Enums
+﻿namespace Drutol.FigureRepository.Shared.Models.Enums;
+
+public enum FigureExternalLinkType
 {
-    public enum FigureExternalLinkType
-    {
-        ArtStation,
-        CgTrader,
-        GameStopMarketplace,
-        Twitter
-    }
+    ArtStation,
+    CgTrader,
+    GameStopMarketplace,
+    Twitter
 }

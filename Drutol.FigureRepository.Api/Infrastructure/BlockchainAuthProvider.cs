@@ -7,7 +7,7 @@ using System.Text.Json;
 using Drutol.FigureRepository.Api.Interfaces;
 using Drutol.FigureRepository.Api.Models.Configuration;
 using Drutol.FigureRepository.Shared.Blockchain;
-using Drutol.FigureRepository.Shared.Blockchain.Loopring;
+using Drutol.FigureRepository.Shared.Blockchain.Loopring.Nft;
 using Drutol.FigureRepository.Shared.Models;
 using LoopringSharp;
 using Microsoft.Extensions.Options;

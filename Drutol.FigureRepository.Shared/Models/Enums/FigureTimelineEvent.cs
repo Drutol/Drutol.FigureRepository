@@ -1,11 +1,10 @@
-﻿namespace Drutol.FigureRepository.Shared.Models.Enums
+﻿namespace Drutol.FigureRepository.Shared.Models.Enums;
+
+public enum FigureTimelineEvent
 {
-    public enum FigureTimelineEvent
-    {
-        ProjectInception,
-        SculptDone,
-        PrintDone,
-        PaintDone,
-        Publish
-    }
+    ProjectInception,
+    SculptDone,
+    PrintDone,
+    PaintDone,
+    Publish
 }
