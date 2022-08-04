@@ -362,4 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-./Drutol.FigureRepository.Api/appsettings.json
+Drutol.FigureRepository.Api/appsettings.json
