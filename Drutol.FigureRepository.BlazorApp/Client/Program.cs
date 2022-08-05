@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Blazored.LocalStorage;
 using Blazored.SessionStorage;
 using Drutol.FigureRepository.BlazorApp.Infrastructure;
 using Drutol.FigureRepository.BlazorApp.Interfaces;
@@ -26,18 +27,8 @@ public class Program
             configuration.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomLeft;
         });
         builder.Services.AddMetaMaskBlazor();
-        builder.Services.AddBlazoredSessionStorage(config =>
-            {
-                config.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
-
-                config.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-                config.JsonSerializerOptions.IgnoreReadOnlyProperties = true;
-                config.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-                config.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-                config.JsonSerializerOptions.ReadCommentHandling = JsonCommentHandling.Skip;
-                config.JsonSerializerOptions.WriteIndented = false;
-            }
-        );
+        builder.Services.AddBlazoredSessionStorage();
+        builder.Services.AddBlazoredLocalStorage();
 
         builder.Services.AddScoped<IFigureProvider, FigureProvider>();
         builder.Services.AddScoped<IFigureIconProvider, FigureIconProvider>();

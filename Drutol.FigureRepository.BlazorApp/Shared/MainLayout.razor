@@ -1,16 +1,18 @@
-﻿@using MudBlazor
-@using MudBlazor.Utilities
-@using Drutol.FigureRepository.BlazorApp.Util
+﻿@using Drutol.FigureRepository.BlazorApp.Util
+@using MudBlazor
+@using Blazored.LocalStorage
 @inherits LayoutComponentBase
 
+@inject ISyncLocalStorageService LocalStorageService
+
 <MudThemeProvider Theme="_theme" @bind-IsDarkMode="@DarkMode"/>
-<MudDialogProvider />
-<MudSnackbarProvider />
+<MudDialogProvider/>
+<MudSnackbarProvider/>
 
 <MudLayout>
     <MudAppBar Elevation="2">
         <MudHidden Breakpoint="Breakpoint.SmAndUp" @bind-IsHidden="IsExtraSmall">
-            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
+            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(e => DrawerToggle())"/>
             <div style="width: 10px"></div>
         </MudHidden>
 
@@ -35,16 +37,16 @@
                 <MudButton OnClick="ConnectMetaMask">
                     <MudImage Src="svg/wallet/MetaMask.svg" Width="30" Height="30" Class="mr-2"/>
                     Connect MetaMask
-                </MudButton>  
+                </MudButton>
                 <MudButton OnClick="ConnectMetaMask">
                     <MudImage Src="svg/wallet/Gme.svg" Width="30" Height="30" Class="mr-2"/>
                     Connect GameStop
                 </MudButton>
             </ChildContent>
         </MudMenu>
-        <MudIconButton Icon="@(DarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)" Color="Color.Inherit" OnClick="@((e) => DarkMode = !DarkMode)"/>
+        <MudIconButton Icon="@(DarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)" Color="Color.Inherit" OnClick="@(e => DarkMode = !DarkMode)"/>
     </MudAppBar>
-    <MudDrawer @bind-Open="@_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="1" Variant="@(IsExtraSmall ? DrawerVariant.Responsive : DrawerVariant.Persistent)" Breakpoint="Breakpoint.Xs"  DisableOverlay="false">
+    <MudDrawer @bind-Open="@_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="1" Variant="@(IsExtraSmall ? DrawerVariant.Responsive : DrawerVariant.Persistent)" Breakpoint="Breakpoint.Xs" DisableOverlay="false">
         <CascadingValue Value="_wrapper">
             <NavMenu/>
         </CascadingValue>
@@ -55,8 +57,14 @@
         </CascadingValue>
     </MudMainContent>
 </MudLayout>
+
 @code {
+        const string DarkModeStorageKey = "DarkMode";
+
     bool _drawerOpen = true;
+    private bool _darkMode;
+    private bool _isExtraSmall;
+    private readonly ThemeWrapper _wrapper;
 
     public bool IsExtraSmall
     {
@@ -68,15 +76,13 @@
         }
     }
 
-    private readonly ThemeWrapper _wrapper;
-
-    readonly MudTheme _theme = new MudTheme
+    readonly MudTheme _theme = new()
     {
         Palette = new Palette
         {
             Primary = Colors.LightGreen.Default,
             AppbarBackground = Colors.Shades.White,
-            AppbarText = Colors.Shades.Black,
+            AppbarText = Colors.Shades.Black
         },
         PaletteDark =
         {
@@ -85,8 +91,12 @@
         }
     };
 
-    private bool _darkMode;
-    private bool _isExtraSmall;
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        DarkMode = LocalStorageService.GetItem<bool>(DarkModeStorageKey);
+    }
 
     public MainLayout()
     {
@@ -104,6 +114,7 @@
         set
         {
             _darkMode = value;
+            LocalStorageService.SetItem(DarkModeStorageKey, value);
             StateHasChanged();
         }
     }

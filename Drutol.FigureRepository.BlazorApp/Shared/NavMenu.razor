@@ -21,6 +21,10 @@
     .mud-nav-link.active {
         background-color: @Theme.Palette.DrawerBackground.ColorDarken(.05) !important;
     }
+
+    .mud-skeleton {
+        background-color: @Theme.Palette.DrawerBackground.ColorLighten(.05) !important;
+    }
 </style>
 
 <MudNavMenu Bordered="true" Rounded="true" Margin="Margin.Normal" Class="pa-2">
@@ -47,11 +51,9 @@
         }
     }
 
-
     <MudNavLink Href="/About" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Info">About</MudNavLink>
     <MudNavLink Href="/Contact" Class="pl-4" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.ContactPage">Contact</MudNavLink>
     <MudNavLink Href="/Faq" Class="pl-4" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.QuestionAnswer">FAQ</MudNavLink>
-
 </MudNavMenu>
 
 @code
