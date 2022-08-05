@@ -1,0 +1,109 @@
+﻿@using MudBlazor
+@using Microsoft.AspNetCore.Components
+@using Drutol.FigureRepository.Shared.Models
+@using Drutol.FigureRepository.BlazorApp.Util
+@using Drutol.FigureRepository.Shared.Models.Enums
+
+@inject IJSRuntime JS;
+
+<MudText Typo="Typo.h4" Class="border-l-2 pl-4 mud-border-primary">Gallery</MudText>
+<MudCarousel Id="Carousel" Style="height: 448px" ShowBullets="false" ShowArrows="true" AutoCycle="false" TData="object" @bind-SelectedIndex="CarouselSelectedIndex">
+    @foreach (var photo in GalleryItems)
+    {
+        <MudCarouselItem Transition="Transition.Slide" Class="pa-8 d-flex justify-center rounded">
+            <MudImage Src="@photo.Url" ObjectFit="ObjectFit.Cover" Class="rounded" Elevation="3" Height="400" Style="@(!photo.IsPortraitOrientation ? $"width: 100%;" : "")" @onclick="() => OpenGallery(CarouselSelectedIndex)"/>
+        </MudCarouselItem>
+    }
+</MudCarousel>
+<MudTabs Elevation="2" Rounded="true" Centered="true" Class="ml-4 mr-4" @bind-ActivePanelIndex="ActiveGalleryTabIndex">
+    @foreach (var kind in AvailableGalleryKinds)
+    {
+        @if (Figure.Media.Any(media => media.MediaKind == kind))
+        {
+            <MudTabPanel BadgeData="@Figure.Media.Count(media => media.MediaKind == kind)" BadgeColor="Color.Primary" Text="@kind.Str()"/>
+        }
+    }
+</MudTabs>
+<MudGrid Spacing="0" Class="mt-2" Justify="Justify.Center" Style="max-height: 232px; overflow: auto; align-content: flex-start">
+    @foreach (var photo in GalleryItems)
+    {
+        <MudItem Class="ma-2" Style="width: 100px; height: 100px;">
+            <MudButton Class="d-flex" Style="padding: 0px"
+                       Variant="Variant.Filled" Color="Color.Primary"
+                       OnClick="() => OpenGallery(photo)"
+                       DisableElevation="false">
+                <MudImage Src="@photo.Url" ObjectFit="ObjectFit.Cover" Class="rounded align-center" Style="@($"object-position: {photo.Gravity.ToCssValue()}")" Width="100" Height="100"/>
+            </MudButton>
+        </MudItem>
+    }
+</MudGrid>
+
+@code {
+    private int _activeGalleryTabIndex;
+
+    [Parameter]
+    public Figure Figure { get; set; }
+
+    public List<FigureMedia> GalleryItems { get; set; } = new();
+
+    private int ActiveGalleryTabIndex
+    {
+        get => _activeGalleryTabIndex;
+        set
+        {
+            _activeGalleryTabIndex = value;
+            OnActiveGalleryTabIndexChange(value);
+        }
+    }
+
+    public int CarouselSelectedIndex { get; set; }
+    public FigureMediaKind GalleryKind { get; set; }
+    public List<FigureMediaKind> AvailableGalleryKinds { get; set; } = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        if(Figure == null)
+            return;
+
+        AvailableGalleryKinds = Enum.GetValues<FigureMediaKind>().Reverse().Where(kind => Figure.Media.Any(media => media.MediaKind == kind)).ToList();
+        GalleryKind = Figure.InitialGalleryKindDisplay ?? Figure.Media.MaxBy(media => media.MediaKind)!.MediaKind;
+        RefreshGallery();
+        StateHasChanged();
+
+        await Task.Delay(200);
+        ActiveGalleryTabIndex = AvailableGalleryKinds.IndexOf(GalleryKind);
+    }
+
+    private void RefreshGallery()
+    {
+        if(Figure == null)
+            return;
+
+        var kind = GalleryKind;
+        GalleryItems = Figure.Media.Where(media => media.MediaKind == kind).ToList();
+        CarouselSelectedIndex = 0;
+    }
+
+    private void OnActiveGalleryTabIndexChange(int index)
+    {
+        if (AvailableGalleryKinds.Count > 0)
+        {
+            GalleryKind = AvailableGalleryKinds[index];
+            RefreshGallery();
+        }
+    }
+
+    private void OpenGallery(FigureMedia photo)
+    {
+        GalleryItems.OpenGallery(JS, GalleryItems.IndexOf(photo));
+    }   
+    
+    private void OpenGallery(int index)
+    {
+        GalleryItems.OpenGallery(JS, index);
+    }
+}
+
+

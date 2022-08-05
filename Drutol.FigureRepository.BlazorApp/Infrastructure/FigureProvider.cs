@@ -14,6 +14,9 @@ public class FigureProvider : IFigureProvider
     private readonly ILogger<FigureProvider> _logger;
     private readonly ISessionStorageService _sessionStorageService;
     private readonly IApiHttpClient _apiHttpClient;
+
+    private bool _initialized;
+
     public TaskCompletionSource DataReady { get; } = new();
 
     public List<Figure> Figures { get; } = new();
@@ -30,9 +33,15 @@ public class FigureProvider : IFigureProvider
 
     public async ValueTask Initialize()
     {
+        if(_initialized)
+            return;
+
+        _initialized = true;
+
         if (await _sessionStorageService.ContainKeyAsync(CacheKey))
         {
             var data = await _sessionStorageService.GetItemAsync<List<Figure>>(CacheKey);
+            Figures.Clear();
             Figures.AddRange(data);
         }
 
@@ -42,6 +51,7 @@ public class FigureProvider : IFigureProvider
             {
                 var data = await _apiHttpClient.Client.GetFromJsonAsync<List<Figure>>("figure/all");
                 await _sessionStorageService.SetItemAsync(CacheKey, data);
+                Figures.Clear();
                 Figures.AddRange(data);
 
                 break;

@@ -27,7 +27,7 @@
     <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Home">Index</MudNavLink>
 
     <MudNavLink Href="/Figures" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.SpaceDashboard">Figure Index</MudNavLink>
-    @if (FiguresReady)
+    @if (FigureDataReady)
     {
         @foreach (var figure in FigureProvider.Figures)
         {
@@ -59,13 +59,12 @@
     [CascadingParameter]
     protected ThemeWrapper Theme { get; set; }
 
-    public bool FiguresReady { get; set; }
+    public bool FigureDataReady { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        if (!FigureProvider.DataReady.Task.IsCompleted)
-            await FigureProvider.DataReady.Task;
+        await FigureProvider.DataReady.Task;
 
-        FiguresReady = true;
+        FigureDataReady = true;
     }
 }

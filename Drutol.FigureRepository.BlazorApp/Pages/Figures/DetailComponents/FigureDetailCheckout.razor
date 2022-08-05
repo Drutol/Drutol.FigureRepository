@@ -1,0 +1,226 @@
+﻿@using MudBlazor
+@using Microsoft.AspNetCore.Components
+@using Drutol.FigureRepository.Shared.Models
+@using Drutol.FigureRepository.BlazorApp.Util
+@using Drutol.FigureRepository.Shared.Checkout
+@using Drutol.FigureRepository.Shared.Models.Enums
+@using Drutol.FigureRepository.BlazorApp.Infrastructure
+@using Drutol.FigureRepository.BlazorApp.Interfaces
+@using Drutol.FigureRepository.Shared.Blockchain
+@using Drutol.FigureRepository.Shared.Blockchain.Loopring
+
+@inject IJSRuntime JS
+@inject IApiHttpClient HttpClient
+@inject IWalletProvider WalletProvider
+
+<MudPaper Elevation="2" Square="false" Class="ml-8 mr-8 mt-8" >
+                <MudToolBar>
+                    
+                    <div class="mud-theme-primary py-2 px-6 rounded-tr-xl rounded-bl-xl">
+                        <MudText Align="Align.Center" Typo="Typo.h5" Style="color: white">$@Figure.CheckoutDetails.Price.ToString("N2")</MudText>
+                    </div>
+
+                    <MudSpacer />
+                    <MudMenu Size="Size.Large" AnchorOrigin="Origin.BottomCenter" PopoverClass="pr-2 pl-2">
+                        <ActivatorContent>
+                            <MudButton Disabled="!IsFigureOwned" StartIcon="@Icons.Material.Outlined.Download" Size="Size.Large">Download</MudButton>
+                        </ActivatorContent>
+                        <ChildContent>
+                            <MudStack>
+                                <MudButton StartIcon="@Icons.Filled.ViewInAr" OnClick="Download">Blender Scene</MudButton>
+                                <MudButton StartIcon="@Icons.Filled.Print">Lychee Scenes</MudButton>
+                                <MudButton StartIcon="@Icons.Filled.Print">STLs</MudButton>
+                            </MudStack>
+                        </ChildContent>
+                    </MudMenu>
+                    @if (IsFigureOwned)
+                    {
+                        <MudTooltip Text="You own at least one NFT of this figure.">
+                            <MudFab Class="ml-2" StartIcon="@Icons.Filled.Check" Color="Color.Success" Size="Size.Small"/>
+                        </MudTooltip>
+                    }
+                    else
+                    {
+                        <MudMenu Size="Size.Large" AnchorOrigin="Origin.BottomCenter" PopoverClass="BuyMenuPopover pr-2 pl-2">
+                            <ActivatorContent>
+                                <MudButton Class="ml-2" StartIcon="@Icons.Filled.AddShoppingCart" Color="Color.Info" Size="Size.Large"  OnClick="OnBuyMenuOpened">
+                                    Purchase
+                                </MudButton>
+                            </ActivatorContent>
+                            <ChildContent>
+                                <MudStack>
+                                    <MudButton Variant="Variant.Filled" Style="background-color: black; color: white">
+                                        <MudImage Src="svg/wallet/Gme.svg"></MudImage>
+                                        <span style="text-align: center; flex-grow: 1">
+                                            GameStop Marketplace
+                                        </span>
+                                        
+                                    </MudButton>
+                                    <MudButton Variant="Variant.Filled" Style="background-color: #41a48f; color: white">
+                                        <MudImage Src="svg/vendor/Cgtrader.svg"></MudImage>
+                                        <span style="text-align: center; flex-grow: 1">
+                                            CgTrader
+                                        </span>
+                                        
+                                    </MudButton>
+                                    @if (!PaypalOrderReady)
+                                    {
+                                        <MudProgressCircular Style="place-self: center" Color="Color.Primary" Indeterminate="true" />
+                                        <MudText Align="Align.Center">PayPal Loading...</MudText>
+                                    }
+                                    <div id="paypal-buttons"></div>
+                                </MudStack>
+                                
+                            </ChildContent>
+                        </MudMenu>
+                    }
+                </MudToolBar>
+            </MudPaper>
+
+@code {
+    [Parameter]
+    public Figure Figure { get; set; }
+
+    public bool PaypalOrderReady { get; set; }
+    public bool IsFigureOwned { get; set; }
+    public bool CanCheckOwnership { get; set; }
+
+    [JSInvokable]
+    public async Task SubmitPaypalOrder(string orderId)
+    {
+        var result = await HttpClient.Client.PostAsJsonAsync("api/checkout/transaction", new CheckoutTransactionRequest(orderId));
+        Console.WriteLine(result.Content.ReadFromJsonAsync<CheckoutTransactionResponse>());
+    }
+
+
+    private async void OnBuyMenuOpened(MouseEventArgs obj)
+    {
+        PaypalOrderReady = false;
+        StateHasChanged();
+        var reference = DotNetObjectReference.Create(this);
+        var response = await HttpClient.Client.PostAsJsonAsync("api/checkout/order", new CheckoutOrderRequest(Figure.Guid, WalletProvider.SelectedAccountAddress));
+        var result = await response.Content.ReadFromJsonAsync<CheckoutOrderResponse>();
+        PaypalOrderReady = true;
+        StateHasChanged();
+        await JS.InvokeVoidAsync("openPayPal", reference, result.OrderId);
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        await UpdateCanCheckOwnership();
+    }
+
+
+    private readonly HttpClient _loopringClient = new HttpClient
+    {
+        BaseAddress = new Uri("https://api.loopring.network/api/v3/")
+    };
+
+    private async Task UpdateCanCheckOwnership()
+    {
+        if (Figure == null || string.IsNullOrEmpty(WalletProvider.SelectedAccountAddress))
+        {
+            IsFigureOwned = false;
+            return;
+        }
+
+        try
+        {
+            CanCheckOwnership = await GetLoopringAccount(WalletProvider.SelectedAccountAddress) switch
+            {
+                IAccountResponseModel.Success => true,
+                _ => false,
+            };
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            CanCheckOwnership = false;
+        }
+    }
+
+    private async Task UpdateOwnership()
+    {
+        if (Figure == null || string.IsNullOrEmpty(WalletProvider.SelectedAccountAddress) || !CanCheckOwnership)
+        {
+            IsFigureOwned = false;
+            return;
+        }
+
+        try
+        {
+            //var sha = Sha3Keccack.Current.CalculateHash("balanceOf(address)");
+            //var methodSignature = sha.Substring(0, 8); //first 4 bytes make the function signature
+            //var methodArgument = SelectedAccountAddress[2..].PadLeft(64, '0'); //arguments have to be encoded as 32 bytes
+            //var result = (JsonElement)await _metaMaskService.GenericRpc("eth_call", new
+            //{
+            //    to = Figure.NftDetails.TokenAddress,
+            //    data = $"0x{methodSignature}{methodArgument}"
+            //}, "latest");
+            //var amount = (int)result.GetString().HexToBigInteger(false);
+
+            //ethereum.request({
+            //    method: 'personal_sign',
+            //        params: ['Sign this message to access Loopring Exchange: 0x0BABA1Ad5bE3a5C0a66E7ac838a129Bf948f1eA4 with key nonce: 0', '0x59eb7c1e8e357ef2b4eb7532cab64c6538292ac6']
+            //});
+
+            using var authStartContent = JsonContent.Create(new StartAuthenticationRequest(
+                StartAuthenticationRequest.AuthenticationType.Loopring,
+                ((int?)WalletProvider.SelectedChain) ?? 0,
+                WalletProvider.SelectedAccountAddress,
+                Figure.Guid));
+            var response = await
+                (await HttpClient.Client.PostAsync("/api/auth/StartAuthentication", authStartContent)).Content.ReadFromJsonAsync<StartAuthenticationResult>();
+
+            var signature = await WalletProvider.PersonalSign(response.DataToSign);
+
+            var authFinishContent = JsonContent.Create(new FinishAuthenticationRequest(response.SessionGuid, signature));
+            var auth = await
+                (await HttpClient.Client.PostAsync("/api/auth/FinishAuthentication", authFinishContent)).Content.ReadFromJsonAsync<FinishAuthenticationResult>();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            IsFigureOwned = false;
+        }
+    }
+
+    private async void Download(MouseEventArgs obj)
+    {
+        using var authStartContent = JsonContent.Create(new StartAuthenticationRequest(
+            StartAuthenticationRequest.AuthenticationType.Loopring,
+            (int)WalletProvider.SelectedChain.Value,
+            WalletProvider.SelectedAccountAddress,
+            Figure.Guid));
+        var response = await 
+            (await HttpClient.Client.PostAsync("/api/auth/StartAuthentication", authStartContent)).Content.ReadFromJsonAsync<StartAuthenticationResult>();
+            
+        var signResult = await WalletProvider.SignTypedDataV4(response.DataToSign);
+
+        var authFinishContent = JsonContent.Create(new FinishAuthenticationRequest(response.SessionGuid, signResult));
+        var auth = await
+            (await HttpClient.Client.PostAsync("/api/auth/FinishAuthentication", authFinishContent)).Content.ReadFromJsonAsync<FinishAuthenticationResult>();
+    }
+
+
+    private async ValueTask<IAccountResponseModel> GetLoopringAccount(string walletAddress)
+    {
+        try
+        {
+            var result = await _loopringClient
+                .GetFromJsonAsync<IAccountResponseModel.Success>($"account?owner={walletAddress}")
+                .ConfigureAwait(false);
+
+            if (result == null)
+                return new IAccountResponseModel.Fail();
+
+            return result;
+        }
+        catch (Exception e)
+        {
+            return new IAccountResponseModel.Fail();
+        }
+    }
+}

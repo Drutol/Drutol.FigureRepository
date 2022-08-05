@@ -1,0 +1,30 @@
+﻿@using Drutol.FigureRepository.Shared.Models
+@using MudBlazor
+@using Drutol.FigureRepository.BlazorApp.Infrastructure
+@using Drutol.FigureRepository.BlazorApp.Interfaces
+
+@inject IFigureIconProvider FigureIconProvider;
+
+<MudPaper Elevation="2" Square="false" Class="ml-8 mr-8 mt-4 pa-4" >
+    <MudText Typo="Typo.h4" Class="border-l-2 pl-3 mud-border-primary">@Figure.Name</MudText>
+    <MudText Typo="Typo.body2" Class="mt-2 ml-4">@Figure.Description</MudText>
+    <MudGrid Class="mt-2">
+        <MudItem xs="6">
+            <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center">
+                <MudIcon Icon="@FigureIconProvider.FigureCharacterIcon" Size="Size.Large" Color="Color.Surface"/>
+                <MudText Typo="Typo.body2" Align="Align.Center">@Figure.FigureCharacter.NameEnglish<br/>@Figure.FigureCharacter.NameJapanese</MudText>
+            </MudStack>
+        </MudItem>       
+        <MudItem xs="6">
+            <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center">
+                <MudIcon Icon="@Icons.Outlined.Public" Size="Size.Large"/>
+                <MudText Typo="Typo.body2" Align="Align.Center">@Figure.FigureCharacter.OriginNameEnglish<br/>@Figure.FigureCharacter.OriginNameJapanese</MudText>
+            </MudStack>
+        </MudItem>
+    </MudGrid>
+</MudPaper>
+
+@code {
+    [Parameter]
+    public Figure Figure { get; set; }
+}

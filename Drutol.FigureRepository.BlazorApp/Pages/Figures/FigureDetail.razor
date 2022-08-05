@@ -1,7 +1,7 @@
 ﻿@page "/Figures/{Name}"
 
 @using MudBlazor
-@using Drutol.FigureRepository.BlazorApp.Infrastructure
+@using Drutol.FigureRepository.BlazorApp.Pages.Figures.DetailComponents
 @using Drutol.FigureRepository.BlazorApp.Interfaces
 @using Drutol.FigureRepository.BlazorApp.Util
 @using Drutol.FigureRepository.Shared.Models
@@ -10,7 +10,6 @@
 
 @inject IFigureProvider FigureProvider;
 @inject IFigureIconProvider FigureIconProvider;
-@inject IJSRuntime JS;
 
 <style>
     .BuyMenuPopover {
@@ -18,250 +17,35 @@
     }
 </style>
 
-@if (Figure != null)
+@if (IsFigureDataReady)
 {
-    <MudGrid Style="width: 100% !important;" Spacing="0"> 
-        <MudItem xs="12" sm="5" Class="pa-4 rounded" Style="@($"background-color: {Theme.Palette.BackgroundGrey}")">
-            <MudText Typo="Typo.h4" Class="border-l-2 pl-4 mud-border-primary">Gallery</MudText>
-            <MudCarousel Id="Carousel" Style="height: 448px" ShowBullets="false" ShowArrows="true" AutoCycle="false" TData="object" @bind-SelectedIndex="CarouselSelectedIndex">
-                @foreach (var photo in GalleryItems)
-                {
-                    <MudCarouselItem Transition="Transition.Slide" Class="pa-8 d-flex justify-center rounded">
-                        <MudImage Src="@photo.Url" ObjectFit="ObjectFit.Cover" Class="rounded" Elevation="3" Height="400" Style="@(!photo.IsPortraitOrientation ? $"width: 100%;" : "")" @onclick="() => OpenGallery(CarouselSelectedIndex)"/>
-                    </MudCarouselItem>
-                }
-            </MudCarousel>
-            <MudTabs Elevation="2" Rounded="true" Centered="true" @bind-ActivePanelIndex="ActiveGalleryTabIndex">
-                @foreach (var kind in AvailableGalleryKinds)
-                {
-                    @if (Figure.Media.Any(media => media.MediaKind == kind))
-                    {
-                        <MudTabPanel BadgeData="@Figure.Media.Count(media => media.MediaKind == kind)" BadgeColor="Color.Primary" Text="@kind.Str()"/>
-                    }
-                }
-            </MudTabs>
-            <MudGrid Spacing="0" Class="mt-2" Justify="Justify.Center" Style="max-height: 232px; overflow: auto; align-content: flex-start">
-                @foreach (var photo in GalleryItems)
-                {
-                    <MudItem Class="ma-2" Style="width: 100px; height: 100px;">
-                        <MudButton Class="d-flex" Style="padding: 0px"
-                                   Variant="Variant.Filled" Color="Color.Primary"
-                                   OnClick="() => OpenGallery(photo)"
-                                   DisableElevation="false">
-                            <MudImage Src="@photo.Url" ObjectFit="ObjectFit.Cover" Class="rounded align-center" Style="@($"object-position: {photo.Gravity.ToCssValue()}")" Width="100" Height="100"/>
-                        </MudButton>
-                    </MudItem>
-                }
-            </MudGrid>
-        </MudItem>
-        <MudItem xs="12" sm="7">
-            <MudPaper Elevation="2" Square="false" Class="ml-8 mr-8 mt-8" >
-                <MudToolBar>
-                    
-                    <div class="mud-theme-primary py-2 px-6 rounded-tr-xl rounded-bl-xl">
-                        <MudText Align="Align.Center" Typo="Typo.h5" Style="color: white">$@Figure.CheckoutDetails.Price.ToString("N2")</MudText>
-                    </div>
-
-                    <MudSpacer />
-                    <MudMenu Size="Size.Large" AnchorOrigin="Origin.BottomCenter" PopoverClass="pr-2 pl-2">
-                        <ActivatorContent>
-                            <MudButton Disabled="!IsFigureOwned" StartIcon="@Icons.Material.Outlined.Download" Size="Size.Large">Download</MudButton>
-                        </ActivatorContent>
-                        <ChildContent>
-                            <MudStack>
-                                <MudButton StartIcon="@Icons.Filled.ViewInAr" OnClick="Download">Blender Scene</MudButton>
-                                <MudButton StartIcon="@Icons.Filled.Print">Lychee Scenes</MudButton>
-                                <MudButton StartIcon="@Icons.Filled.Print">STLs</MudButton>
-                            </MudStack>
-                        </ChildContent>
-                    </MudMenu>
-                    @if (IsFigureOwned)
-                    {
-                        <MudTooltip Text="You own at least one NFT of this figure.">
-                            <MudFab Class="ml-2" StartIcon="@Icons.Filled.Check" Color="Color.Success" Size="Size.Small"/>
-                        </MudTooltip>
-                    }
-                    else
-                    {
-                        <MudMenu Size="Size.Large" AnchorOrigin="Origin.BottomCenter" PopoverClass="BuyMenuPopover pr-2 pl-2">
-                            <ActivatorContent>
-                                <MudButton Class="ml-2" StartIcon="@Icons.Filled.AddShoppingCart" Color="Color.Info" Size="Size.Large"  OnClick="OnBuyMenuOpened">
-                                    Purchase
-                                </MudButton>
-                            </ActivatorContent>
-                            <ChildContent>
-                                <MudStack>
-                                    <MudButton Variant="Variant.Filled" Style="background-color: black; color: white">
-                                        <MudImage Src="svg/wallet/Gme.svg"></MudImage>
-                                        <span style="text-align: center; flex-grow: 1">
-                                            GameStop Marketplace
-                                        </span>
-                                        
-                                    </MudButton>
-                                    <MudButton Variant="Variant.Filled" Style="background-color: #41a48f; color: white">
-                                        <MudImage Src="svg/vendor/Cgtrader.svg"></MudImage>
-                                        <span style="text-align: center; flex-grow: 1">
-                                            CgTrader
-                                        </span>
-                                        
-                                    </MudButton>
-                                    @if (!PaypalOrderReady)
-                                    {
-                                        <MudProgressCircular Style="place-self: center" Color="Color.Primary" Indeterminate="true" />
-                                        <MudText Align="Align.Center">PayPal Loading...</MudText>
-                                    }
-                                    <div id="paypal-buttons"></div>
-                                </MudStack>
-                                
-                            </ChildContent>
-                        </MudMenu>
-                    }
-                </MudToolBar>
-            </MudPaper>      
-        
-            <MudPaper Elevation="2" Square="false" Class="ml-8 mr-8 mt-4 pa-4" >
-                <MudText Typo="Typo.h4" Class="border-l-2 pl-3 mud-border-primary">@Figure.Name</MudText>
-                <MudText Typo="Typo.body2" Class="mt-2 ml-4">@Figure.Description</MudText>
-                <MudGrid Class="mt-2">
-                    <MudItem xs="6">
-                        <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center">
-                            <MudIcon Icon="@FigureIconProvider.FigureCharacterIcon" Size="Size.Large" Color="Color.Surface"/>
-                            <MudText Typo="Typo.body2" Align="Align.Center">@Figure.FigureCharacter.NameEnglish<br/>@Figure.FigureCharacter.NameJapanese</MudText>
-                        </MudStack>
-                    </MudItem>       
-                    <MudItem xs="6">
-                        <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center">
-                            <MudIcon Icon="@Icons.Outlined.Public" Size="Size.Large"/>
-                            <MudText Typo="Typo.body2" Align="Align.Center">@Figure.FigureCharacter.OriginNameEnglish<br/>@Figure.FigureCharacter.OriginNameJapanese</MudText>
-                        </MudStack>
-                    </MudItem>
-                </MudGrid>
-            </MudPaper>
-
-            <MudPaper Elevation="3" Class="ml-8 mr-8 mt-4 pa-4">
-                <MudContainer Class="d-flex flex-wrap flex-row" Style="justify-content: center">
-                    <MudItem xs="12" sm="7" Class="pb-4" Style="max-width: unset !important; flex-grow: 1 !important">
-                        <MudGrid>
-                            <MudItem xs="6">
-                                <MudStack Spacing="2">
-                                    <MudStack Row="true" AlignItems="AlignItems.Center">
-                                        <MudIcon Icon="@Icons.Filled.Straighten"/>
-                                        <MudText Typo="Typo.h6" Align="Align.Center">Dimensions</MudText>
-                                    </MudStack>
-                                    <MudText Typo="Typo.body2"><strong>Width:</strong> @Figure.FigureDimensions.Width.ToString("N0") mm</MudText>
-                                    <MudText Typo="Typo.body2"><strong>Height:</strong> @Figure.FigureDimensions.Height.ToString("N0") mm</MudText>
-                                    <MudText Typo="Typo.body2"><strong>Length:</strong> @Figure.FigureDimensions.Length.ToString("N0") mm</MudText>
-                                    <MudStack Row="true" AlignItems="AlignItems.Center">
-                                        <MudTooltip Text="Maximum single part dimension at the default scale.">
-                                            <MudText Typo="Typo.subtitle1" Align="Align.Center">
-                                                <span class="border-b-2 mud-border-primary pb-1">
-                                                    Biggest Object
-                                                </span>
-                                            </MudText>
-                                        </MudTooltip>
-                                    </MudStack>
-                                    <MudText Typo="Typo.body2"><strong>W/H/L:</strong> 
-                                        @Figure.PrintDetails.BiggestPartDimension.Width.ToString("N0")/@Figure.PrintDetails.BiggestPartDimension.Height.ToString("N0")/@Figure.PrintDetails.BiggestPartDimension.Length.ToString("N0") mm
-                                    </MudText>
-                                </MudStack>
-                            </MudItem>
-                            <MudItem xs="6">
-                                <MudStack Spacing="2">
-                                    <MudStack Row="true" AlignItems="AlignItems.Center">
-                                        <MudIcon Icon="@Icons.Filled.ViewInAr"/>
-                                        <MudText Typo="Typo.h6" Align="Align.Center">Technicalities</MudText>
-                                    </MudStack>
-                                    <MudText Typo="Typo.body2"><strong>Blender Scene:</strong> @Figure.TechnicalStatistics.BlendFileSize.Bytes()</MudText>
-                                    <MudText Typo="Typo.body2"><strong>Lychee Scenes:</strong> @Figure.TechnicalStatistics.LycheeScenesSize.Bytes()</MudText>
-                                    <MudText Typo="Typo.body2"><strong>STLs:</strong> @Figure.TechnicalStatistics.StlsSize.Bytes()</MudText>
-                                    <MudText Typo="Typo.body2"><strong>Vertices:</strong> @Figure.TechnicalStatistics.Vertices.ToMetric(MetricNumeralFormats.WithSpace, 2)</MudText>
-                                    <MudText Typo="Typo.body2"><strong>Eyes:</strong> @Figure.EyeType.Str()</MudText>
-                                    <MudTooltip Text="@Figure.NftDetails.TokenAddress">
-                                        <MudText Typo="Typo.body2"><strong>Token:</strong> @Figure.NftDetails.TokenAddress.TruncateAddress()</MudText>
-                                    </MudTooltip>
-                                </MudStack>
-                            </MudItem>
-                            <MudItem xs="6">
-                                <MudStack Spacing="2">
-                                    <MudStack Row="true" AlignItems="AlignItems.Center">
-                                        <MudIcon Icon="@Icons.Filled.Print"/>
-                                        <MudText Typo="Typo.h6" Align="Align.Center">Printing</MudText>
-                                    </MudStack>
-                                    <MudText Typo="Typo.body2"><strong>Number of parts: </strong>
-                                        @if (Figure.PrintDetails.MinNumberOfParts == Figure.PrintDetails.MaxNumberOfParts)
-                                        {
-                                            @Figure.PrintDetails.MaxNumberOfParts
-                                        }
-                                        else
-                                        {
-                                            <MudTooltip Text="Depending on your print max print volume there is variable number of parts prepared.">
-                                                <span class="border-b-2 mud-border-primary">
-                                                    @($"{Figure.PrintDetails.MinNumberOfParts} - {Figure.PrintDetails.MaxNumberOfParts}")
-                                                </span>
-                                            </MudTooltip>
-                                        }
-                                    </MudText>
-                                    <MudText Typo="Typo.body2">
-                                        <MudTooltip Text="Some parts were designed to be printed clear (translucent). Separate kind of resin required.">
-                                            <span class="border-b-2 mud-border-primary">
-                                                <strong>Clear Parts: </strong>
-                                            </span>
-                                        </MudTooltip>
-                                        @Figure.PrintDetails.NumberOfClearParts
-                                    </MudText>
-                                    <MudText Typo="Typo.body2"><strong>Print Batches:</strong> @Figure.PrintDetails.NumberOfPrintBatches</MudText>
-                                    <MudText Typo="Typo.body2"><strong>Resin Volume:</strong> @Figure.PrintDetails.PrintResinVolume ml</MudText>
-                                </MudStack>
-                            </MudItem>
-                            <MudItem xs="6">
-                                <MudStack Spacing="2">
-                                    <MudStack Row="true" AlignItems="AlignItems.Center">
-                                        <MudIcon Icon="@Icons.Filled.Link"/>
-                                        <MudText Typo="Typo.h6" Align="Align.Center">External Links</MudText>
-                                    </MudStack>
-                                    @foreach (var link in Figure.ExternalLinks)
-                                    {
-                                        <MudLink Href="@link.Url">@link.Type.ToString()</MudLink>
-                                    }
-                                </MudStack>
-                            </MudItem>
-                        </MudGrid>
-                    </MudItem>
-                    <MudItem xs="12" sm="5" Style="max-width: unset !important;">
-                        <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center">
-                            <MudIcon Icon="@Icons.Filled.EventRepeat"/>
-                            <MudText Typo="Typo.h6" Align="Align.Center">Timeline</MudText>
-                        </MudStack>
-                        <MudTimeline TimelinePosition="TimelinePosition.Alternate">
-                            @foreach (var step in Figure.Timeline.OrderBy(entry => entry.Date))
-                            {
-                                <MudTimelineItem Size="@(step.Event switch{
-                                                           FigureTimelineEvent.Publish=> Size.Large,
-                                                           FigureTimelineEvent.ProjectInception => Size.Medium,
-                                                           _=>Size.Small })"
-                                                 Color="@(step.Event switch{
-                                                            FigureTimelineEvent.Publish=> Color.Primary,
-                                                            FigureTimelineEvent.ProjectInception => Color.Info,
-                                                            _=> Color.Default })">
-                                    <MudText Typo="Typo.button">@step.Event.Str()</MudText>
-                                    <MudText Typo="Typo.body2" Class="mud-text-secondary">@step.Date.ToString("d")</MudText>
-                                </MudTimelineItem>
-                            }
-                        </MudTimeline>
-                    </MudItem>
-                </MudContainer>
-            </MudPaper>
-        </MudItem>
-    </MudGrid>
+    @if (Figure != null)
+    {
+        <MudGrid Style="width: 100% !important;" Spacing="0"> 
+            <MudItem xs="12" sm="5" Class="pa-4 rounded" Style="@($"background-color: {Theme.Palette.BackgroundGrey}")">
+                <FigureDetailGallery Figure="Figure"/>
+            </MudItem>
+            <MudItem xs="12" sm="7">
+                <FigureDetailCheckout Figure="Figure"/>
+                <FigureDetailDescription Figure="Figure"/>
+                <FigureDetailListing Figure="Figure"/>
+            </MudItem>
+        </MudGrid>
+    }
+    else
+    {
+        <MudText>Not Found</MudText>
+    }
 }
 else
 {
-    <MudText>Not Found</MudText>
+    <MudContainer Class="d-flex justify-center align-center" Style="height: 100%">
+        <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true" />
+    </MudContainer>
 }
 
-
 @code {
-    private int _activeGalleryTabIndex;
+ 
 
     [CascadingParameter]
     protected ThemeWrapper Theme { get; set; }
@@ -269,80 +53,21 @@ else
     [Parameter]
     public string Name { get; set; }
 
-    private string GmeWalletIcon = "<svg width=\"24\" height=\"24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M40 0H8a8 8 0 0 0-8 8v32a8 8 0 0 0 8 8h32a8 8 0 0 0 8-8V8a8 8 0 0 0-8-8Z\" fill=\"#000\"/><path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M13.78 18.202v15.083c0 1.102.837 1.934 1.924 1.934h17.619c1.087 0 1.923-.832 1.923-1.934v-12.65h2.78v12.65c0 2.629-2.072 4.715-4.703 4.715h-17.62C13.074 38 11 35.913 11 33.285V18.202h2.78Z\" fill=\"#fff\"/><path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M11 14.715C11 12.086 13.073 10 15.704 10h18.201v5.514h.307c2.146 0 3.815 1.681 3.815 3.823v1.865c0 2.142-1.669 3.823-3.815 3.823H15.704C13.073 25.025 11 22.94 11 20.31v-5.595Zm20.125.8V12.78H15.704c-1.087 0-1.924.833-1.924 1.935v5.595c0 1.102.837 1.935 1.924 1.935h7.42v-6.73h8Zm-5.221 6.73h8.308c.602 0 1.034-.428 1.034-1.043v-1.865c0-.615-.432-1.042-1.034-1.042h-8.308v3.95Z\" fill=\"#fff\"/><path fill=\"url(#a)\" d=\"M22.697 18.541h3.707v3.707h-3.707z\"/><path fill=\"url(#b)\" d=\"M30.171 12.276h4.041v3.244h-4.041z\"/><defs><linearGradient id=\"a\" x1=\"24.55\" y1=\"24.72\" x2=\"24.55\" y2=\"19.777\" gradientUnits=\"userSpaceOnUse\"><stop/><stop offset=\"1\" stop-opacity=\"0\"/></linearGradient><linearGradient id=\"b\" x1=\"32.191\" y1=\"17.682\" x2=\"32.191\" y2=\"13.357\" gradientUnits=\"userSpaceOnUse\"><stop/><stop offset=\"1\" stop-opacity=\"0\"/></linearGradient></defs></svg>";
-    private string CgTraderIcon = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"48\" height=\"48\" viewBox=\"0 0 1280 1024\" role=\"img\"><path d=\"M134.45 512.852c0 96.762 48.283 160.91 114.394 160.91 51.663 0 99.698-32.596 118.225-46.843a7.576 7.576 0 0111.843 3.781c3.91 11.33 9.636 30.062 11.068 46.201 1.5 16.917-1.38 34.902-3.42 44.842a31.364 31.364 0 01-8.042 15.423c-14.157 14.77-54.943 45.7-148.244 45.7C4.457 782.866 0 553.336 0 512.852s4.457-270.015 230.274-270.015c93.301 0 134.087 30.93 148.245 45.7a31.364 31.364 0 018.042 15.423c2.04 9.94 4.92 27.925 3.419 44.842-1.432 16.14-7.158 34.872-11.068 46.201a7.576 7.576 0 01-11.843 3.781c-18.527-14.247-66.562-46.842-118.225-46.842-66.11 0-114.394 64.147-114.394 160.91zM1264.153 761.82s-25.008 16.59-84.434 16.59-155.249-16.343-155.249-134.45v-279.3H866.731a152.448 152.448 0 019.019 51.672c0 95.819-89.513 173.495-199.932 173.495a225.165 225.165 0 01-82.491-15.412c-8.849 7.403-17.89 19.166-17.89 36.365 0 20.995 20.017 35.442 35.094 43.348 38.026-.283 105.32-.627 130.802.23 35.265 1.187 179.762 10.895 179.762 136.68S803.93 965.351 675.818 965.351 442.72 933.658 442.72 836.596c0-59.897 42.239-96.779 74.588-116.246-22.092-12.067-53.79-38.483-53.79-90.752 0-49.178 34.35-81.929 60.937-99.916-30.263-30.404-48.569-70.02-48.569-113.35 0-95.818 89.513-173.495 199.932-173.495a226.398 226.398 0 0172.858 11.885h275.794V140.328c0-21.129 127.764-21.129 127.764 0v114.394h111.919c21.13 0 21.13 109.937 0 109.937h-111.919v255.53c0 43.083 34.914 51.254 58.684 51.254s53.235-11.142 53.235-11.142c21.13 0 21.13 101.519 0 101.519zm-695.154 58.93c0 28.227 35.655 59.425 106.82 59.425 71.163 0 115.282-29.712 115.282-75.767s-60.168-56.454-60.168-56.454h-118.85c-28.228 17.084-43.084 44.569-43.084 72.796zm193.244-403.413a86.425 86.425 0 10-86.425 86.425 86.425 86.425 0 0086.425-86.425z\"/></svg>";
+    public bool IsFigureDataReady { get; set; }
 
-    public List<FigureMedia> GalleryItems { get; set; } = new();
     public Figure? Figure { get; set; }
-
-    private int ActiveGalleryTabIndex
-    {
-        get => _activeGalleryTabIndex;
-        set
-        {
-            _activeGalleryTabIndex = value;
-            OnActiveGalleryTabIndexChange(value);
-        }
-    }
-
-    public int CarouselSelectedIndex { get; set; }
-    public FigureMediaKind GalleryKind { get; set; }
-    public List<FigureMediaKind> AvailableGalleryKinds { get; set; }
-
-    private readonly List<BreadcrumbItem> _breadcrumbs = new()
-    {
-        new BreadcrumbItem("Home", "/", false, "home"),
-        new BreadcrumbItem("Figures", "/Figures")
-    };
-
-    private void OnActiveGalleryTabIndexChange(int index)
-    {
-        if (AvailableGalleryKinds.Count > 0)
-        {
-            GalleryKind = AvailableGalleryKinds[index];
-            RefreshGallery();
-        }
-    }
 
     protected override async Task OnParametersSetAsync()
     {
-        await base.OnParametersSetAsync();
+        await FigureProvider.DataReady.Task;
 
-        if (_breadcrumbs.Count == 3)
-            _breadcrumbs.RemoveAt(2);
-        _breadcrumbs.Add(new BreadcrumbItem(Name, $"/Figures/{Name}"));
+        IsFigureDataReady = true;
+
         Figure = FigureProvider.Figures.FirstOrDefault(figure => figure.Name.Equals(Name));
 
         if (Figure == null)
             return;
 
-        AvailableGalleryKinds = Enum.GetValues<FigureMediaKind>().Reverse().Where(kind => Figure.Media.Any(media => media.MediaKind == kind)).ToList();
-        GalleryKind = Figure.InitialGalleryKindDisplay ?? Figure.Media.MaxBy(media => media.MediaKind)!.MediaKind;
-        RefreshGallery();
-        StateHasChanged();
-        UpdateCanCheckOwnership();
-
-        await Task.Delay(200);
-        ActiveGalleryTabIndex = AvailableGalleryKinds.IndexOf(GalleryKind);
-    }
-
-    private void RefreshGallery()
-    {
-        if(Figure == null)
-            return;
-
-        var kind = GalleryKind;
-        GalleryItems = Figure.Media.Where(media => media.MediaKind == kind).ToList();
-        CarouselSelectedIndex = 0;
-    }
-
-    private void OpenGallery(FigureMedia photo)
-    {
-        GalleryItems.OpenGallery(JS, GalleryItems.IndexOf(photo));
-    }   
-    
-    private void OpenGallery(int index)
-    {
-        GalleryItems.OpenGallery(JS, index);
+        await base.OnParametersSetAsync();
     }
 }

@@ -1,0 +1,52 @@
+﻿@using MudBlazor
+<MudPaper Elevation="3" Class="pa-8 ma-4">
+    <MudStack Spacing="0">
+        <MudItem xs="12" Class="border-l-2 pl-4 mud-border-primary">
+            <MudText Typo="Typo.h3" Align="Align.Left">Welcome!</MudText>
+        </MudItem>   
+        <MudText Typo="Typo.body1" Class="mt-4">
+            Welcome to my figure repository page. I'm hosting here figures I've sculpted in the past and published online.
+            It serves as:
+        </MudText>
+        <MudStack Class="mt-1" Row="true" AlignItems="AlignItems.Center">
+            <MudIcon Icon="@Icons.Filled.ChevronRight" Color="Color.Primary"/>
+            <MudText Typo="Typo.body2" Align="Align.Center"><strong>Portfolio</strong></MudText>
+        </MudStack>
+        <MudStack Class="mt-1" Row="true" AlignItems="AlignItems.Center">
+            <MudIcon Icon="@Icons.Filled.ChevronRight" Color="Color.Primary"/>
+            <MudText Typo="Typo.body2" Align="Align.Center"><strong>Store</strong></MudText>
+        </MudStack>
+
+        <MudText Class="mt-2" Typo="Typo.body1">
+            I'm purely an hobbyist, sculpting in Blender. Figures are Resin Printed (SLA) on Elegoo Saturn. Files provided are usually:
+        </MudText>
+
+        <MudStack Class="mt-1" Row="true" AlignItems="AlignItems.Center">
+            <MudIcon Icon="@Icons.Filled.ChevronRight" Color="Color.Primary"/>
+            <MudText Typo="Typo.body2" Align="Align.Center"><strong>Blender Scenes</strong></MudText>
+        </MudStack>
+        <MudStack Class="mt-1" Row="true" AlignItems="AlignItems.Center">
+            <MudIcon Icon="@Icons.Filled.ChevronRight" Color="Color.Primary"/>
+            <MudText Typo="Typo.body2" Align="Align.Center"><strong>Pre-Supported Lychee Slicer Scenes</strong></MudText>
+        </MudStack>
+        <MudStack Class="mt-1" Row="true" AlignItems="AlignItems.Center">
+            <MudIcon Icon="@Icons.Filled.ChevronRight" Color="Color.Primary"/>
+            <MudText Typo="Typo.body2" Align="Align.Center"><strong>STLs</strong></MudText>
+        </MudStack>
+
+        <MudText Class="mt-2" Typo="Typo.body1">
+            There are no physical options available. You can purchase the models via CGTrader listings or as NFTs on GameStop NFT marketplace.
+        </MudText>
+
+    </MudStack>
+
+    <MudSpacer/>
+
+    <MudContainer Class="d-flex justify-end align-self-end">
+        <MudButton Variant="Variant.Filled" Href="/Figures"Color="Color.Primary" Size="Size.Large">Browse Figurines</MudButton>
+    </MudContainer>
+</MudPaper>
+
+@code {
+
+}

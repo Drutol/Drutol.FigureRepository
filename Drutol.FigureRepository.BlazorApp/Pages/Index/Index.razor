@@ -1,0 +1,39 @@
+﻿@page "/"
+
+@using MudBlazor
+@using Drutol.FigureRepository.BlazorApp.Infrastructure
+@using Drutol.FigureRepository.BlazorApp.Interfaces
+@using Drutol.FigureRepository.BlazorApp.Util
+@using Drutol.FigureRepository.Shared.Models
+@using Drutol.FigureRepository.Shared.Models.Enums
+@using Drutol.FigureRepository.BlazorApp.Pages.Index.IndexComponents
+
+@inject IFigureProvider FigureProvider
+@inject IFigureIconProvider FigureIconProvider
+
+
+<MudGrid>
+    <MudItem Id="Gallery" xs="12" sm="6">
+        <IndexGallery/>
+    </MudItem>
+    <MudItem xs="12" sm="6" Class="d-flex flex-column">
+        <IndexHello/>
+    </MudItem>
+</MudGrid>
+
+
+<MudPaper Class="ma-8 pa-8" Elevation="3">
+    <MudItem Class="border-l-2 pl-4 mud-border-primary">
+        <MudText Typo="Typo.h4" Align="Align.Left">FAQ</MudText>
+    </MudItem>   
+    
+    <FaqList/>
+</MudPaper>
+
+
+
+@code {
+
+
+
+}
