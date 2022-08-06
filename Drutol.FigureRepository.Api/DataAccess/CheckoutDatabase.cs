@@ -22,13 +22,12 @@ public class CheckoutDatabase : ICheckoutDatabase
         _database = new LiteDatabase(config.Value.ConnectionString);
 
         _database.Mapper.Entity<OrderEntity>()
-            .Id(entity => entity.Guid)
-            .DbRef(entity => entity.Events, nameof(OrderEvent));
+            .Id(entity => entity.Guid);
 
-        var collection = _database.GetCollection<OrderEntity>();
-        collection.EnsureIndex(entity => entity.Guid);
-        collection.EnsureIndex(entity => entity.CreatedAt);
-        collection.EnsureIndex(entity => entity.CheckoutId);
+        var orders = _database.GetCollection<OrderEntity>();
+        orders.EnsureIndex(entity => entity.Guid);
+        orders.EnsureIndex(entity => entity.CreatedAt);
+        orders.EnsureIndex(entity => entity.CheckoutId);
     }
 
     public async ValueTask<bool> CreateOrder(OrderEntity order)
@@ -40,7 +39,7 @@ public class CheckoutDatabase : ICheckoutDatabase
             Guard.Against.Default(order.CreatedAt);
             Guard.Against.NullOrWhiteSpace(order.WalletAddress);
             Guard.Against.NullOrWhiteSpace(order.CheckoutId);
-            Guard.Against.AgainstExpression(status => status != OrderStatus.Created, order.Status, $"Order must be in {OrderStatus.Created} status.");
+            Guard.Against.AgainstExpression(status => status == OrderStatus.Created, order.Status, $"Order must be in {OrderStatus.Created} status.");
 
             var result = _database.GetCollection<OrderEntity>().Insert(order);
             return true;

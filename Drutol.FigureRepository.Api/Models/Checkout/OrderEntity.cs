@@ -15,7 +15,7 @@ public class OrderEntity
 
     public string CheckoutId { get; set; }
     public OrderStatus Status { get; set; }
-    public List<OrderEvent> Events { get; set; }
+    public List<OrderEventEntity> Events { get; set; }
     public string PayPalObject { get; set; }
     public string TransactionHash { get; set; }
 
@@ -29,7 +29,7 @@ public class OrderEntity
     }
 }
 
-public class OrderEvent
+public class OrderEventEntity
 {
     public OrderStatus StatusChange { get; init; }
     public DateTime DateTime { get; init; }

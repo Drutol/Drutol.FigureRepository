@@ -46,36 +46,48 @@
         }
         else
         {
-            <MudMenu Size="Size.Large" AnchorOrigin="Origin.BottomCenter" PopoverClass="BuyMenuPopover pr-2 pl-2">
+            <MudMenu @ref="PurchaseMenu" Size="Size.Large" AnchorOrigin="Origin.BottomCenter" PopoverClass="BuyMenuPopover pr-2 pl-2" >
                 <ActivatorContent>
-                    <MudButton Class="ml-2" StartIcon="@Icons.Filled.AddShoppingCart" Color="Color.Info" Size="Size.Large"  OnClick="OnBuyMenuOpened">
+                    <MudButton Class="ml-2" StartIcon="@Icons.Filled.AddShoppingCart" Color="Color.Info" Size="Size.Large" OnClick="OnBuyMenuOpened">
                         Purchase
                     </MudButton>
                 </ActivatorContent>
                 <ChildContent>
-                    <MudStack>
-                        <MudButton Variant="Variant.Filled" Style="background-color: black; color: white">
-                            <MudImage Src="svg/wallet/Gme.svg"></MudImage>
-                            <span style="text-align: center; flex-grow: 1">
-                                GameStop Marketplace
-                            </span>
-                                        
-                        </MudButton>
-                        <MudButton Variant="Variant.Filled" Style="background-color: #41a48f; color: white">
-                            <MudImage Src="svg/vendor/Cgtrader.svg"></MudImage>
-                            <span style="text-align: center; flex-grow: 1">
-                                CgTrader
-                            </span>
-                                        
-                        </MudButton>
-                        @if (!PaypalOrderReady)
-                        {
-                            <MudProgressCircular Style="place-self: center" Color="Color.Primary" Indeterminate="true" />
-                            <MudText Align="Align.Center">PayPal Loading...</MudText>
-                        }
-                        <div id="paypal-buttons"></div>
-                    </MudStack>
-                                
+                    @if (CanPurchase)
+                    {
+                        <MudStack>
+                            <MudButton Variant="Variant.Filled" Style="background-color: black; color: white">
+                                <MudImage Src="svg/wallet/Gme.svg"></MudImage>
+                                <span style="text-align: center; flex-grow: 1">
+                                    GameStop Marketplace
+                                </span>
+
+                            </MudButton>
+                            <MudButton Variant="Variant.Filled" Style="background-color: #41a48f; color: white">
+                                <MudImage Src="svg/vendor/Cgtrader.svg"></MudImage>
+                                <span style="text-align: center; flex-grow: 1">
+                                    CgTrader
+                                </span>
+
+                            </MudButton>
+                            @if (!PaypalOrderReady)
+                            {
+                                <MudProgressCircular Style="place-self: center" Color="Color.Primary" Indeterminate="true"/>
+                                <MudText Align="Align.Center">PayPal Loading...</MudText>
+                            }
+                            <div id="paypal-buttons"></div>
+                        </MudStack>
+                    }
+                    else
+                    {
+                        <MudAlert Severity="Severity.Info" >
+                            Please connect your wallet first in order to connect.
+                            <br/>
+                            You can do it by clicking the button in the top right corner of the screen.
+                        </MudAlert>
+                    }
+
+
                 </ChildContent>
             </MudMenu>
         }
@@ -94,6 +106,9 @@
     public bool IsFigureOwned { get; set; }
     public bool IsLoading { get; set; }
     public bool FailedToDetermineOwnership { get; set; }
+    public bool CanPurchase { get; set; }
+
+    public MudMenu PurchaseMenu { get; set; }
 
     #region PayPal
 
@@ -101,11 +116,27 @@
     public async Task SubmitPaypalOrder(string orderId)
     {
         var result = await HttpClient.Client.PostAsJsonAsync("api/checkout/transaction", new CheckoutTransactionRequest(orderId));
-        Console.WriteLine(result.Content.ReadFromJsonAsync<CheckoutTransactionResponse>());
+        var response = await result.Content.ReadFromJsonAsync<CheckoutTransactionResponse>();
+
+        if (response.Status is CheckoutTransactionResponse.StatusCode.Ok or CheckoutTransactionResponse.StatusCode.DeliveryPending)
+        {
+            await DownloadTokenManager.SetDownloadTokenForFigure(Figure, response.TokenResponse);
+            IsFigureOwned = true;
+            StateHasChanged();
+        }
+    }   
+    
+    [JSInvokable]
+    public async Task PaypalButtonClicked()
+    {
+        PurchaseMenu.CloseMenu();
     }
 
     private async void OnBuyMenuOpened(MouseEventArgs obj)
     {
+        if(CanPurchase)
+            return;
+
         PaypalOrderReady = false;
         StateHasChanged();
         var reference = DotNetObjectReference.Create(this);
@@ -114,9 +145,11 @@
             new CheckoutOrderRequest(Figure.Guid, WalletProvider.SelectedAccountAddress));
         var result = await response.Content.ReadFromJsonAsync<CheckoutOrderResponse>();
 
+        await JS.InvokeVoidAsync("openPayPal", reference, result.OrderId);
+
+        await Task.Delay(500);
         PaypalOrderReady = true;
         StateHasChanged();
-        await JS.InvokeVoidAsync("openPayPal", reference, result.OrderId);
     }
 
     #endregion
@@ -149,8 +182,11 @@
             if (string.IsNullOrEmpty(WalletProvider.SelectedAccountAddress))
             {
                 IsFigureOwned = false;
+                CanPurchase = false;
                 return;
             }
+
+            CanPurchase = true;
 
             try
             {
@@ -216,6 +252,7 @@
         finally
         {
             IsLoading = false;
+            StateHasChanged();
         }
     }
 

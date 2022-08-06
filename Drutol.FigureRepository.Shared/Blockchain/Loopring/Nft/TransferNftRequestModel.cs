@@ -35,7 +35,10 @@ public class TransferNftRequestModel
     public string EcdsaSignature { get; set; }
 
     [JsonPropertyName("memo")]
-    public string Memo { get; set; }
+    public string Memo { get; set; }  
+    
+    [JsonPropertyName("validUntil")]
+    public int ValidUntil { get; set; }
 
     public class MaxFee
     {

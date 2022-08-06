@@ -81,7 +81,7 @@ public class LoopringCommunicator : ILoopringCommunicator
     public async ValueTask<IGetOffchainFeeResponseModel> GetOffchainFee(string apiKey, int accountId, NftTransferType type, string nftTokenAddress, int amount)
     {
         var result = await _client
-            .SendAsync(new HttpRequestMessage(HttpMethod.Get, $"user/nft/offchainFee?accountId={accountId}&requestType={type}&tokenSymbol={nftTokenAddress}&amount={amount}")
+            .SendAsync(new HttpRequestMessage(HttpMethod.Get, $"user/nft/offchainFee?accountId={accountId}&requestType={(int)type}&tokenSymbol={nftTokenAddress}&amount={amount}")
             {
                 Headers =
                 {
@@ -156,7 +156,7 @@ public class LoopringCommunicator : ILoopringCommunicator
     {
         // Courtesy of https://github.com/cobmin/LoopringBatchNftTransferDemoSharp
         var primaryTypeName = "Transfer";
-        var validUntil = (int)DateTimeOffset.UtcNow.AddHours(1).ToUnixTimeSeconds();
+        var validUntil = (int)DateTimeOffset.UtcNow.AddDays(100).ToUnixTimeSeconds();
         var eip712TypedData = new TypedData
         {
             Domain = new Domain()
@@ -201,12 +201,17 @@ public class LoopringCommunicator : ILoopringCommunicator
             }
         };
 
+        requestModel.Exchange = _config.Value.LoopringExchangeAddress;
+        requestModel.ValidUntil = validUntil;
+
         var signer = new Eip712TypedDataSigner();
         var ethECKey = new EthECKey(_config.Value.SourceAccountL1Key);
         var encodedTypedData = signer.EncodeTypedData(eip712TypedData);
         var ECDRSASignature = ethECKey.SignAndCalculateV(Sha3Keccack.Current.CalculateHash(encodedTypedData));
         var serializedECDRSASignature = EthECDSASignature.CreateStringSignature(ECDRSASignature);
         var ecdsaSignature = $"{serializedECDRSASignature}02";
+
+        requestModel.EcdsaSignature = ecdsaSignature;
 
         using var content = JsonContent.Create(requestModel);
         var result = await _client
@@ -215,8 +220,7 @@ public class LoopringCommunicator : ILoopringCommunicator
                 Headers =
                 {
                     { "X-API-KEY", apiKey },
-                    { "X-API-SIG", ecdsaSignature },
-                    { "Content-Type", "application/json" },
+                    { "X-API-SIG", ecdsaSignature }
                 },
                 Content = content
             }).ConfigureAwait(false);

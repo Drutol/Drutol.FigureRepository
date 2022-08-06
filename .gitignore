@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 Drutol.FigureRepository.Api/appsettings.json
+*.db

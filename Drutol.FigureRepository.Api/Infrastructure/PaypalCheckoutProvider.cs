@@ -77,7 +77,7 @@ public class PaypalCheckoutProvider : ICheckoutProvider
         request.RequestBody(order);
         var response = await _payPal.Execute(request);
 
-        if (response.StatusCode == HttpStatusCode.OK)
+        if (response.StatusCode == HttpStatusCode.Created)
         {
             var orderResult = response.Result<Order>();
             var orderEntity = new OrderEntity
@@ -86,7 +86,7 @@ public class PaypalCheckoutProvider : ICheckoutProvider
                 WalletAddress = orderRequest.WalletAddress,
                 CheckoutId = orderResult.Id,
                 CreatedAt = DateTime.UtcNow,
-                Events = new List<OrderEvent>
+                Events = new List<OrderEventEntity>
                 {
                     new()
                     {
@@ -131,7 +131,7 @@ public class PaypalCheckoutProvider : ICheckoutProvider
             request.RequestBody(new OrderActionRequest());
             var response = await _payPal.Execute(request);
 
-            if (response.StatusCode == HttpStatusCode.OK)
+            if (response.StatusCode == HttpStatusCode.Created)
             {
                 var order = response.Result<Order>();
                 if (order.Status == "COMPLETED")
@@ -155,7 +155,7 @@ public class PaypalCheckoutProvider : ICheckoutProvider
                     if (transferResult.Success)
                     {
                         orderEntity.Status = OrderStatus.Delivered;
-                        orderEntity.Events.Add(new OrderEvent
+                        orderEntity.Events.Add(new OrderEventEntity
                         {
                             DateTime = DateTime.UtcNow,
                             StatusChange = OrderStatus.Delivered
@@ -171,7 +171,7 @@ public class PaypalCheckoutProvider : ICheckoutProvider
                     else
                     {
                         orderEntity.Status = OrderStatus.DeliveryPending;
-                        orderEntity.Events.Add(new OrderEvent
+                        orderEntity.Events.Add(new OrderEventEntity
                         {
                             DateTime = DateTime.UtcNow,
                             StatusChange = OrderStatus.DeliveryPending
@@ -185,7 +185,7 @@ public class PaypalCheckoutProvider : ICheckoutProvider
                 {
                     var payload = JsonSerializer.Serialize(order);
                     orderEntity.Status = OrderStatus.PayPalError;
-                    orderEntity.Events.Add(new OrderEvent
+                    orderEntity.Events.Add(new OrderEventEntity
                     {
                         DateTime = DateTime.UtcNow,
                         StatusChange = OrderStatus.PayPalError,
@@ -198,7 +198,7 @@ public class PaypalCheckoutProvider : ICheckoutProvider
             else
             {
                 orderEntity.Status = OrderStatus.PayPalError;
-                orderEntity.Events.Add(new OrderEvent
+                orderEntity.Events.Add(new OrderEventEntity
                 {
                     DateTime = DateTime.UtcNow,
                     StatusChange = OrderStatus.PayPalError,
@@ -211,7 +211,7 @@ public class PaypalCheckoutProvider : ICheckoutProvider
         catch (Exception e)
         {
             orderEntity.Status = OrderStatus.PayPalError;
-            orderEntity.Events.Add(new OrderEvent
+            orderEntity.Events.Add(new OrderEventEntity
             {
                 DateTime = DateTime.UtcNow,
                 StatusChange = OrderStatus.PayPalError,
