@@ -134,7 +134,7 @@
 
     private async void OnBuyMenuOpened(MouseEventArgs obj)
     {
-        if(CanPurchase)
+        if(!CanPurchase)
             return;
 
         PaypalOrderReady = false;
@@ -233,6 +233,10 @@
                     {
                         await DownloadTokenManager.SetDownloadTokenForFigure(Figure, auth.TokenResponse);
                         IsFigureOwned = true;
+                    }
+                    else
+                    {
+                        IsFigureOwned = false;
                     }
 
                     FailedToDetermineOwnership = false;

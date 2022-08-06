@@ -96,8 +96,8 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
 
         var apiKeyResponse = await _loopringCommunicator.GetApiKey(
             _configuration.Value.SourceAccountL2Key,
-            authSession.Request.WalletAddress,
-            authSession.LoopringAccount.AccountId);
+            _configuration.Value.SourceAccountAddress,
+            _configuration.Value.SourceAccountId);
 
         if (apiKeyResponse is IApiKeyResponseModel.Success apiKey)
         {
@@ -106,10 +106,8 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
             {
                 ownedAmount = await _loopringCommunicator.GetBalances(
                         apiKey.ApiKey,
-                        finishAuthenticationRequest.SignedDataHash,
-                        authSession.Request.WalletAddress,
                         authSession.LoopringAccount.AccountId,
-                        authSession.Figure.NftDetails.TokenId) switch
+                        authSession.Figure.NftDetails.NftData) switch
                     {
                         INftBalancesResponseModel.Success success => int.Parse(success.NftData.FirstOrDefault()?.Total ?? "0"),
                         _ => 0

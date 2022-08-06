@@ -51,12 +51,12 @@ public class LoopringCommunicator : ILoopringCommunicator
         }
     }
 
-    public async ValueTask<INftBalancesResponseModel> GetBalances(string apiKey, string signedDataHash, string walletAddress, int accountId, int tokenId)
+    public async ValueTask<INftBalancesResponseModel> GetBalances(string apiKey, int accountId, string nftData)
     {
         try
         {
             var result = await _client
-                .SendAsync(new HttpRequestMessage(HttpMethod.Get, $"user/nft/balances?accountId={accountId}&tokenIds={tokenId}")
+                .SendAsync(new HttpRequestMessage(HttpMethod.Get, $"user/nft/balances?accountId={accountId}&nftDatas={nftData}")
                 {
                     Headers =
                     {
