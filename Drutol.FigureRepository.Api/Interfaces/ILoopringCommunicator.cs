@@ -7,7 +7,7 @@ namespace Drutol.FigureRepository.Api.Interfaces;
 public interface ILoopringCommunicator
 {
     ValueTask<IAccountResponseModel> GetAccount(string walletAddress);
-    ValueTask<INftBalancesResponseModel> GetBalances(string signedDataHash, string walletAddress, int accountId, int tokenId);
+    ValueTask<INftBalancesResponseModel> GetBalances(string apiKey, string signedDataHash, string walletAddress, int accountId, int tokenId);
 
     ValueTask<IGetOffchainFeeResponseModel> GetOffchainFee(string apiKey, int accountId, NftTransferType type, string nftTokenAddress, int amount);
     ValueTask<IGetStorageIdResponseModel> GetStorageId(string apiKey, int accountId);

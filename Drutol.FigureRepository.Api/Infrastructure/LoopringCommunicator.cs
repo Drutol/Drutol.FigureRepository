@@ -51,35 +51,25 @@ public class LoopringCommunicator : ILoopringCommunicator
         }
     }
 
-    public async ValueTask<INftBalancesResponseModel> GetBalances(string signedDataHash, string walletAddress, int accountId, int tokenId)
+    public async ValueTask<INftBalancesResponseModel> GetBalances(string apiKey, string signedDataHash, string walletAddress, int accountId, int tokenId)
     {
         try
         {
-            return await GetApiKey(signedDataHash, walletAddress, accountId) switch
-            {
-                IApiKeyResponseModel.Success success => await GetBalances(success.ApiKey).ConfigureAwait(false),
-                IApiKeyResponseModel.Fail fail => new INftBalancesResponseModel.Fail(),
-                _ => new INftBalancesResponseModel.Fail()
-            };
-
-            async ValueTask<INftBalancesResponseModel> GetBalances(string apiKey)
-            {
-                var result = await _client
-                    .SendAsync(new HttpRequestMessage(HttpMethod.Get, $"user/nft/balances?accountId={accountId}&tokenIds={tokenId}")
-                    {
-                        Headers =
-                        {
-                            { "X-API-KEY", apiKey }
-                        }
-                    }).ConfigureAwait(false);
-
-
-                return result.IsSuccessStatusCode switch
+            var result = await _client
+                .SendAsync(new HttpRequestMessage(HttpMethod.Get, $"user/nft/balances?accountId={accountId}&tokenIds={tokenId}")
                 {
-                    true => (await result.Content.ReadFromJsonAsync<INftBalancesResponseModel.Success>())!,
-                    false => (await result.Content.ReadFromJsonAsync<INftBalancesResponseModel.Fail>())!,
-                };
-            }
+                    Headers =
+                    {
+                        { "X-API-KEY", apiKey }
+                    }
+                }).ConfigureAwait(false);
+
+
+            return result.IsSuccessStatusCode switch
+            {
+                true => (await result.Content.ReadFromJsonAsync<INftBalancesResponseModel.Success>())!,
+                false => (await result.Content.ReadFromJsonAsync<INftBalancesResponseModel.Fail>())!,
+            };
         }
         catch (Exception e)
         {

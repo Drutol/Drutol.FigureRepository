@@ -11,16 +11,20 @@
 @inject IFigureProvider FigureProvider
 @inject IFigureIconProvider FigureIconProvider
 
+<style>
+    #Gallery {
+        align-self: center;
+    }
+</style>
 
-<MudGrid>
-    <MudItem Id="Gallery" xs="12" sm="6">
+<MudGrid Spacing="0">
+    <MudItem xs="12" sm="6" Id="Gallery">
         <IndexGallery/>
     </MudItem>
     <MudItem xs="12" sm="6" Class="d-flex flex-column">
         <IndexHello/>
     </MudItem>
 </MudGrid>
-
 
 <MudPaper Class="ma-8 pa-8" Elevation="3">
     <MudItem Class="border-l-2 pl-4 mud-border-primary">
@@ -30,10 +34,6 @@
     <FaqList/>
 </MudPaper>
 
-
-
 @code {
-
-
 
 }

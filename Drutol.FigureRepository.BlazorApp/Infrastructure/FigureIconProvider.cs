@@ -1,5 +1,5 @@
 ﻿using Drutol.FigureRepository.BlazorApp.Interfaces;
-using Drutol.FigureRepository.Shared.Models;
+using Drutol.FigureRepository.Shared.Models.Figure;
 
 namespace Drutol.FigureRepository.BlazorApp.Infrastructure;
 

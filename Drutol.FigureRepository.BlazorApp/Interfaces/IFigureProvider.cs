@@ -1,4 +1,4 @@
-﻿using Drutol.FigureRepository.Shared.Models;
+﻿using Drutol.FigureRepository.Shared.Models.Figure;
 
 namespace Drutol.FigureRepository.BlazorApp.Interfaces;
 

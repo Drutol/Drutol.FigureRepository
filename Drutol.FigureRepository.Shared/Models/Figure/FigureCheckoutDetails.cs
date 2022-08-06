@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Drutol.FigureRepository.Shared.Models;
+namespace Drutol.FigureRepository.Shared.Models.Figure;
 
 public record FigureCheckoutDetails
 {

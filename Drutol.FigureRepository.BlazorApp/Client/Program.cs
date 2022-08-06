@@ -4,6 +4,7 @@ using Blazored.LocalStorage;
 using Blazored.SessionStorage;
 using Drutol.FigureRepository.BlazorApp.Infrastructure;
 using Drutol.FigureRepository.BlazorApp.Interfaces;
+using Drutol.FigureRepository.BlazorApp.Interfaces.Http;
 using MetaMask.Blazor;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -22,6 +23,7 @@ public class Program
 
         builder.Services.AddScoped<IApiHttpClient>(_ => new HttpClientWrapper(new HttpClient { BaseAddress = new Uri("http://localhost:5000") }));
         builder.Services.AddScoped<IHostHttpClient>(_ => new HttpClientWrapper(new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) }));
+        builder.Services.AddScoped<ILoopringHttpClient>(_ => new HttpClientWrapper(new HttpClient { BaseAddress = new Uri("https://uat2.loopring.io/api/v3/") }));
         builder.Services.AddMudServices(configuration =>
         {
             configuration.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomLeft;
@@ -33,6 +35,7 @@ public class Program
         builder.Services.AddScoped<IFigureProvider, FigureProvider>();
         builder.Services.AddScoped<IFigureIconProvider, FigureIconProvider>();
         builder.Services.AddScoped<IWalletProvider, WalletProvider>();
+        builder.Services.AddScoped<IFigureDownloadTokenManager, FigureDownloadTokenManager>();
 
         await builder.Build().RunAsync();
     }

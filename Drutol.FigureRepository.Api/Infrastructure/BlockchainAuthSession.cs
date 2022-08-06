@@ -6,7 +6,7 @@ using Drutol.FigureRepository.Api.Models.Configuration;
 using Drutol.FigureRepository.Api.Util;
 using Drutol.FigureRepository.Shared.Blockchain;
 using Drutol.FigureRepository.Shared.Blockchain.Loopring;
-using Drutol.FigureRepository.Shared.Models;
+using Drutol.FigureRepository.Shared.Models.Figure;
 using Microsoft.Extensions.Options;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.KeyStore.Crypto;

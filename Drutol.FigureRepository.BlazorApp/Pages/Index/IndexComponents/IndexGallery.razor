@@ -5,6 +5,7 @@
 @using Drutol.FigureRepository.BlazorApp.Util
 @using Drutol.FigureRepository.Shared.Models
 @using Drutol.FigureRepository.Shared.Models.Enums
+@using Drutol.FigureRepository.Shared.Models.Figure
 
 @inject IFigureProvider FigureProvider
 @inject IFigureIconProvider FigureIconProvider
@@ -13,10 +14,6 @@
 <style>
     .CarouselBullet {
         color: var(--mud-palette-primary-darken) !important;
-    }
-
-    #Gallery {
-        align-self: center;
     }
 </style>
 
@@ -36,7 +33,7 @@
                 var figure = FigureDictionary[photo];
                 <MudCarouselItem Transition="Transition.Slide" Style="@($"background-color: {Theme.Palette.BackgroundGrey}")" Class="pa-8 d-flex justify-center rounded">
                     <MudPaper Elevation="3" Class="rounded" Style="position: relative">
-                        <MudImage Src="@photo.Url" Class="rounded" ObjectFit="ObjectFit.Cover" Height="400" Style="@($"object-position: {photo.Gravity.ToCssValue()};min-width: 325px")" @onclick="OnImageClick"/>
+                        <MudImage Src="@photo.Url" Class="rounded cursor-pointer" ObjectFit="ObjectFit.Cover" Height="400" Style="@($"object-position: {photo.Gravity.ToCssValue()};min-width: 325px")" @onclick="OnImageClick"/>
                         <MudStack Row="true" Class="rounded pa-2" Style="background: linear-gradient(0deg, rgba(0, 0, 0, .8) 20%, rgba(0, 0, 0, 0) 100%); position: absolute; bottom: 0; width: 100%; height: 20%;">
                             <MudIcon Icon="@FigureIconProvider.GetForFigure(figure)" Size="Size.Large" Style="color: white; font-size: 4rem;"/>
                             <MudStack Spacing="0" Style="align-self: center">

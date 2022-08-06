@@ -1,7 +1,7 @@
 ﻿using System;
 using Drutol.FigureRepository.Shared.Models.Enums;
 
-namespace Drutol.FigureRepository.Shared.Models;
+namespace Drutol.FigureRepository.Shared.Models.Figure;
 
 public record FigureTimelineEntry
 {

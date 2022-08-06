@@ -1,4 +1,4 @@
-﻿namespace Drutol.FigureRepository.Shared.Models;
+﻿namespace Drutol.FigureRepository.Shared.Models.Figure;
 
 public record FigurePrintDetails
 {

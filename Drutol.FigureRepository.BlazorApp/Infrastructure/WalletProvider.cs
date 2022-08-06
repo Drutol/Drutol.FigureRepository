@@ -1,4 +1,6 @@
 ﻿using System.Net.Http.Json;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using Drutol.FigureRepository.BlazorApp.Interfaces;
 using Drutol.FigureRepository.Shared.Blockchain;
@@ -18,10 +20,12 @@ public class WalletProvider : IWalletProvider
 
     private readonly MetaMaskService _metaMaskService;
     private readonly ISnackbar _snackbar;
+    private readonly Dictionary<int, string> _signCache = new();
     public bool EthereumAvailable { get; set; }
     public bool HasMetaMask { get; set; }
     public string SelectedAccountAddress { get; set; }
     public Chain? SelectedChain { get; set; }
+
 
     public WalletProvider(
         MetaMaskService metaMaskService,
@@ -107,16 +111,45 @@ public class WalletProvider : IWalletProvider
 
     public async Task<string> PersonalSign(string dataToSign)
     {
-        return ((JsonElement)await _metaMaskService.GenericRpc("personal_sign", new string[]
-        {
-            dataToSign,
-            SelectedAccountAddress
-        })).GetString();
+        var hash = GetDeterministicHashCode(dataToSign);
+        if (_signCache.TryGetValue(hash, out var signature))
+            return signature;
+
+        var result = ((JsonElement)await _metaMaskService.GenericRpc(
+                "personal_sign",
+                new string[]
+                {
+                    dataToSign,
+                    SelectedAccountAddress
+                }))
+            .GetString();
+
+        _signCache[hash] = result;
+        return result;
     }
 
     public async Task<string> SignTypedDataV4(string dataToSign)
     {
         return await _metaMaskService.SignTypedDataV4(dataToSign.Trim('\''));
+    }
+
+    private int GetDeterministicHashCode(string str)
+    {
+        unchecked
+        {
+            int hash1 = (5381 << 16) + 5381;
+            int hash2 = hash1;
+
+            for (int i = 0; i < str.Length; i += 2)
+            {
+                hash1 = ((hash1 << 5) + hash1) ^ str[i];
+                if (i == str.Length - 1)
+                    break;
+                hash2 = ((hash2 << 5) + hash2) ^ str[i + 1];
+            }
+
+            return hash1 + (hash2 * 1566083941);
+        }
     }
 
     #endregion

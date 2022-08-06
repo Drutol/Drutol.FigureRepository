@@ -1,5 +1,5 @@
 ﻿using Drutol.FigureRepository.Api.Interfaces;
-using Drutol.FigureRepository.Shared.Models;
+using Drutol.FigureRepository.Shared.Models.Figure;
 
 namespace Drutol.FigureRepository.Api.DataAccess.Seeding;
 

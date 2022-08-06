@@ -3,7 +3,8 @@ using System.Text;
 using Drutol.FigureRepository.Api.Interfaces;
 using Drutol.FigureRepository.Api.Models.Configuration;
 using Drutol.FigureRepository.Shared.Blockchain;
-using Drutol.FigureRepository.Shared.Models;
+using Drutol.FigureRepository.Shared.Models.Auth;
+using Drutol.FigureRepository.Shared.Models.Figure;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -18,13 +19,14 @@ public class DownloadTokenGenerator : IDownloadTokenGenerator
         _configuration = configuration;
     }
 
-    public string GenerateDownloadTokenForFigure(Figure figure)
+    public TokenResponse GenerateDownloadTokenForFigure(Figure figure)
     {
         var jwtHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_configuration.Value.JwtSigningKey);
+        var expiration = DateTime.UtcNow.AddHours(1);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Expires = DateTime.UtcNow.AddMinutes(10),
+            Expires = expiration,
             SigningCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(key),
                 SecurityAlgorithms.HmacSha256Signature),
@@ -35,6 +37,6 @@ public class DownloadTokenGenerator : IDownloadTokenGenerator
         };
 
         var jwt = jwtHandler.CreateToken(tokenDescriptor);
-        return jwtHandler.WriteToken(jwt);
+        return new(jwtHandler.WriteToken(jwt), expiration);
     }
 }

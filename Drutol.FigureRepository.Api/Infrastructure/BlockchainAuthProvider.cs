@@ -7,6 +7,7 @@ using System.Text.Json;
 using Drutol.FigureRepository.Api.Interfaces;
 using Drutol.FigureRepository.Api.Models.Configuration;
 using Drutol.FigureRepository.Shared.Blockchain;
+using Drutol.FigureRepository.Shared.Blockchain.Loopring;
 using Drutol.FigureRepository.Shared.Blockchain.Loopring.Nft;
 using Drutol.FigureRepository.Shared.Models;
 using LoopringSharp;
@@ -82,55 +83,77 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
 
     public async ValueTask<FinishAuthenticationResult> FinishAuthentication(FinishAuthenticationRequest finishAuthenticationRequest)
     {
-        if (!_sessions.TryGetValue(finishAuthenticationRequest.SessionGuid, out var activeSession))
+        if (!_sessions.TryGetValue(finishAuthenticationRequest.SessionGuid, out var authSession))
         {
-            return 
-                new FinishAuthenticationResult(FinishAuthenticationResult.StatusCode.SessionDoesNotExist);
+            return new(FinishAuthenticationResult.StatusCode.SessionDoesNotExist);
         }
 
-        int ownedAmount = 0;
-        if (activeSession.Request.Type == StartAuthenticationRequest.AuthenticationType.Loopring)
+        var key = EDDSAHelper.RipKeyAppart((finishAuthenticationRequest.SignedDataHash, authSession.Request.WalletAddress));
+        if (key.ethAddress != authSession.Request.WalletAddress)
         {
-            ownedAmount = await _loopringCommunicator.GetBalances(
-                    finishAuthenticationRequest.SignedDataHash,
-                    activeSession.Request.WalletAddress,
-                    activeSession.LoopringAccount.AccountId,
-                    activeSession.Figure.NftDetails.TokenId) switch
-                {
-                    INftBalancesResponseModel.Success success => int.Parse(success.NftData[0].Total),
-                    _ => 0
-                };
-        }
-        else if (activeSession.Request.Type == StartAuthenticationRequest.AuthenticationType.Mainnet)
-        {
-            //var walletAddress = Eip712TypedDataSigner.Current.RecoverFromSignatureV4(
-            //    activeSession.GetMessage(),
-            //    activeSession.GetTypedData(),
-            //    finishAuthenticationRequest.SignedDataHash);
-
-            //if (!walletAddress.Equals(activeSession.Request.WalletAddress, StringComparison.OrdinalIgnoreCase))
-            //    return new FinishAuthenticationResult(FinishAuthenticationResult.StatusCode.InvalidSignedData);
-
-            //var service = new ERC721ContractService(
-            //    new EthApiContractService(new RpcClient(new Uri(_configuration.Value.RpcUrl))),
-            //    activeSession.Request.TokenAddress);
-
-            //var amount = await service
-            //    .BalanceOfQueryAsync(walletAddress, BlockParameter.CreateLatest())
-            //    .ConfigureAwait(false);
+            return new(FinishAuthenticationResult.StatusCode.InvalidSignedData);
         }
 
-        if (ownedAmount > 0)
+        var apiKeyResponse = await _loopringCommunicator.GetApiKey(
+            _configuration.Value.SourceAccountL2Key,
+            authSession.Request.WalletAddress,
+            authSession.LoopringAccount.AccountId);
+
+        if (apiKeyResponse is IApiKeyResponseModel.Success apiKey)
         {
-            return new FinishAuthenticationResult(
-                FinishAuthenticationResult.StatusCode.Ok,
-                _downloadTokenGenerator.GenerateDownloadTokenForFigure(activeSession.Figure));
+            int ownedAmount = 0;
+            if (authSession.Request.Type == StartAuthenticationRequest.AuthenticationType.Loopring)
+            {
+                ownedAmount = await _loopringCommunicator.GetBalances(
+                        apiKey.ApiKey,
+                        finishAuthenticationRequest.SignedDataHash,
+                        authSession.Request.WalletAddress,
+                        authSession.LoopringAccount.AccountId,
+                        authSession.Figure.NftDetails.TokenId) switch
+                    {
+                        INftBalancesResponseModel.Success success => int.Parse(success.NftData.FirstOrDefault()?.Total ?? "0"),
+                        _ => 0
+                    };
+            }
+            else if (authSession.Request.Type == StartAuthenticationRequest.AuthenticationType.Mainnet)
+            {
+                //var walletAddress = Eip712TypedDataSigner.Current.RecoverFromSignatureV4(
+                //    activeSession.GetMessage(),
+                //    activeSession.GetTypedData(),
+                //    finishAuthenticationRequest.SignedDataHash);
+
+                //if (!walletAddress.Equals(activeSession.Request.WalletAddress, StringComparison.OrdinalIgnoreCase))
+                //    return new(FinishAuthenticationResult.StatusCode.InvalidSignedData);
+
+                //var service = new ERC721ContractService(
+                //    new EthApiContractService(new RpcClient(new Uri(_configuration.Value.RpcUrl))),
+                //    activeSession.Request.TokenAddress);
+
+                //var amount = await service
+                //    .BalanceOfQueryAsync(walletAddress, BlockParameter.CreateLatest())
+                //    .ConfigureAwait(false);
+            }
+
+            if (ownedAmount > 0)
+            {
+                return new(
+                    FinishAuthenticationResult.StatusCode.Ok,
+                    _downloadTokenGenerator.GenerateDownloadTokenForFigure(authSession.Figure));
+            }
+            else
+            {
+                return new(
+                    FinishAuthenticationResult.StatusCode.NotAnOwner);
+            }
         }
-        else
+
+        if(apiKeyResponse is IApiKeyResponseModel.Fail fail)
         {
-            return new FinishAuthenticationResult(
-                FinishAuthenticationResult.StatusCode.NotAnOwner);
+            _logger.LogError($"Failed to obtain loopring api key. {JsonSerializer.Serialize(fail)}");
+            return new(FinishAuthenticationResult.StatusCode.Error);
         }
+
+        return new (FinishAuthenticationResult.StatusCode.Error);
     }
 
     private async void AuthSessionsCleanLoop()

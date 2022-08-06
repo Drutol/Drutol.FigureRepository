@@ -1,6 +1,7 @@
 ﻿using Drutol.FigureRepository.Api.Interfaces;
 using Drutol.FigureRepository.Shared.Models;
 using Drutol.FigureRepository.Shared.Models.Enums;
+using Drutol.FigureRepository.Shared.Models.Figure;
 
 namespace Drutol.FigureRepository.Api.DataAccess.Seeding;
 
@@ -181,7 +182,7 @@ public class MadokaFigureSeed : IFigureSeed
         },
         NftDetails = new("0xb06146103f0b05e55c7b8ccf4dcd8df70b5a105c")
         {
-            TokenId = 32769
+            TokenId = 11111
         },
         DownloadResources = new List<FigureDownloadResource>
         {

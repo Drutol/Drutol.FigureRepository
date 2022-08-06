@@ -1,8 +1,9 @@
-﻿using Drutol.FigureRepository.Shared.Models;
+﻿using Drutol.FigureRepository.Shared.Models.Auth;
+using Drutol.FigureRepository.Shared.Models.Figure;
 
 namespace Drutol.FigureRepository.Api.Interfaces;
 
 public interface IDownloadTokenGenerator
 {
-    string GenerateDownloadTokenForFigure(Figure figure);
+    TokenResponse GenerateDownloadTokenForFigure(Figure figure);
 }

@@ -2,8 +2,9 @@
 using System.Text.Json;
 using Blazored.SessionStorage;
 using Drutol.FigureRepository.BlazorApp.Interfaces;
-using Drutol.FigureRepository.Shared.Models;
+using Drutol.FigureRepository.BlazorApp.Interfaces.Http;
 using Drutol.FigureRepository.Shared.Models.Enums;
+using Drutol.FigureRepository.Shared.Models.Figure;
 
 namespace Drutol.FigureRepository.BlazorApp.Infrastructure;
 
