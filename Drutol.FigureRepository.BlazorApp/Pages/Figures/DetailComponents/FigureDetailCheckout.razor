@@ -168,12 +168,14 @@
             IsFigureOwned = true;
             StateHasChanged();
         }
+
+        PurchaseMenu.CloseMenu();
     }   
     
     [JSInvokable]
     public async Task PaypalButtonClicked()
     {
-        PurchaseMenu.CloseMenu();
+
     }
 
     private async void OnBuyMenuOpened(MouseEventArgs obj)

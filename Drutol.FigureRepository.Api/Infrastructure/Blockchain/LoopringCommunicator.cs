@@ -96,10 +96,10 @@ public class LoopringCommunicator : ILoopringCommunicator
         };
     }
 
-    public async ValueTask<IGetStorageIdResponseModel> GetStorageId(string apiKey, int accountId)
+    public async ValueTask<IGetStorageIdResponseModel> GetStorageId(string apiKey, int accountId, int tokenId)
     {
         var result = await _client
-            .SendAsync(new HttpRequestMessage(HttpMethod.Get, $"storageId?accountId={accountId}&sellTokenId=0")
+            .SendAsync(new HttpRequestMessage(HttpMethod.Get, $"storageId?accountId={accountId}&sellTokenId={tokenId}")
             {
                 Headers =
                 {

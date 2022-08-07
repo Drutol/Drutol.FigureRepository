@@ -25,11 +25,15 @@ public class Program
         builder.Services.AddScoped<IApiHttpClient>(_ => new HttpClientWrapper(new HttpClient { BaseAddress = new Uri("http://localhost:5000") }));
         builder.Services.AddScoped<IHostHttpClient>(_ => new HttpClientWrapper(new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) }));
         builder.Services.AddScoped<ILoopringHttpClient>(_ => new HttpClientWrapper(new HttpClient { BaseAddress = new Uri("https://uat2.loopring.io/api/v3/") }));
+        
         builder.Services.AddMudServices(configuration =>
         {
             configuration.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomLeft;
         });
+
         builder.Services.AddMetaMaskBlazor();
+        builder.Services.AddScoped<GameStopService>();
+
         builder.Services.AddBlazoredSessionStorage();
         builder.Services.AddBlazoredLocalStorage();
 

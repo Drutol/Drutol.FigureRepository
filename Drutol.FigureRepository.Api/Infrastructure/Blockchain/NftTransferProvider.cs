@@ -50,7 +50,8 @@ public class NftTransferProvider : INftTransferProvider
 
                 var storageIdResponse = await _loopringCommunicator.GetStorageId(
                     apiKey.ApiKey,
-                    _config.Value.SourceAccountId);
+                    _config.Value.SourceAccountId,
+                    figure.NftDetails.TokenId);
 
                 if (feesResponse is IGetOffchainFeeResponseModel.Success fees &&
                     storageIdResponse is IGetStorageIdResponseModel.Success storageId)

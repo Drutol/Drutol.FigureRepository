@@ -37,7 +37,7 @@
         <div style="width: 10px"></div>
         <MudImage Src="@(DarkMode ? "svg/logo/LogoTextWhite.svg" : "svg/logo/LogoTextBlack.svg")" Height="40"/>
         <MudSpacer/>
-        @if (WalletProvider.CurrentWallet.Select(connector => connector.SelectedAccount).Collapse().HasValue)
+        @if (WalletProvider.CurrentWallet.HasValue && WalletProvider.CurrentWallet.Value.SelectedAccount.HasValue)
         {
             var account = WalletProvider.CurrentWallet.Value.SelectedAccount.Value;
             <MudStack Spacing="0" Class="ml-4 mr-6">
@@ -66,7 +66,7 @@
                         }
                         else
                         {
-                            <MudButton Class="WalletButton" Href="@metadata.DownloadUrl" Variant="Variant.Filled">
+                            <MudButton Class="WalletButton" Href="@metadata.DownloadUrl" Variant="Variant.Filled" target="_blank">
                                 <MudImage Src="@metadata.IconUrl" Width="30" Height="30" Class="mr-2"/>
                                 <MudText Typo="Typo.button">Download @connector.WalletType.ToString()</MudText>
                             </MudButton>

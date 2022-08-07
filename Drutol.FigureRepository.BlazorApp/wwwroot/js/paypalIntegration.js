@@ -4,8 +4,9 @@
         createOrder: (data, actions) => {
             return order;
         },
-        onClick: function () {
+        onClick: function (data, actions) {
             objReference.invokeMethodAsync('PaypalButtonClicked');
+            return true;
         },
         // Finalize the transaction after payer approval
         onApprove: (data, actions) => {

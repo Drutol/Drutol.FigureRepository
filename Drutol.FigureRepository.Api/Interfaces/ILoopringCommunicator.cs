@@ -10,7 +10,7 @@ public interface ILoopringCommunicator
     ValueTask<INftBalancesResponseModel> GetBalances(string apiKey, int accountId, string nftData);
 
     ValueTask<IGetOffchainFeeResponseModel> GetOffchainFee(string apiKey, int accountId, NftTransferType type, string nftTokenAddress, int amount);
-    ValueTask<IGetStorageIdResponseModel> GetStorageId(string apiKey, int accountId);
+    ValueTask<IGetStorageIdResponseModel> GetStorageId(string apiKey, int accountId, int tokenId);
 
     ValueTask<IApiKeyResponseModel> GetApiKey(string signedDataHash, string walletAddress, int accountId);
 
