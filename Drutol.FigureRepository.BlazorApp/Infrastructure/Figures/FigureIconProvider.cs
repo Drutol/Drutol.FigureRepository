@@ -1,7 +1,7 @@
-﻿using Drutol.FigureRepository.BlazorApp.Interfaces;
+﻿using Drutol.FigureRepository.BlazorApp.Interfaces.Figures;
 using Drutol.FigureRepository.Shared.Models.Figure;
 
-namespace Drutol.FigureRepository.BlazorApp.Infrastructure;
+namespace Drutol.FigureRepository.BlazorApp.Infrastructure.Figures;
 
 public class FigureIconProvider : IFigureIconProvider
 {

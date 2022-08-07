@@ -12,7 +12,6 @@
   <ItemGroup>
     <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
     <PackageReference Include="Blazored.SessionStorage" Version="2.2.0" />
-    <PackageReference Include="Functional.Maybe" Version="2.0.20" />
     <PackageReference Include="Humanizer.Core" Version="2.14.1" />
     <PackageReference Include="LoopringSharp" Version="0.3.4" />
     <PackageReference Include="MetaMask.Blazor" Version="1.6.1" />
@@ -128,6 +127,12 @@
     <Content Update="wwwroot\svg\wallet\MetaMask.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\Figure\" />
+    <Folder Include="Interfaces\Wallet\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

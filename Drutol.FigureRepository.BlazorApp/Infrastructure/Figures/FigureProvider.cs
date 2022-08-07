@@ -1,12 +1,10 @@
 ﻿using System.Net.Http.Json;
-using System.Text.Json;
 using Blazored.SessionStorage;
-using Drutol.FigureRepository.BlazorApp.Interfaces;
+using Drutol.FigureRepository.BlazorApp.Interfaces.Figures;
 using Drutol.FigureRepository.BlazorApp.Interfaces.Http;
-using Drutol.FigureRepository.Shared.Models.Enums;
 using Drutol.FigureRepository.Shared.Models.Figure;
 
-namespace Drutol.FigureRepository.BlazorApp.Infrastructure;
+namespace Drutol.FigureRepository.BlazorApp.Infrastructure.Figures;
 
 public class FigureProvider : IFigureProvider
 {
@@ -34,7 +32,7 @@ public class FigureProvider : IFigureProvider
 
     public async ValueTask Initialize()
     {
-        if(_initialized)
+        if (_initialized)
             return;
 
         _initialized = true;
@@ -58,7 +56,7 @@ public class FigureProvider : IFigureProvider
                 break;
             }
             catch (Exception e)
-            {   
+            {
                 _logger.LogError(e, "Failed to fetch figure data.");
             }
 

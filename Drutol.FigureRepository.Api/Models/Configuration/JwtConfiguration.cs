@@ -1,7 +1,6 @@
-﻿namespace Drutol.FigureRepository.Api.Models.Configuration
+﻿namespace Drutol.FigureRepository.Api.Models.Configuration;
+
+public class JwtConfiguration
 {
-    public class JwtConfiguration
-    {
-        public string JwtSigningKey { get; set; }
-    }
+    public string JwtSigningKey { get; set; }
 }

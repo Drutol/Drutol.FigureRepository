@@ -5,50 +5,49 @@ using Drutol.FigureRepository.Shared.Models.Figure;
 using Functional.Maybe;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Drutol.FigureRepository.Api.Infrastructure.Downloads
+namespace Drutol.FigureRepository.Api.Infrastructure.Downloads;
+
+public class FigureDownloadManager : IFigureDownloadManager
 {
-    public class FigureDownloadManager : IFigureDownloadManager
+    private readonly IFigureSeedManager _figureSeedManager;
+    private readonly IDownloadTokenManager _tokenManager;
+    private readonly IDownloadLinkGenerator _linkGenerator;
+
+    public FigureDownloadManager(
+        IFigureSeedManager figureSeedManager,
+        IDownloadTokenManager tokenManager,
+        IDownloadLinkGenerator linkGenerator)
     {
-        private readonly IFigureSeedManager _figureSeedManager;
-        private readonly IDownloadTokenManager _tokenManager;
-        private readonly IDownloadLinkGenerator _linkGenerator;
+        _figureSeedManager = figureSeedManager;
+        _tokenManager = tokenManager;
+        _linkGenerator = linkGenerator;
+    }
 
-        public FigureDownloadManager(
-            IFigureSeedManager figureSeedManager,
-            IDownloadTokenManager tokenManager,
-            IDownloadLinkGenerator linkGenerator)
+    public async ValueTask<Maybe<Dictionary<FigureDownloadType, string>>> CreateDownloadPackage(
+        Guid figureGuid,
+        string token)
+    {
+        var figure = _figureSeedManager.Figures.FirstOrDefault(f => f.Guid == figureGuid);
+
+        if(figure == null)
+            return Maybe<Dictionary<FigureDownloadType, string>>.Nothing;
+
+        var authorized = _tokenManager.ValidateToken(figureGuid, token);
+
+        if (authorized)
         {
-            _figureSeedManager = figureSeedManager;
-            _tokenManager = tokenManager;
-            _linkGenerator = linkGenerator;
+            var downloadData = new Dictionary<FigureDownloadType, string>();
+            foreach (var downloadResource in figure.DownloadResources)
+            {
+                var link = await _linkGenerator.GenerateDownloadTokenForFigure(figure, downloadResource);
+                link.Do(l => downloadData[downloadResource.Type] = l);
+            }
+
+            return downloadData.ToMaybe();
         }
-
-        public async ValueTask<Maybe<Dictionary<FigureDownloadType, string>>> CreateDownloadPackage(
-            Guid figureGuid,
-            string token)
+        else
         {
-            var figure = _figureSeedManager.Figures.FirstOrDefault(f => f.Guid == figureGuid);
-
-            if(figure == null)
-                return Maybe<Dictionary<FigureDownloadType, string>>.Nothing;
-
-            var authorized = _tokenManager.ValidateToken(figureGuid, token);
-
-            if (authorized)
-            {
-                var downloadData = new Dictionary<FigureDownloadType, string>();
-                foreach (var downloadResource in figure.DownloadResources)
-                {
-                    var link = await _linkGenerator.GenerateDownloadTokenForFigure(figure, downloadResource);
-                    link.Do(l => downloadData[downloadResource.Type] = l);
-                }
-
-                return downloadData.ToMaybe();
-            }
-            else
-            {
-                return Maybe<Dictionary<FigureDownloadType, string>>.Nothing;
-            }
+            return Maybe<Dictionary<FigureDownloadType, string>>.Nothing;
         }
     }
 }

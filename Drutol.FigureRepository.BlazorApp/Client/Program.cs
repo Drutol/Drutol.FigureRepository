@@ -1,10 +1,11 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Blazored.LocalStorage;
 using Blazored.SessionStorage;
 using Drutol.FigureRepository.BlazorApp.Infrastructure;
-using Drutol.FigureRepository.BlazorApp.Interfaces;
+using Drutol.FigureRepository.BlazorApp.Infrastructure.Figures;
+using Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet;
+using Drutol.FigureRepository.BlazorApp.Interfaces.Figures;
 using Drutol.FigureRepository.BlazorApp.Interfaces.Http;
+using Drutol.FigureRepository.BlazorApp.Interfaces.Wallet;
 using MetaMask.Blazor;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -36,6 +37,9 @@ public class Program
         builder.Services.AddScoped<IFigureIconProvider, FigureIconProvider>();
         builder.Services.AddScoped<IWalletProvider, WalletProvider>();
         builder.Services.AddScoped<IFigureDownloadTokenManager, FigureDownloadTokenManager>();
+
+        builder.Services.AddScoped<IWalletConnector, MetaMaskWalletConnector>();
+        builder.Services.AddScoped<IWalletConnector, GameStopWalletConnector>();
 
         await builder.Build().RunAsync();
     }

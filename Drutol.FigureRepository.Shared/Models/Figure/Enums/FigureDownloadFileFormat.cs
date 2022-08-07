@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Drutol.FigureRepository.Shared.Models.Enums
+namespace Drutol.FigureRepository.Shared.Models.Enums;
+
+public enum FigureDownloadFileFormat
 {
-    public enum FigureDownloadFileFormat
-    {
-        Zip
-    }
+    Zip
 }

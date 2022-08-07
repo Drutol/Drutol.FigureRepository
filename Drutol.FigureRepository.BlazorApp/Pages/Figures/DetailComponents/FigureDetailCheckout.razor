@@ -1,5 +1,7 @@
 ﻿@using Drutol.FigureRepository.BlazorApp.Interfaces.Http
 @using Drutol.FigureRepository.BlazorApp.Interfaces
+@using Drutol.FigureRepository.BlazorApp.Interfaces.Figures
+@using Drutol.FigureRepository.BlazorApp.Interfaces.Wallet
 @using Drutol.FigureRepository.BlazorApp.Util
 @using MudBlazor
 @using Drutol.FigureRepository.Shared.Models.Figure
@@ -8,6 +10,7 @@
 @using Drutol.FigureRepository.Shared.Blockchain
 @using Drutol.FigureRepository.Shared.Download
 @using Drutol.FigureRepository.Shared.Models.Enums
+@using Functional.Maybe
 
 @inject IJSRuntime JS
 @inject IApiHttpClient HttpClient
@@ -186,7 +189,7 @@
         var reference = DotNetObjectReference.Create(this);
         var response = await HttpClient.Client.PostAsJsonAsync(
             "api/checkout/order",
-            new CheckoutOrderRequest(Figure.Guid, WalletProvider.SelectedAccountAddress));
+            new CheckoutOrderRequest(Figure.Guid, WalletProvider.CurrentWallet.Value.SelectedAccount.Value.Address));
         var result = await response.Content.ReadFromJsonAsync<CheckoutOrderResponse>();
 
         await JS.InvokeVoidAsync("openPayPal", reference, result.OrderId);
@@ -207,7 +210,7 @@
         {
             IsLoading = true;
 
-            if (string.IsNullOrEmpty(WalletProvider.SelectedAccountAddress))
+            if (!WalletProvider.CurrentWallet.SelectOrElse(connector => connector.SelectedAccount.HasValue, () => false))
             {
                 IsFigureOwned = false;
                 CanPurchase = false;
@@ -233,13 +236,13 @@
                 //        params: ['Sign this message to access Loopring Exchange: 0x0BABA1Ad5bE3a5C0a66E7ac838a129Bf948f1eA4 with key nonce: 0', '0x59eb7c1e8e357ef2b4eb7532cab64c6538292ac6']
                 //});
 
-                var loopringAccountResponse = await GetLoopringAccount(WalletProvider.SelectedAccountAddress);
+                var loopringAccountResponse = await GetLoopringAccount( WalletProvider.CurrentWallet.Value.SelectedAccount.Value.Address);
                 if (loopringAccountResponse is IAccountResponseModel.Success loopringAccount)
                 {
                     using var authStartContent = JsonContent.Create(new StartAuthenticationRequest(
                         StartAuthenticationRequest.AuthenticationType.Loopring,
-                        (int?)WalletProvider.SelectedChain ?? 0,
-                        WalletProvider.SelectedAccountAddress,
+                        (int)WalletProvider.CurrentWallet.Value.SelectedAccount.Value.ChainId,
+                        WalletProvider.CurrentWallet.Value.SelectedAccount.Value.Address,
                         Figure.Guid));
 
                     var response = await
@@ -247,7 +250,7 @@
                             .Content
                             .ReadFromJsonAsync<StartAuthenticationResult>();
 
-                    var signature = await WalletProvider.PersonalSign(response.DataToSign);
+                    var signature = await WalletProvider.CurrentWallet.Value.PersonalSign(response.DataToSign);
 
                     var authFinishContent = JsonContent.Create(new FinishAuthenticationRequest(response.SessionGuid, signature));
                     var auth = await
