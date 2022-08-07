@@ -1,9 +1,14 @@
 ﻿@using Drutol.FigureRepository.BlazorApp.Util
 @using MudBlazor
 @using Blazored.LocalStorage
+@using Drutol.FigureRepository.BlazorApp.Infrastructure
+@using Drutol.FigureRepository.BlazorApp.Interfaces
+@using MudBlazor.Utilities
 @inherits LayoutComponentBase
 
 @inject ISyncLocalStorageService LocalStorageService
+@inject IWalletProvider WalletProvider
+@inject IFigureProvider FigureProvider
 
 <MudThemeProvider Theme="_theme" @bind-IsDarkMode="@DarkMode"/>
 <MudDialogProvider/>
@@ -29,19 +34,42 @@
                 </MudTooltip>
             </MudStack>
         }
-        <MudMenu Size="Size.Large" PopoverClass="pr-2 pl-2" Class="mr-4">
+        <MudMenu Size="Size.Large" PopoverClass="pr-2 pl-2" Class="mr-4" @ref="WalletMenu">
             <ActivatorContent>
-                <MudButton StartIcon="@Icons.Material.Outlined.AccountBalanceWallet" Color="Color.Inherit">Wallet</MudButton>
+                <MudButton StartIcon="@Icons.Material.Outlined.AccountBalanceWallet" Color="Color.Inherit" OnClick="CheckWalletAvailability">Wallet</MudButton>
             </ActivatorContent>
             <ChildContent>
-                <MudButton OnClick="ConnectMetaMask">
-                    <MudImage Src="svg/wallet/MetaMask.svg" Width="30" Height="30" Class="mr-2"/>
-                    Connect MetaMask
-                </MudButton>
-                <MudButton OnClick="ConnectMetaMask">
-                    <MudImage Src="svg/wallet/Gme.svg" Width="30" Height="30" Class="mr-2"/>
-                    Connect GameStop
-                </MudButton>
+                <MudStack>
+                    @if (WalletProvider.HasMetaMask)
+                    {
+                        <MudButton OnClick="ConnectMetaMask" Variant="Variant.Filled">
+                            <MudImage Src="svg/wallet/MetaMask.svg" Width="30" Height="30" Class="mr-2"/>
+                            Connect MetaMask
+                        </MudButton>
+                    }
+                    else
+                    {
+                        <MudButton Href="https://metamask.io" Variant="Variant.Filled">
+                            <MudImage Src="svg/wallet/MetaMask.svg" Width="30" Height="30" Class="mr-2"/>
+                            Download MetaMask
+                        </MudButton>
+                    }
+
+                    @if (WalletProvider.HasGameStop)
+                    {
+                        <MudButton OnClick="ConnectMetaMask" Variant="Variant.Filled">
+                            <MudImage Src="svg/wallet/Gme.svg" Width="30" Height="30" Class="mr-2"/>
+                            Connect GameStop Wallet
+                        </MudButton>
+                    }
+                    else
+                    {
+                        <MudButton Href="https://wallet.gamestop.com" Variant="Variant.Filled">
+                            <MudImage Src="svg/wallet/Gme.svg" Width="30" Height="30" Class="mr-2"/>
+                            Download GameStop Wallet
+                        </MudButton>
+                    }
+                </MudStack>
             </ChildContent>
         </MudMenu>
         <MudIconButton Icon="@(DarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)" Color="Color.Inherit" OnClick="@(e => DarkMode = !DarkMode)"/>
@@ -65,6 +93,8 @@
     private bool _darkMode;
     private bool _isExtraSmall;
     private readonly ThemeWrapper _wrapper;
+
+    public MudMenu WalletMenu { get; set; }
 
     public bool IsExtraSmall
     {
@@ -95,11 +125,26 @@
         }
     };
 
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-
+    protected override async Task OnInitializedAsync()
+    {        
         DarkMode = LocalStorageService.GetItem<bool>(DarkModeStorageKey);
+        WalletProvider.WalletPromptRequest += WalletProviderOnWalletPromptRequest;
+        await WalletProvider.Initialize();
+
+        _ = Task.Run(async () =>
+        {
+            await FigureProvider.Initialize();
+        });
+    }
+
+    private void WalletProviderOnWalletPromptRequest(object? sender, EventArgs e)
+    {
+        WalletMenu.OpenMenu(e);
+    }
+
+    private async Task ConnectMetaMask()
+    {
+        await WalletProvider.ConnectMetaMask();
     }
 
     public MainLayout()
@@ -121,6 +166,11 @@
             LocalStorageService.SetItem(DarkModeStorageKey, value);
             StateHasChanged();
         }
+    }
+
+    private async Task CheckWalletAvailability()
+    {
+        await WalletProvider.CheckWalletAvailability();
     }
 
 }

@@ -40,7 +40,7 @@ namespace Drutol.FigureRepository.Api.Infrastructure.Downloads
                 foreach (var downloadResource in figure.DownloadResources)
                 {
                     var link = await _linkGenerator.GenerateDownloadTokenForFigure(figure, downloadResource);
-                    link.Do(l => downloadData[downloadResource.FigureDownloadType] = l);
+                    link.Do(l => downloadData[downloadResource.Type] = l);
                 }
 
                 return downloadData.ToMaybe();

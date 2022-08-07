@@ -1,5 +1,6 @@
 ﻿@using Drutol.FigureRepository.BlazorApp.Interfaces.Http
 @using Drutol.FigureRepository.BlazorApp.Interfaces
+@using Drutol.FigureRepository.BlazorApp.Util
 @using MudBlazor
 @using Drutol.FigureRepository.Shared.Models.Figure
 @using Drutol.FigureRepository.Shared.Checkout
@@ -32,7 +33,20 @@
                     <MudStack>
                         @foreach (var resource in Figure.DownloadResources)
                         {
-                            <MudButton StartIcon="@Icons.Filled.Print" Href="@DownloadUrls[resource.FigureDownloadType]" download="@resource.FigureDownloadType.ToString()">@resource.Name</MudButton>
+                            <MudButton Href="@DownloadUrls![resource.Type]"
+                                       download="@($"{Figure.Name}{resource.Type}.{resource.Format.Str()}")">
+                                <MudImage Width="50" Class="mr-4" Src="@GetIconSrcForResource(resource)"></MudImage>
+                                <MudStack AlignItems="AlignItems.Center" Spacing="0">
+                                    <MudText>
+                                        @resource.Type.Str()
+                                    </MudText>
+                                    <MudTooltip>
+                                        <MudText Typo="Typo.caption">
+                                            <b>SHA256: </b> @(resource.Sha256.Substring(0, 9))...
+                                        </MudText>
+                                    </MudTooltip>
+                                </MudStack>
+                            </MudButton>
                         }
                     </MudStack>
                 }
@@ -71,7 +85,6 @@
                                 <span style="text-align: center; flex-grow: 1">
                                     GameStop Marketplace
                                 </span>
-
                             </MudButton>
                             <MudButton Variant="Variant.Filled" Style="background-color: #41a48f; color: white">
                                 <MudImage Src="svg/vendor/Cgtrader.svg"></MudImage>
@@ -89,14 +102,12 @@
                     }
                     else
                     {
-                        <MudAlert Severity="Severity.Info" >
+                        <MudAlert Severity="Severity.Info" Class="ma-2" Style="color: var(--mud-palette-text-primary)">
                             Please connect your wallet first in order to connect.
                             <br/>
                             You can do it by clicking the button in the top right corner of the screen.
                         </MudAlert>
                     }
-
-
                 </ChildContent>
             </MudMenu>
         }
@@ -164,8 +175,11 @@
 
     private async void OnBuyMenuOpened(MouseEventArgs obj)
     {
-        if(!CanPurchase)
+        if (!CanPurchase)
+        {
+            WalletProvider.RequestWalletPrompt();
             return;
+        }
 
         PaypalOrderReady = false;
         StateHasChanged();
@@ -331,6 +345,17 @@
                 IsFigureOwned = false;
             }
         }
+    }
+
+    private string GetIconSrcForResource(FigureDownloadResource resource)
+    {
+        return resource.Type switch 
+        {
+            FigureDownloadType.BlenderScene => "images/Logo/BlenderLogo.png",
+            FigureDownloadType.SlicedScenes => "images/Logo/LycheeLogo.png",
+            FigureDownloadType.Stls => "images/Logo/Stl.png",
+            _ => throw new ArgumentOutOfRangeException()
+        };
     }
 
     #endregion

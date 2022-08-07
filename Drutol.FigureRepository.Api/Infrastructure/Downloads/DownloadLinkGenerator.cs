@@ -42,7 +42,7 @@ namespace Drutol.FigureRepository.Api.Infrastructure.Downloads
             return uri.ToString().ToMaybe();
         }
 
-        private string ResourceTypeToBlobName(FigureDownloadResource resource) => resource.FigureDownloadType switch
+        private string ResourceTypeToBlobName(FigureDownloadResource resource) => resource.Type switch
         {
             FigureDownloadType.BlenderScene => "Blender.zip",
             FigureDownloadType.SlicedScenes => "Lychee.zip",

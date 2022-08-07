@@ -16,13 +16,18 @@ namespace Drutol.FigureRepository.BlazorApp.Infrastructure;
 public class WalletProvider : IWalletProvider
 {
     public event EventHandler StateHasChanged;
+    public event EventHandler WalletPromptRequest;
+
     private bool _connectingToMetaMask;
 
     private readonly MetaMaskService _metaMaskService;
     private readonly ISnackbar _snackbar;
     private readonly Dictionary<int, string> _signCache = new();
     public bool EthereumAvailable { get; set; }
+
     public bool HasMetaMask { get; set; }
+    public bool HasGameStop { get; set; }
+
     public string SelectedAccountAddress { get; set; }
     public Chain? SelectedChain { get; set; }
 
@@ -133,6 +138,16 @@ public class WalletProvider : IWalletProvider
     public async Task<string> SignTypedDataV4(string dataToSign)
     {
         return await _metaMaskService.SignTypedDataV4(dataToSign.Trim('\''));
+    }
+
+    public void RequestWalletPrompt()
+    {
+        WalletPromptRequest?.Invoke(this, EventArgs.Empty);
+    }
+
+    public async Task CheckWalletAvailability()
+    {
+        HasMetaMask = await _metaMaskService.HasMetaMask();
     }
 
     private int GetDeterministicHashCode(string str)

@@ -186,17 +186,17 @@ public class GanyuFigureSeed : IFigureSeed
         {
             new FigureDownloadResource
             {
-                FigureDownloadType = FigureDownloadType.BlenderScene,
+                Type = FigureDownloadType.BlenderScene,
                 Sha256 = "SHASHASHA256"
             },
             new FigureDownloadResource
             {
-                FigureDownloadType = FigureDownloadType.SlicedScenes,
+                Type = FigureDownloadType.SlicedScenes,
                 Sha256 = "SHASHASHA256"
             },
             new FigureDownloadResource
             {
-                FigureDownloadType = FigureDownloadType.Stls,
+                Type = FigureDownloadType.Stls,
                 Sha256 = "SHASHASHA256"
             },
         },

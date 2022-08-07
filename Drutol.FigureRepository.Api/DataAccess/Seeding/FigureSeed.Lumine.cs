@@ -241,17 +241,17 @@ public class LumineFigureSeed : IFigureSeed
         {
             new()
             {
-                FigureDownloadType = FigureDownloadType.BlenderScene,
+                Type = FigureDownloadType.BlenderScene,
                 Sha256 = "SHASHASHA256"
             },
             new()
             {
-                FigureDownloadType = FigureDownloadType.SlicedScenes,
+                Type = FigureDownloadType.SlicedScenes,
                 Sha256 = "SHASHASHA256"
             },
             new()
             {
-                FigureDownloadType = FigureDownloadType.Stls,
+                Type = FigureDownloadType.Stls,
                 Sha256 = "SHASHASHA256"
             }
         },
