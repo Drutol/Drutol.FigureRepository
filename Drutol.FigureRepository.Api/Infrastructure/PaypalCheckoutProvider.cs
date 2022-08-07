@@ -18,7 +18,7 @@ public class PaypalCheckoutProvider : ICheckoutProvider
     private readonly ILogger<PaypalCheckoutProvider> _logger;
     private readonly IFigureSeedManager _figureSeedManager;
     private readonly ICheckoutDatabase _checkoutDatabase;
-    private readonly IDownloadTokenGenerator _downloadTokenGenerator;
+    private readonly IDownloadTokenManager _downloadTokenManager;
     private readonly INftTransferProvider _nftTransferProvider;
     private readonly ILoopringCommunicator _loopringCommunicator;
     private readonly IOptions<PaypalCheckoutConfiguration> _config;
@@ -28,7 +28,7 @@ public class PaypalCheckoutProvider : ICheckoutProvider
         ILogger<PaypalCheckoutProvider> logger,
         IFigureSeedManager figureSeedManager,
         ICheckoutDatabase checkoutDatabase,
-        IDownloadTokenGenerator downloadTokenGenerator,
+        IDownloadTokenManager downloadTokenManager,
         INftTransferProvider nftTransferProvider,
         ILoopringCommunicator loopringCommunicator,
         IOptions<PaypalCheckoutConfiguration> config)
@@ -36,7 +36,7 @@ public class PaypalCheckoutProvider : ICheckoutProvider
         _logger = logger;
         _figureSeedManager = figureSeedManager;
         _checkoutDatabase = checkoutDatabase;
-        _downloadTokenGenerator = downloadTokenGenerator;
+        _downloadTokenManager = downloadTokenManager;
         _nftTransferProvider = nftTransferProvider;
         _loopringCommunicator = loopringCommunicator;
         _config = config;
@@ -147,7 +147,7 @@ public class PaypalCheckoutProvider : ICheckoutProvider
                     }
                     
                     var downloadToken =
-                        _downloadTokenGenerator.GenerateDownloadTokenForFigure(
+                        _downloadTokenManager.GenerateDownloadTokenForFigure(
                             _figureSeedManager[orderEntity.FigureId]);
 
                     var transferResult = await _nftTransferProvider.TransferNft(orderEntity);

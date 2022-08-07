@@ -23,13 +23,13 @@ using Nethereum.Signer.EIP712;
 using Nethereum.Util;
 using Nethereum.Web3;
 
-namespace Drutol.FigureRepository.Api.Infrastructure;
+namespace Drutol.FigureRepository.Api.Infrastructure.Blockchain;
 
 public class BlockchainAuthProvider : IBlockchainAuthProvider
 {
     private readonly ILogger<BlockchainAuthProvider> _logger;
     private readonly ILoopringCommunicator _loopringCommunicator;
-    private readonly IDownloadTokenGenerator _downloadTokenGenerator;
+    private readonly IDownloadTokenManager _downloadTokenManager;
     private readonly Func<StartAuthenticationRequest, BlockchainAuthSession> _authSessionFactory;
     private readonly IOptions<BlockchainAuthConfig> _configuration;
 
@@ -39,13 +39,13 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
     public BlockchainAuthProvider(
         ILogger<BlockchainAuthProvider> logger,
         ILoopringCommunicator loopringCommunicator,
-        IDownloadTokenGenerator downloadTokenGenerator,
+        IDownloadTokenManager downloadTokenManager,
         Func<StartAuthenticationRequest, BlockchainAuthSession> authSessionFactory,
         IOptions<BlockchainAuthConfig> configuration)
     {
         _logger = logger;
         _loopringCommunicator = loopringCommunicator;
-        _downloadTokenGenerator = downloadTokenGenerator;
+        _downloadTokenManager = downloadTokenManager;
         _authSessionFactory = authSessionFactory;
         _configuration = configuration;
     }
@@ -108,10 +108,10 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
                         apiKey.ApiKey,
                         authSession.LoopringAccount.AccountId,
                         authSession.Figure.NftDetails.NftData) switch
-                    {
-                        INftBalancesResponseModel.Success success => int.Parse(success.NftData.FirstOrDefault()?.Total ?? "0"),
-                        _ => 0
-                    };
+                {
+                    INftBalancesResponseModel.Success success => int.Parse(success.NftData.FirstOrDefault()?.Total ?? "0"),
+                    _ => 0
+                };
             }
             else if (authSession.Request.Type == StartAuthenticationRequest.AuthenticationType.Mainnet)
             {
@@ -136,7 +136,7 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
             {
                 return new(
                     FinishAuthenticationResult.StatusCode.Ok,
-                    _downloadTokenGenerator.GenerateDownloadTokenForFigure(authSession.Figure));
+                    _downloadTokenManager.GenerateDownloadTokenForFigure(authSession.Figure));
             }
             else
             {
@@ -145,13 +145,13 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
             }
         }
 
-        if(apiKeyResponse is IApiKeyResponseModel.Fail fail)
+        if (apiKeyResponse is IApiKeyResponseModel.Fail fail)
         {
             _logger.LogError($"Failed to obtain loopring api key. {JsonSerializer.Serialize(fail)}");
             return new(FinishAuthenticationResult.StatusCode.Error);
         }
 
-        return new (FinishAuthenticationResult.StatusCode.Error);
+        return new(FinishAuthenticationResult.StatusCode.Error);
     }
 
     private async void AuthSessionsCleanLoop()
@@ -162,7 +162,7 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
         {
             foreach (var session in _sessions.Values.ToList())
             {
-                if(session.ExpiresAt > DateTime.UtcNow)
+                if (session.ExpiresAt > DateTime.UtcNow)
                     _sessions.TryRemove(session.SessionGuid, out _);
             }
         }

@@ -12,7 +12,7 @@ using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.KeyStore.Crypto;
 using Nethereum.Signer.EIP712;
 
-namespace Drutol.FigureRepository.Api.Infrastructure;
+namespace Drutol.FigureRepository.Api.Infrastructure.Blockchain;
 
 public record BlockchainAuthSession(
     StartAuthenticationRequest Request,
@@ -46,20 +46,20 @@ public record BlockchainAuthSession(
             //node[nameof(TypedData<Domain>.Message).ToLower()] = JsonSerializer.SerializeToNode(GetMessage(), SerializerOptions);
 
             //return node.ToJsonString(SerializerOptions);
-        } 
+        }
 
-        if(Request.Type == StartAuthenticationRequest.AuthenticationType.Loopring)
+        if (Request.Type == StartAuthenticationRequest.AuthenticationType.Loopring)
         {
             var account = await LoopringCommunicator.GetAccount(Request.WalletAddress);
 
             switch (account)
             {
                 case IAccountResponseModel.Success success:
-                {
-                    LoopringAccount = success;
-                    return
-                        $"Sign this message to access Loopring Exchange: {Config.Value.LoopringExchangeAddress} with key nonce: {success.Nonce - 1}";
-                }
+                    {
+                        LoopringAccount = success;
+                        return
+                            $"Sign this message to access Loopring Exchange: {Config.Value.LoopringExchangeAddress} with key nonce: {success.Nonce - 1}";
+                    }
             }
         }
 

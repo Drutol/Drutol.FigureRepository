@@ -10,7 +10,7 @@ using Nethereum.Signer;
 using Nethereum.Signer.EIP712;
 using Nethereum.Util;
 
-namespace Drutol.FigureRepository.Api.Infrastructure;
+namespace Drutol.FigureRepository.Api.Infrastructure.Blockchain;
 
 public class LoopringCommunicator : ILoopringCommunicator
 {

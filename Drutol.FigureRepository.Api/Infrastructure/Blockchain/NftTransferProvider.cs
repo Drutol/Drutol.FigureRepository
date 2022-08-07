@@ -7,7 +7,7 @@ using Drutol.FigureRepository.Shared.Blockchain.Loopring;
 using Drutol.FigureRepository.Shared.Blockchain.Loopring.Nft;
 using Microsoft.Extensions.Options;
 
-namespace Drutol.FigureRepository.Api.Infrastructure;
+namespace Drutol.FigureRepository.Api.Infrastructure.Blockchain;
 
 public class NftTransferProvider : INftTransferProvider
 {

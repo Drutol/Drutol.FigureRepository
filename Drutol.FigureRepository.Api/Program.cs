@@ -3,6 +3,8 @@ using Autofac.Extensions.DependencyInjection;
 using Drutol.FigureRepository.Api.DataAccess;
 using Drutol.FigureRepository.Api.DataAccess.Seeding;
 using Drutol.FigureRepository.Api.Infrastructure;
+using Drutol.FigureRepository.Api.Infrastructure.Blockchain;
+using Drutol.FigureRepository.Api.Infrastructure.Downloads;
 using Drutol.FigureRepository.Api.Interfaces;
 using Drutol.FigureRepository.Api.Models.Configuration;
 
@@ -21,6 +23,8 @@ public class Program
         builder.Services.Configure<BlockchainAuthConfig>(builder.Configuration.GetSection(nameof(BlockchainAuthConfig)));
         builder.Services.Configure<PaypalCheckoutConfiguration>(builder.Configuration.GetSection(nameof(PaypalCheckoutConfiguration)));
         builder.Services.Configure<CheckoutDatabaseConfiguration>(builder.Configuration.GetSection(nameof(CheckoutDatabaseConfiguration)));
+        builder.Services.Configure<DownloadConfiguration>(builder.Configuration.GetSection(nameof(DownloadConfiguration)));
+        builder.Services.Configure<JwtConfiguration>(builder.Configuration.GetSection(nameof(JwtConfiguration)));
 
         var app = builder.Build();
 
@@ -45,7 +49,9 @@ public class Program
         builder.RegisterType<PaypalCheckoutProvider>().AsImplementedInterfaces().SingleInstance();
         builder.RegisterType<FigureSeedManager>().AsImplementedInterfaces().SingleInstance();
         builder.RegisterType<NftTransferProvider>().AsImplementedInterfaces().SingleInstance();
-        builder.RegisterType<DownloadTokenGenerator>().AsImplementedInterfaces().SingleInstance();
+        builder.RegisterType<DownloadTokenManager>().AsImplementedInterfaces().SingleInstance();
+        builder.RegisterType<DownloadLinkGenerator>().AsImplementedInterfaces().SingleInstance();
+        builder.RegisterType<FigureDownloadManager>().AsImplementedInterfaces().SingleInstance();
 
         builder.RegisterType<GanyuFigureSeed>().AsImplementedInterfaces().SingleInstance();
         builder.RegisterType<AsukaFigureSeed>().AsImplementedInterfaces().SingleInstance();

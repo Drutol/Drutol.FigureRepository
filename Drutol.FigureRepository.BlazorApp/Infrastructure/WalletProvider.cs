@@ -68,6 +68,8 @@ public class WalletProvider : IWalletProvider
 
     private async Task MetaMaskAccountChangedEvent(string arg)
     {
+        _signCache.Clear();
+
         if (_connectingToMetaMask)
             return;
 

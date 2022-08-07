@@ -5,6 +5,8 @@
 @using Drutol.FigureRepository.Shared.Checkout
 @using Drutol.FigureRepository.Shared.Blockchain.Loopring
 @using Drutol.FigureRepository.Shared.Blockchain
+@using Drutol.FigureRepository.Shared.Download
+@using Drutol.FigureRepository.Shared.Models.Enums
 
 @inject IJSRuntime JS
 @inject IApiHttpClient HttpClient
@@ -22,14 +24,22 @@
         <MudSpacer />
         <MudMenu Size="Size.Large" AnchorOrigin="Origin.BottomCenter" PopoverClass="pr-2 pl-2">
             <ActivatorContent>
-                <MudButton Disabled="!IsFigureOwned" StartIcon="@Icons.Material.Outlined.Download" Size="Size.Large">Download</MudButton>
+                <MudButton Disabled="!IsFigureOwned" StartIcon="@Icons.Material.Outlined.Download" Size="Size.Large" OnClick="PrepareDownloads">Download</MudButton>
             </ActivatorContent>
             <ChildContent>
-                <MudStack>
-                    <MudButton StartIcon="@Icons.Filled.ViewInAr" OnClick="Download">Blender Scene</MudButton>
-                    <MudButton StartIcon="@Icons.Filled.Print">Lychee Scenes</MudButton>
-                    <MudButton StartIcon="@Icons.Filled.Print">STLs</MudButton>
-                </MudStack>
+                @if (DownloadsReady)
+                {
+                    <MudStack>
+                        @foreach (var resource in Figure.DownloadResources)
+                        {
+                            <MudButton StartIcon="@Icons.Filled.Print" Href="@DownloadUrls[resource.FigureDownloadType]" download="@resource.FigureDownloadType.ToString()">@resource.Name</MudButton>
+                        }
+                    </MudStack>
+                }
+                else
+                {
+                    <MudProgressCircular Indeterminate="true" Size="Size.Large"/>
+                }
             </ChildContent>
         </MudMenu>
         @if (IsFigureOwned)
@@ -46,7 +56,7 @@
         }
         else
         {
-            <MudMenu @ref="PurchaseMenu" Size="Size.Large" AnchorOrigin="Origin.BottomCenter" PopoverClass="BuyMenuPopover pr-2 pl-2" >
+            <MudMenu @ref="PurchaseMenu" Size="Size.Large" AnchorOrigin="Origin.BottomCenter" PopoverClass="BuyMenuPopover pr-2 pl-2">
                 <ActivatorContent>
                     <MudButton Class="ml-2" StartIcon="@Icons.Filled.AddShoppingCart" Color="Color.Info" Size="Size.Large" OnClick="OnBuyMenuOpened">
                         Purchase
@@ -68,7 +78,6 @@
                                 <span style="text-align: center; flex-grow: 1">
                                     CgTrader
                                 </span>
-
                             </MudButton>
                             @if (!PaypalOrderReady)
                             {
@@ -107,8 +116,29 @@
     public bool IsLoading { get; set; }
     public bool FailedToDetermineOwnership { get; set; }
     public bool CanPurchase { get; set; }
+    public bool DownloadsReady { get; set; }
 
     public MudMenu PurchaseMenu { get; set; }
+    public Dictionary<FigureDownloadType, string>? DownloadUrls { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        WalletProvider.StateHasChanged += WalletProviderOnStateHasChanged;
+    }
+
+    private async void WalletProviderOnStateHasChanged(object? sender, EventArgs e)
+    {
+        await UpdateOwnership();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        await UpdateOwnership();
+    }
 
     #region PayPal
 
@@ -154,24 +184,8 @@
 
     #endregion
 
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
 
-        WalletProvider.StateHasChanged += WalletProviderOnStateHasChanged;
-    }
-
-    private async void WalletProviderOnStateHasChanged(object? sender, EventArgs e)
-    {
-        await UpdateOwnership();
-    }
-
-    protected override async Task OnParametersSetAsync()
-    {
-        await base.OnParametersSetAsync();
-
-        await UpdateOwnership();
-    }
+    #region Ownership
 
     private async Task UpdateOwnership()
     {
@@ -260,27 +274,6 @@
         }
     }
 
-    private async void Download(MouseEventArgs obj)
-    {
-        var token = await DownloadTokenManager.GetDownloadTokenForFigure(Figure);
-
-        if(token == default)
-            await UpdateOwnership();
-
-        if (IsFigureOwned)
-        {
-            token = await DownloadTokenManager.GetDownloadTokenForFigure(Figure);
-            if (token != default)
-            {
-
-            }
-            else
-            {
-                IsFigureOwned = false;
-            }
-        }
-    }
-
     private async ValueTask<IAccountResponseModel> GetLoopringAccount(string walletAddress)
     {
         try
@@ -299,4 +292,49 @@
             return new IAccountResponseModel.Fail();
         }
     }
+
+    #endregion
+
+    #region Download
+
+    private async Task PrepareDownloads()
+    {
+        if(DownloadUrls != null)
+            DownloadUrls.Clear();
+
+        DownloadsReady = false;
+        var token = await DownloadTokenManager.GetDownloadTokenForFigure(Figure);
+
+        if(token == default)
+            await UpdateOwnership();
+
+        if (IsFigureOwned)
+        {
+            token = await DownloadTokenManager.GetDownloadTokenForFigure(Figure);
+            if (token != default)
+            {
+                var result = await HttpClient.Client.PostAsJsonAsync("download/downloadData", new DownloadFigureRequest(Figure.Guid, token.JwtToken));
+                var response = await result.Content.ReadFromJsonAsync<DownloadFigureResponse>();
+
+                if (response.Success)
+                {
+                    DownloadUrls = response.DownloadUrls;
+                    DownloadsReady = true;
+                }
+                else
+                {
+                    
+                }
+            }
+            else
+            {
+                IsFigureOwned = false;
+            }
+        }
+    }
+
+    #endregion
+
+
+
 }
