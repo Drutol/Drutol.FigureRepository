@@ -121,7 +121,8 @@
                             <br/>
                             You can do it by clicking the button in the top right corner of the screen.
                         </MudAlert>
-                        <MudStack Class="ml-2 mr-2 mt-2">
+                        <MudDivider Class="ma-2"/>
+                        <MudStack Class="ma-2">
                         @foreach (var option in Figure.ExternalPurchaseOptions.Concat(new[] { _dummyPayPalPurchaseOption }))
                         {
                             <CheckoutPurchaseButton Option="option" Disabled="@option.RequiresWallet"/>

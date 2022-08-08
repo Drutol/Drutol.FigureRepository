@@ -5,6 +5,16 @@
 
 @inject IWalletProvider WalletProvider
 
+<style>
+    .RecommendedTooltip {
+        align-self: center;
+    }
+
+    .RecommendedTooltip .mud-popover-cascading-value {
+        z-index: 2000;
+    }
+</style>
+
 <MudMenu Size="Size.Large" PopoverClass="pr-2 pl-2" Class="mr-4" @ref="WalletMenu">
     <ActivatorContent>
         <MudButton StartIcon="@Icons.Material.Outlined.AccountBalanceWallet" Color="Color.Inherit" OnClick="CheckWalletAvailability">Wallet</MudButton>
@@ -16,10 +26,18 @@
                 var metadata = WalletProvider.GetWalletMetadata(connector.WalletType);
                 @if (connector.IsWalletPresent)
                 {
-                    <MudButton Class="WalletButton" OnClick="@(() => ConnectWallet(connector.WalletType))" Variant="Variant.Filled" Color="Color.Primary">
+                    <MudButton Class="WalletButton" OnClick="@(() => ConnectWallet(connector.WalletType))" Variant="Variant.Filled" Color="@(connector.WalletType == WalletType.GameStop ? Color.Primary : Color.Default)">
                         <MudImage Src="@metadata.IconUrl" Width="30" Height="30" Class="mr-2"/>
-                        <MudText Typo="Typo.button">Connect @connector.WalletType.ToString()</MudText>
-                                
+                        <MudStack Spacing="0" Style="flex-grow: 1">
+                            <MudText Typo="Typo.button">Connect @connector.WalletType.ToString()</MudText>
+                            @if (connector.WalletType == WalletType.GameStop)
+                            {
+                                <MudTooltip RootClass="RecommendedTooltip" Text="GameStop wallet was designed for NFTs hence it provides best user experience.">
+                                    <MudText Typo="Typo.caption" Align="Align.Center">(Recommended)</MudText>
+                                </MudTooltip>
+                            }
+                        </MudStack>
+ 
                     </MudButton>
                 }
                 else
