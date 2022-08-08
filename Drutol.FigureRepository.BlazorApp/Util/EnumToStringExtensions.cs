@@ -1,4 +1,5 @@
 ﻿using Drutol.FigureRepository.Shared.Models.Enums;
+using Drutol.FigureRepository.Shared.Models.Figure.Enums;
 
 namespace Drutol.FigureRepository.BlazorApp.Util;
 
@@ -45,6 +46,14 @@ public static class EnumToStringExtensions
     public static string Str(this FigureDownloadFileFormat ev) => ev switch
     {
         FigureDownloadFileFormat.Zip => "zip",
+        _ => throw new ArgumentOutOfRangeException(nameof(ev), ev, null)
+    }; 
+    
+    public static string Str(this FigureExternalPurchaseOptionType ev) => ev switch
+    {
+        FigureExternalPurchaseOptionType.GameStopMarketplace => "GameStop Marketplace",
+        FigureExternalPurchaseOptionType.CgTrader => "CGTrader",
+        FigureExternalPurchaseOptionType.PayPal => "PayPal",
         _ => throw new ArgumentOutOfRangeException(nameof(ev), ev, null)
     };
 }

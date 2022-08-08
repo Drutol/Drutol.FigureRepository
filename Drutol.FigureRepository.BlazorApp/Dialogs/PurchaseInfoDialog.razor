@@ -1,0 +1,49 @@
+﻿@using MudBlazor
+
+<MudDialog>
+    <DialogContent>
+        <div class="d-flex flex-column py-1">
+            <MudText>You can purchase the figure in 3 different ways.</MudText>
+            <br/>
+            <MudText>
+                When you opt to use this site directly, your purchase will be securely stored on blockchain.
+                For this you will need a wallet extension, the NFT will be deposited into it.
+            </MudText>
+            <br/>
+            <MudStack Row="true">
+                <MudImage Src="images/Logo/PayPalLogo.png"/>
+                <MudText>
+                    <b>PayPal</b> - standard checkout option, all you need to do is install and connect the wallet
+                    and I'll activate it and transfer the token. Activation fees are included in price.
+                </MudText>
+            </MudStack>
+            <br/>
+            <MudStack Row="true">
+                <MudImage Src="svg/v/PayPalLogo.png"/>
+                <MudText>
+                    <b>GameStop Marketplace</b> - buy the NFT directly on the market, it will be deposited in your wallet by the marketplace.
+                    Once the NFT is present in your wallet the website will recognize it and allow download.
+                </MudText>
+            </MudStack>
+            <br/>
+            <MudStack Row="true">
+                <MudImage Src="svg/vendor/Cgtrader.svg"/>
+                <MudText>
+                    <b>CGTrader</b> - entirely conventional purchase option, upon purchase you will obtain
+                    all the files from their website. Because of extra royalties the price there will be higher.
+                </MudText>
+            </MudStack>
+        </div>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="Close">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    void Close() => MudDialog.Close(DialogResult.Ok(true));
+}

@@ -256,7 +256,6 @@ namespace Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet
             }
         }
 
-
         public async ValueTask DisposeAsync()
         {
             if (moduleTask.IsValueCreated)

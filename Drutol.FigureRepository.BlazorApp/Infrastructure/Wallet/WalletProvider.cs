@@ -48,17 +48,28 @@ public class WalletProvider : IWalletProvider
 
     public async Task<bool> SwitchToWallet(WalletType walletType)
     {
-        CurrentWallet.Do(connector => connector.Disconnect());
+        CurrentWallet.Do(connector =>
+        {
+            connector.Disconnect();
+            connector.StateHasChanged -= CurrentWalletOnStateHasChanged;
+        });
         CurrentWallet = Maybe<IWalletConnector>.Nothing;
 
         var connector = Wallets[walletType];
         if (await connector.Connect())
         {
             CurrentWallet = connector.ToMaybe();
+            connector.StateHasChanged += CurrentWalletOnStateHasChanged;
+            StateHasChanged?.Invoke(this, EventArgs.Empty);
             return true;
         }
 
         return false;
+    }
+
+    private void CurrentWalletOnStateHasChanged(object? sender, EventArgs e)
+    {
+        StateHasChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void RequestWalletPrompt()

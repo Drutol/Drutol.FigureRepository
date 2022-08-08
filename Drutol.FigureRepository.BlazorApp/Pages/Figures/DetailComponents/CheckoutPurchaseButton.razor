@@ -1,0 +1,57 @@
+﻿@using Drutol.FigureRepository.Shared.Models.Figure
+@using Drutol.FigureRepository.BlazorApp.Util
+@using Drutol.FigureRepository.Shared.Models.Figure.Enums
+@using MudBlazor
+
+<style>
+    .PurchaseButton {
+        color: white;
+    } 
+    
+    .PurchaseButton span {
+        text-align: center;
+        flex-grow: 1;
+    }
+</style>
+
+<MudButton Class="PurchaseButton"
+           Variant="Variant.Filled" 
+           Disabled="Disabled" 
+           Href="@Option.Link" 
+           target="_blank" 
+           Style="@($"background-color: {GetButtonColourForPurchaseOption(Option)}")">
+    <MudImage Src="@GetIconSrcForPurchaseOption(Option)" Height="28"></MudImage>
+    <span>
+        @Option.Type.Str()
+    </span>
+</MudButton>
+
+@code {
+    [Parameter]
+    public FigureExternalPurchaseOption Option { get; set; }
+
+    [Parameter]
+    public bool Disabled { get; set; }
+
+    private string GetIconSrcForPurchaseOption(FigureExternalPurchaseOption option)
+    {
+        return option.Type switch 
+        {
+            FigureExternalPurchaseOptionType.GameStopMarketplace => "svg/wallet/Gme.svg",
+            FigureExternalPurchaseOptionType.CgTrader => "svg/vendor/Cgtrader.svg",
+            FigureExternalPurchaseOptionType.PayPal => "images/Logo/PayPalLogo.png"
+            ,_ => throw new ArgumentOutOfRangeException()
+        };
+    }    
+    
+    private string GetButtonColourForPurchaseOption(FigureExternalPurchaseOption option)
+    {
+        return option.Type switch 
+        {
+            FigureExternalPurchaseOptionType.GameStopMarketplace => "black",
+            FigureExternalPurchaseOptionType.CgTrader => "#41a48f",
+            FigureExternalPurchaseOptionType.PayPal => "$ffcc00",
+            _ => throw new ArgumentOutOfRangeException()
+            };
+    }
+}

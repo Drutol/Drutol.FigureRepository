@@ -2,6 +2,7 @@
 using Drutol.FigureRepository.Shared.Models;
 using Drutol.FigureRepository.Shared.Models.Enums;
 using Drutol.FigureRepository.Shared.Models.Figure;
+using Drutol.FigureRepository.Shared.Models.Figure.Enums;
 
 namespace Drutol.FigureRepository.Api.DataAccess.Seeding;
 
@@ -214,6 +215,11 @@ public class MadokaFigureSeed : IFigureSeed
             OriginNameEnglish = "Aokana: Four Rhythm Across the Blue",
             OriginNameJapanese = "蒼の彼方のフォーリズム"
         },
-        EyeType = FigureEyeType.PartSculpted
+        EyeType = FigureEyeType.PartSculpted,
+        ExternalPurchaseOptions = new()
+        {
+            new FigureExternalPurchaseOption(FigureExternalPurchaseOptionType.CgTrader, "https://www.cgtrader.com/3d-print-models/art/sculptures/ganyu-from-genshin-impact-sculpture-for-3d-printing", false),
+            new FigureExternalPurchaseOption(FigureExternalPurchaseOptionType.GameStopMarketplace, "https://nft.gamestop.com", true)
+        }
     };
 }

@@ -11,6 +11,9 @@
 @using Drutol.FigureRepository.Shared.Download
 @using Drutol.FigureRepository.Shared.Models.Enums
 @using Functional.Maybe
+@using Nethereum.Model
+@using Drutol.FigureRepository.BlazorApp.Dialogs
+@using Drutol.FigureRepository.Shared.Models.Figure.Enums
 
 @inject IJSRuntime JS
 @inject IApiHttpClient HttpClient
@@ -18,6 +21,16 @@
 @inject ILoopringHttpClient LoopringHttpClient
 @inject ILogger<FigureDetailCheckout> Logger
 @inject IFigureDownloadTokenManager DownloadTokenManager
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+
+@*<style>
+    .PurchaseInfoButton {
+        position: absolute;
+        right: 8px;
+        top: 8px;
+    }
+</style>*@
 
 <MudPaper Elevation="2" Square="false" Class="ml-8 mr-8 mt-8" >
     <MudToolBar>
@@ -75,41 +88,45 @@
         {
             <MudMenu @ref="PurchaseMenu" Size="Size.Large" AnchorOrigin="Origin.BottomCenter" PopoverClass="BuyMenuPopover pr-2 pl-2">
                 <ActivatorContent>
-                    <MudButton Class="ml-2" StartIcon="@Icons.Filled.AddShoppingCart" Color="Color.Info" Size="Size.Large" OnClick="OnBuyMenuOpened">
+                    <MudButton Class="ml-2" StartIcon="@Icons.Filled.AddShoppingCart" Color="Color.Info" Size="Size.Large" OnClick="() => OnBuyMenuOpened(true)">
                         Purchase
                     </MudButton>
                 </ActivatorContent>
                 <ChildContent>
+                    <MudStack Row="true" AlignItems="AlignItems.Center" Class="ml-2">
+                        <MudText Typo="Typo.h4" Align="Align.Left" Style="flex-grow: 1">Purchase</MudText>
+                        <MudSpacer/>
+                        <MudFab Class="ma-2" StartIcon="@Icons.Filled.Info" Color="Color.Primary" Size="Size.Small" OnClick="ShowPurchaseInfoDialog"/>
+                    </MudStack>
                     @if (CanPurchase)
                     {
-                        <MudStack>
-                            <MudButton Variant="Variant.Filled" Style="background-color: black; color: white">
-                                <MudImage Src="svg/wallet/Gme.svg"></MudImage>
-                                <span style="text-align: center; flex-grow: 1">
-                                    GameStop Marketplace
-                                </span>
-                            </MudButton>
-                            <MudButton Variant="Variant.Filled" Style="background-color: #41a48f; color: white">
-                                <MudImage Src="svg/vendor/Cgtrader.svg"></MudImage>
-                                <span style="text-align: center; flex-grow: 1">
-                                    CgTrader
-                                </span>
-                            </MudButton>
+                        <MudStack Class="ml-2 mr-2">
+                            @foreach (var option in Figure.ExternalPurchaseOptions)
+                            {
+                                <CheckoutPurchaseButton Option="option"/>
+                            }
                             @if (!PaypalOrderReady)
                             {
                                 <MudProgressCircular Style="place-self: center" Color="Color.Primary" Indeterminate="true"/>
                                 <MudText Align="Align.Center">PayPal Loading...</MudText>
                             }
-                            <div id="paypal-buttons"></div>
+                            <div id="paypal-buttons" style="@(!PaypalOrderReady ? "display: none;" : string.Empty)"></div>
                         </MudStack>
                     }
                     else
                     {
-                        <MudAlert Severity="Severity.Info" Class="ma-2" Style="color: var(--mud-palette-text-primary)">
-                            Please connect your wallet first in order to connect.
+                        <MudAlert Severity="Severity.Info" Class="ml-2 mr-2 mt-2" Style="color: var(--mud-palette-text-primary)">
+                            Connect your wallet first in order to access all purchase options.
+                            <br/>
                             <br/>
                             You can do it by clicking the button in the top right corner of the screen.
                         </MudAlert>
+                        <MudStack Class="ml-2 mr-2 mt-2">
+                        @foreach (var option in Figure.ExternalPurchaseOptions.Concat(new[] { _dummyPayPalPurchaseOption }))
+                        {
+                            <CheckoutPurchaseButton Option="option" Disabled="@option.RequiresWallet"/>
+                        }
+                        </MudStack>
                     }
                 </ChildContent>
             </MudMenu>
@@ -122,6 +139,9 @@
 </MudPaper>
 
 @code {
+
+    private readonly FigureExternalPurchaseOption _dummyPayPalPurchaseOption = new(FigureExternalPurchaseOptionType.PayPal, "", true);
+
     [Parameter]
     public Figure Figure { get; set; }
 
@@ -173,32 +193,39 @@
     }   
     
     [JSInvokable]
-    public async Task PaypalButtonClicked()
+    public async Task PaypalButtonsInitialized()
     {
-
+        PaypalOrderReady = true;
+        StateHasChanged();
     }
 
-    private async void OnBuyMenuOpened(MouseEventArgs obj)
+    private async void OnBuyMenuOpened(bool fromButton)
     {
         if (!CanPurchase)
         {
-            WalletProvider.RequestWalletPrompt();
+            //if(fromButton)
+            //    WalletProvider.RequestWalletPrompt();
             return;
         }
 
         PaypalOrderReady = false;
-        StateHasChanged();
-        var reference = DotNetObjectReference.Create(this);
-        var response = await HttpClient.Client.PostAsJsonAsync(
-            "api/checkout/order",
-            new CheckoutOrderRequest(Figure.Guid, WalletProvider.CurrentWallet.Value.SelectedAccount.Value.Address));
-        var result = await response.Content.ReadFromJsonAsync<CheckoutOrderResponse>();
 
-        await JS.InvokeVoidAsync("openPayPal", reference, result.OrderId);
+        try
+        {
+            var reference = DotNetObjectReference.Create(this);
+            var response = await HttpClient.Client.PostAsJsonAsync(
+                "api/checkout/order",
+                new CheckoutOrderRequest(Figure.Guid, WalletProvider.CurrentWallet.Value.SelectedAccount.Value.Address));
+            var result = await response.Content.ReadFromJsonAsync<CheckoutOrderResponse>();
 
-        await Task.Delay(500);
-        PaypalOrderReady = true;
-        StateHasChanged();
+            await JS.InvokeVoidAsync("openPayPal", reference, result.OrderId);
+        }
+        catch (Exception e)
+        {
+            Logger.LogError(e, "Failed to prepare order.");
+            Snackbar.Add("Failed to prepare PayPal order. Try again later.");
+            PaypalOrderReady = true;
+        }
     }
 
     #endregion
@@ -288,6 +315,9 @@
         }
         finally
         {
+            if(!PaypalOrderReady && !IsFigureOwned)
+                OnBuyMenuOpened(false);
+
             IsLoading = false;
             StateHasChanged();
         }
@@ -361,10 +391,13 @@
             FigureDownloadType.Stls => "images/Logo/Stl.png",
             _ => throw new ArgumentOutOfRangeException()
         };
-    }
+    }    
 
     #endregion
 
-
+    private void ShowPurchaseInfoDialog()
+    {
+        DialogService.Show<PurchaseInfoDialog>("Purchasing information");
+    }
 
 }

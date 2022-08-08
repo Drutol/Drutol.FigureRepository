@@ -1,6 +1,7 @@
 ﻿using Drutol.FigureRepository.Api.Interfaces;
 using Drutol.FigureRepository.Shared.Models.Enums;
 using Drutol.FigureRepository.Shared.Models.Figure;
+using Drutol.FigureRepository.Shared.Models.Figure.Enums;
 
 namespace Drutol.FigureRepository.Api.DataAccess.Seeding;
 
@@ -267,6 +268,11 @@ public class LumineFigureSeed : IFigureSeed
             OriginNameEnglish = "Genshin Impact",
             OriginNameJapanese = "原神"
         },
-        EyeType = FigureEyeType.FullDecals
+        EyeType = FigureEyeType.FullDecals,
+        ExternalPurchaseOptions = new()
+        {
+            new FigureExternalPurchaseOption(FigureExternalPurchaseOptionType.CgTrader, "https://www.cgtrader.com/3d-print-models/art/sculptures/ganyu-from-genshin-impact-sculpture-for-3d-printing", false),
+            new FigureExternalPurchaseOption(FigureExternalPurchaseOptionType.GameStopMarketplace, "https://nft.gamestop.com", true)
+        }
     };
 }

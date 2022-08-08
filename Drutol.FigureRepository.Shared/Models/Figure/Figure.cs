@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Drutol.FigureRepository.Shared.Models.Enums;
+using Drutol.FigureRepository.Shared.Models.Figure.Enums;
 
 namespace Drutol.FigureRepository.Shared.Models.Figure;
 
@@ -25,4 +26,5 @@ public record Figure
     public List<FigureExternalLink> ExternalLinks { get; init; }
     public List<FigureTimelineEntry> Timeline { get; set; }
     public List<FigureDownloadResource> DownloadResources { get; set; }
+    public List<FigureExternalPurchaseOption> ExternalPurchaseOptions { get; set; }
 }

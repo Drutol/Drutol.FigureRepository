@@ -1,0 +1,61 @@
+﻿@using MudBlazor
+@using Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet
+@using Drutol.FigureRepository.BlazorApp.Enums
+@using Drutol.FigureRepository.BlazorApp.Interfaces.Wallet
+
+@inject IWalletProvider WalletProvider
+
+<MudMenu Size="Size.Large" PopoverClass="pr-2 pl-2" Class="mr-4" @ref="WalletMenu">
+    <ActivatorContent>
+        <MudButton StartIcon="@Icons.Material.Outlined.AccountBalanceWallet" Color="Color.Inherit" OnClick="CheckWalletAvailability">Wallet</MudButton>
+    </ActivatorContent>
+    <ChildContent>
+        <MudStack>
+            @foreach (var connector in WalletProvider.Wallets.Values)
+            {
+                var metadata = WalletProvider.GetWalletMetadata(connector.WalletType);
+                @if (connector.IsWalletPresent)
+                {
+                    <MudButton Class="WalletButton" OnClick="@(() => ConnectWallet(connector.WalletType))" Variant="Variant.Filled" Color="Color.Primary">
+                        <MudImage Src="@metadata.IconUrl" Width="30" Height="30" Class="mr-2"/>
+                        <MudText Typo="Typo.button">Connect @connector.WalletType.ToString()</MudText>
+                                
+                    </MudButton>
+                }
+                else
+                {
+                    <MudButton Class="WalletButton" Href="@metadata.DownloadUrl" Variant="Variant.Filled" target="_blank">
+                        <MudImage Src="@metadata.IconUrl" Width="30" Height="30" Class="mr-2"/>
+                        <MudText Typo="Typo.button">Download @connector.WalletType.ToString()</MudText>
+                    </MudButton>
+                }
+            }
+        </MudStack>
+    </ChildContent>
+</MudMenu>
+
+@code {
+    public MudMenu WalletMenu { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {     
+        WalletProvider.WalletPromptRequest += WalletProviderOnWalletPromptRequest;
+
+        return base.OnInitializedAsync();
+    }
+
+    private void WalletProviderOnWalletPromptRequest(object? sender, EventArgs e)
+    {
+        WalletMenu.OpenMenu(e);
+    }
+
+    private async Task ConnectWallet(WalletType walletType)
+    {
+        await WalletProvider.SwitchToWallet(walletType);
+    }
+
+    private async Task CheckWalletAvailability()
+    {
+        await WalletProvider.CheckWalletAvailability();
+    }
+}
