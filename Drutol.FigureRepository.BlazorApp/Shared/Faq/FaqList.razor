@@ -1,4 +1,7 @@
 ﻿@using MudBlazor
+@using Drutol.FigureRepository.BlazorApp.Dialogs
+
+@inject IDialogService DialogService
 
 <MudExpansionPanels MultiExpansion="true" Class="mt-4">
     <MudGrid>
@@ -7,10 +10,11 @@
                 What are these?
             </Question>
             <Answer>
-                Some people buy mass produced, pre-painted figures from the companies like Kotobukiya or Alter,
+                Some people buy mass produced, pre-painted figures from the companies like <MudLink Href="https://myfigurecollection.net/entry/7621" Target="_blank">Kotobukiya</MudLink> or <MudLink Href="https://myfigurecollection.net/entry/7619" Target="_blank">Alter</MudLink>,
                 deeper in the rabbit hole you have those who buy resin Garage Kits (GKs).
                 <br/>
-                GKs are usually resin-cast figures that come in parts and require manual assembly and painting.
+                GKs are usually resin-cast figures that come in parts and require manual assembly and painting made by hobbyists or dedicated companies.
+                <br/>
                 <br/>
                 At the end of this chain there's me who after going through with first two steps decided that sculpting something on my own would be fun!
                 <br/>
@@ -23,9 +27,9 @@
                 What can I do with these?
             </Question>
             <Answer>
-                The main purpose of these is to print them, paint and display just like you'd with pre-painted figure with added
+                The main purpose of these is to print them, paint and display just like you'd with pre-painted figure with the added
                 flavour of doing it yourself.
-                <br/> Standard FDM 3D printing (the one that first comes to mind) is sadly not something I can recommend. 4K resolution SLA printer is necessary to achieve
+                <br/><br/> Standard FDM 3D printing (the one that first comes to mind) is sadly not something I can recommend. 4K resolution SLA printer is necessary to achieve
                 satisfactory results.
                 <br/> From other use cases I've seen people laser engraving the models in crystal for example.
             </Answer>
@@ -35,26 +39,29 @@
                 What's the deal with NFTs?
             </Question>
             <Answer>
-                There's a lot of bad fame around NFTs. Their hopefully now past main use of being just some crappy images stored somewhere on ipfs.
+                There's a lot of bad fame around NFTs. Their main use of being just some images stored somewhere is pretty pointless indeed in my opinion.
                 <br/>
-                However I believe that they <strong>do have</strong> a reason, you can treat an NFT as a license, be it for movie, book, audio... or in my case a license to download figure.
+                However I believe that they <strong>do have</strong> a reason, you can treat an NFT as a license, be it for movie, book, audio... or in my case a license to download a figure.
                 <br/>
-                You can have all of these digital goods in your wallet and precisely speaking immortalized in blockchain. No pesky payment providers, royalties etc.
                 <br/>
-                When you purchase a figure NFT on the marketplace, I'll just ask you to send me your wallet address, validate ownership and generate download link based on this <del>license</del> NFT.
+                You can have all of these digital goods in your wallet and precisely speaking immortalized in blockchain. No pesky payment providers and their royalties, other 3rd parties etc.
+                <br/>
+                You can learn more here: <MudLink Href="https://nft.gamestop.com/learn" Target="_blank">GameStop NFT</MudLink>
             </Answer>
         </FaqEntry>       
         <FaqEntry>
             <Question>
-                Is it difficult?
+                Is it difficult to paint and assembly?
             </Question>
             <Answer>
                 It is.
                 <br/>
                 <br/>
                 But at the same time it's incredibly satisfying to build something on your own. Lots of skills to obtain and the path will be thorny,
-                it's certainly doable though. I myself started basically from creative black hole (I'm a programmer professionally and no, I'm not doing frontend usually ^^)
+                it's certainly doable though.
+                <br/>I myself started basically from creative black hole (I'm a programmer professionally and no, I'm not doing websites ^^)
                 not having done anything creative at all and while I'm far from mastering anything I have a lot of fun while the results are satisfactory.
+                <br/>
                 <br/>
                 It also requires some major investments as it's not cheap hobby by any means.
             </Answer>
@@ -64,7 +71,10 @@
                 How do I print?
             </Question>
             <Answer>
-                Assuming you own resin 3D printer, you are provided with Lychee slicer scenes with pre-supported parts. <em>I'm doing these on best-effort basis, sadly can't guarantee these to be the most optimal. I did successfully print them though.</em>
+                Assuming you own resin 3D printer, you are provided with Lychee slicer scenes with pre-supported parts. 
+                <br/>
+                @*<em>I'm doing these on best-effort basis and sadly can't guarantee these to be the most optimal and depending on your own printer and resin the best arrangement will differ.</em><br/>*@
+                
                 In theory you just adjust them to use your resin and printer profile, export, load onto the printer and done.
                 <br/>
                 In reality you most likely will have to rearrange them based on your printer's print volume and other conditions that you know best
@@ -72,7 +82,7 @@
                 <br/>
                 <br/>
                 If you are entirely new to it you will have to research from scratch, buy printer and necessary equipment. Thankfully there's plenty of resources online.
-                I can recommend getting <em>at least 4K</em> resolution printer with decently sized build plate, I'm using Elegoo Saturn as of writing this.
+                I can recommend getting <em>at least 4K</em> resolution printer with decently sized build plate, I'm using Elegoo Saturn as of writing this and I'm very happy with it.
             </Answer>
         </FaqEntry>      
         <FaqEntry>
@@ -81,7 +91,7 @@
             </Question>
             <Answer>
                 You can either paint with airbrush or standard brushes, any kind of paint will suffice (Acrylics, Laquers, Enamels).
-                Get ready for a lot of sanding too. <br/>
+                Get ready for a lot of sanding too. <br/> <br/>
                 It's quite complex topic as you may imagine and it's not my goal to cover it here entirely. I will recommend this site as a good starting point:
                 <MudLink Href="https://www.plumworkshop.com/guides" Target="_blank" rel="noopener noreferrer">https://www.plumworkshop.com/guides</MudLink>
             </Answer>
@@ -112,7 +122,9 @@
             <Answer>
                 If you bought via CGTrader they are handling the download, if you bought an NFT you will find a download button
                 on figure details page. You will have to have your wallet extension installed and connected to this website, after that a prompt will pop-up asking to sign a message.
-                This signed message will allow me to verify ownership of given wallet address, if everything checks out I'll display your custom download link.
+                This signed message will allow me to verify ownership of given wallet address, if everything checks out I'll generate your custom download links.
+                <br/>
+                <MudLink Class="cursor-pointer" @onclick="ShowDownloadInfo">More info</MudLink>
             </Answer>
         </FaqEntry>    
         <FaqEntry>
@@ -120,7 +132,11 @@
                 What about the eyes?
             </Question>
             <Answer>
-
+                Eyes are tough, both to sculpt and paint. They are the soul of the figure after all. 
+                As of now I've settled on sculpting the eyebrows, lashes and the overall eye outline, with them serving as guides you can easily add basic colours.
+                <br/><br/>
+                For the actual inner eye you are either comfortable with painting manually with brush or you can print decals with laser printer. 
+                I do provide decals for you to print.
             </Answer>
         </FaqEntry>     
         <FaqEntry>
@@ -128,7 +144,8 @@
                 What's the difference between buying NFT and on CGTrader?
             </Question>
             <Answer>
-
+                CGTrader is entirely conventional 3rd party marketplace, because of royalties the prices there will be higher compared to buying directly from me.
+                Aside from that you are getting the same figure with the same files without the need of playing with Blockchain.
             </Answer>
         </FaqEntry>
         <FaqEntry>
@@ -136,7 +153,8 @@
                 What is Lychee Slicer?
             </Question>
             <Answer>
-
+                Lychee Slicer is my slicer of choice. Slicer is a software which converts 3D models to something that your printer can work with.
+                In case of resin printing it's simply a series of images (horizontal slices) indicating as to where the resin should be exposed to the UV light.
             </Answer>
         </FaqEntry> 
         <FaqEntry>
@@ -144,7 +162,7 @@
                 At what scale is the model? Can I adjust it?
             </Question>
             <Answer>
-
+                You can export all the parts as you desire with provided Blender scene. Press <strong>A</strong> then <strong>S</strong> and adjust as needed with mouse or by inputting precise scale value on keyboard.
             </Answer>
         </FaqEntry>
     </MudGrid>
@@ -152,5 +170,10 @@
 
 @code {
 
+
+    private void ShowDownloadInfo()
+    {
+        DialogService.Show<PurchaseInfoDialog>("Purchasing information");
+    }
 
 }

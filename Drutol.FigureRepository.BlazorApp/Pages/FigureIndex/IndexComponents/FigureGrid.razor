@@ -1,0 +1,89 @@
+﻿@using Drutol.FigureRepository.BlazorApp.Infrastructure.Figures
+@using Drutol.FigureRepository.BlazorApp.Interfaces.Figures
+@using Drutol.FigureRepository.Shared.Models.Enums
+@using Drutol.FigureRepository.BlazorApp.Util
+@using Drutol.FigureRepository.Shared.Models.Figure
+@using MudBlazor
+
+@inject IFigureProvider FigureProvider
+@inject NavigationManager NavigationManager
+
+<MudGrid Justify="Justify.SpaceEvenly">
+    @if (FigureDataReady)
+    {
+        @foreach (var figure in FigureProvider.Figures.Where(figure => figure.Media.Any(media => media.Display.HasFlag(FigurePhotoIntendedDisplay.FigureIndex))))
+        {
+            var photo = figure.Media.First(media => media.Display.HasFlag(FigurePhotoIntendedDisplay.FigureIndex));
+            <MudItem Style="@($"max-width: {ItemWidth}px")">
+                <MudCard @onclick="() => OnItemClick(figure)" Class="cursor-pointer">
+                    <MudCardMedia Image="@photo.Url" Height="400" Style="@($"background-position: {@photo.Gravity.ToCssValue()}")"/>
+                    <MudCardContent Style="min-height: 100px">
+                        <MudText Typo="Typo.h5" Align="Align.Center">@figure.Name</MudText>
+                        <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
+                        <MudText Typo="Typo.body1" Class="mt-2">@figure.Description</MudText>
+                        @{
+                            var publishEvent = figure.Timeline.FirstOrDefault(entry => entry.Event == FigureTimelineEvent.Publish);
+                        }
+                        @if (publishEvent != null)
+                        {
+                            <MudText Typo="Typo.body2" Class="mt-2">Published: @publishEvent.Date.ToString("d")</MudText>
+                        }
+                        else
+                        {
+                            <MudText Typo="Typo.body2" Class="mt-2">Published: TBD</MudText>
+                        }
+
+                    </MudCardContent>
+                    @*                    <MudCardActions Class="justify-end">
+                        <MudButton Variant="Variant.Outlined" Color="Color.Primary" >Details</MudButton>
+                    </MudCardActions>*@
+                </MudCard>
+            </MudItem>
+        }
+    }
+    else
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            <MudItem xs="12" sm="6" md="5" lg="4">
+                <MudCard>
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="250px"/>
+                    <MudCardContent>
+                        <MudSkeleton Animation="Animation.Wave"/>
+                        <MudSkeleton Animation="Animation.Wave"/>
+                        <MudSkeleton Animation="Animation.Wave"/>
+                        <MudSkeleton Animation="Animation.Wave"/>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudSkeleton SkeletonType="SkeletonType.Circle" Animation="Animation.Wave" Height="30px" Width="30px" Class="ml-2 mb-2"/>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        }
+    }
+
+</MudGrid>
+
+
+@code {
+
+    [Parameter]
+    public int ItemWidth { get; set; } = 345;
+
+    public bool FigureDataReady { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await FigureProvider.DataReady.Task;
+
+        FigureDataReady = true;
+
+        await base.OnInitializedAsync();
+    }
+
+    private void OnItemClick(Figure figure)
+    {
+        NavigationManager.NavigateTo($"Figures/{figure.Name}");
+    }
+
+}

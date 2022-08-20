@@ -32,10 +32,13 @@
             <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(e => DrawerToggle())"/>
             <div style="width: 10px"></div>
         </MudHidden>
+        
+        <a style="all: inherit;padding: 0" class="cursor-pointer" href="/">
+            <MudImage Src="svg/logo/LogoWebThick.svg" Height="45"/>
+            <div style="width: 10px"></div>
+            <MudImage Src="@(DarkMode ? "svg/logo/LogoTextWhite.svg" : "svg/logo/LogoTextBlack.svg")" Height="40"/>
+        </a>
 
-        <MudImage Src="svg/logo/LogoWebThick.svg" Height="45"/>
-        <div style="width: 10px"></div>
-        <MudImage Src="@(DarkMode ? "svg/logo/LogoTextWhite.svg" : "svg/logo/LogoTextBlack.svg")" Height="40"/>
         <MudSpacer/>
         @if (WalletProvider.CurrentWallet.HasValue && WalletProvider.CurrentWallet.Value.SelectedAccount.HasValue)
         {

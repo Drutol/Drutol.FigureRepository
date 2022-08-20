@@ -3,6 +3,7 @@
 @using MudBlazor
 @using Drutol.FigureRepository.BlazorApp.Interfaces.Figures
 @using Drutol.FigureRepository.BlazorApp.Pages.Index.IndexComponents
+@using Drutol.FigureRepository.BlazorApp.Pages.FigureIndex.IndexComponents
 @using Drutol.FigureRepository.BlazorApp.Shared.Faq
 
 @inject IFigureProvider FigureProvider
@@ -14,7 +15,7 @@
     }
 </style>
 
-<MudGrid Spacing="0">
+<MudGrid Spacing="0" Class="mt-2">
     <MudItem xs="12" sm="6" Id="Gallery">
         <IndexGallery/>
     </MudItem>
@@ -23,13 +24,23 @@
     </MudItem>
 </MudGrid>
 
-<MudPaper Class="ma-8 pa-8" Elevation="3">
+<MudText Typo="Typo.h4" Class="mt-4" Align="Align.Center">
+    Figures
+</MudText>
+
+<MudDivider Class="mx-8 mt-4"/>
+
+<div Class="ma-8">
+    <FigureGrid ItemWidth="400"/>
+</div>
+
+@*<MudPaper Class="ma-8 pa-8" Elevation="3">
     <MudItem Class="border-l-2 pl-4 mud-border-primary">
         <MudText Typo="Typo.h4" Align="Align.Left">FAQ</MudText>
-    </MudItem>   
-    
+    </MudItem>
+
     <FaqList/>
-</MudPaper>
+</MudPaper>*@
 
 @code {
 
