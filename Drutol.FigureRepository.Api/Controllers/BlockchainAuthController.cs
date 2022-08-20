@@ -1,4 +1,6 @@
 using Drutol.FigureRepository.Api.Interfaces;
+using Drutol.FigureRepository.Api.Logging;
+using Drutol.FigureRepository.Api.Util;
 using Drutol.FigureRepository.Shared.Blockchain;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,14 +22,44 @@ public class BlockchainAuthController : ControllerBase
     }
 
     [HttpPost("StartAuthentication")]
-    public async Task<StartAuthenticationResult> Start(StartAuthenticationRequest startAuthenticationRequest)
+    public async Task<StartAuthenticationResult> Start(StartAuthenticationRequest request)
     {
-        return await _authProvider.StartAuthentication(startAuthenticationRequest).ConfigureAwait(false);
+        var result = await _authProvider.StartAuthentication(request).ConfigureAwait(false);
+
+        if (result.Status == StartAuthenticationResult.StatusCode.Ok)
+        {
+            _logger.LogInformation(
+                EventIds.AuthSessionCreated.Ev(),
+                $"Created auth session {result.SessionGuid} for {request.WalletAddress} for figure {request.FigureGuid}");
+        }
+        else
+        {
+            _logger.LogError(
+                EventIds.AuthSessionCreationFailed.Ev(),
+                $"Failed to create auth session for {request.WalletAddress} for figure {request.FigureGuid} with status code {result.Status}");
+        }
+
+        return result;
     }      
         
     [HttpPost("FinishAuthentication")]
-    public async Task<FinishAuthenticationResult> Finish(FinishAuthenticationRequest finishAuthenticationRequest)
+    public async Task<FinishAuthenticationResult> Finish(FinishAuthenticationRequest request)
     {
-        return await _authProvider.FinishAuthentication(finishAuthenticationRequest).ConfigureAwait(false);
+        var result =  await _authProvider.FinishAuthentication(request).ConfigureAwait(false);
+
+        if (result.Status == FinishAuthenticationResult.StatusCode.Ok)
+        {
+            _logger.LogInformation(
+                EventIds.AuthSessionAuthenticated.Ev(),
+                $"Successfully authenticated session {request.SessionGuid}.");
+        }
+        else
+        {
+            _logger.LogError(
+                EventIds.AuthSessionAuthenticationFailed.Ev(),
+                $"Failed to authenticated session {request.SessionGuid}, status code: {result.Status}");
+        }
+
+        return result;
     }
 }

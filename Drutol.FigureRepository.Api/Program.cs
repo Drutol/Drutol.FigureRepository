@@ -7,15 +7,28 @@ using Drutol.FigureRepository.Api.Infrastructure.Blockchain;
 using Drutol.FigureRepository.Api.Infrastructure.Downloads;
 using Drutol.FigureRepository.Api.Interfaces;
 using Drutol.FigureRepository.Api.Models.Configuration;
+using Serilog;
+using Serilog.Events;
+using Serilog.Formatting.Json;
+using Serilog.Sinks.LiteDB;
 
 namespace Drutol.FigureRepository.Api;
 
 public class Program
 {
-    public static void Main(string[] args)
+    private const string LogDatabase = "Filename=DruFiguresLogs.db;Connection=shared";
+    private const string LogTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message} {Exception} {Properties} {NewLine}";
+
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
         builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory(ConfigurationAction));
+        builder.Host.UseSerilog((context, configuration) =>
+        {
+            configuration.Enrich.FromLogContext()
+                .WriteTo.LiteDB(LogDatabase, "logs")
+                .WriteTo.Console(LogEventLevel.Debug, "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message} {Exception} {Properties} {NewLine}");
+        });
 
         // Add services to the container.
 
@@ -34,9 +47,26 @@ public class Program
         app.MapControllers();
         app.UseCors(policyBuilder => policyBuilder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().SetIsOriginAllowed(s => true));
 
-        app.Services.GetRequiredService<IBlockchainAuthProvider>().Initialize();
+        Log.Logger = new LoggerConfiguration()
+            .Enrich.FromLogContext()
+            .WriteTo.Console(LogEventLevel.Verbose, LogTemplate)
+            .WriteTo.LiteDB(LogDatabase, "logs")
+            .CreateLogger();
 
-        app.Run();
+        try
+        {
+            Log.Information("Starting web host");
+            await app.Services.GetRequiredService<IBlockchainAuthProvider>().Initialize();
+            await app.RunAsync();
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "Host terminated unexpectedly");
+        }
+        finally
+        {
+            Log.CloseAndFlush();
+        }
     }
 
     private static void ConfigurationAction(ContainerBuilder builder)

@@ -5,7 +5,9 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 using Drutol.FigureRepository.Api.Interfaces;
+using Drutol.FigureRepository.Api.Logging;
 using Drutol.FigureRepository.Api.Models.Configuration;
+using Drutol.FigureRepository.Api.Util;
 using Drutol.FigureRepository.Shared.Blockchain;
 using Drutol.FigureRepository.Shared.Blockchain.Loopring;
 using Drutol.FigureRepository.Shared.Blockchain.Loopring.Nft;
@@ -147,7 +149,9 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
 
         if (apiKeyResponse is IApiKeyResponseModel.Fail fail)
         {
-            _logger.LogError($"Failed to obtain loopring api key. {JsonSerializer.Serialize(fail)}");
+            _logger.LogError(
+                EventIds.LoopringError.Ev(),
+                $"Failed to obtain loopring api key. {JsonSerializer.Serialize(fail)}");
             return new(FinishAuthenticationResult.StatusCode.Error);
         }
 

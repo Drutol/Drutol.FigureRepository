@@ -1,7 +1,9 @@
 ﻿using Ardalis.GuardClauses;
 using Drutol.FigureRepository.Api.Interfaces;
+using Drutol.FigureRepository.Api.Logging;
 using Drutol.FigureRepository.Api.Models.Checkout;
 using Drutol.FigureRepository.Api.Models.Configuration;
+using Drutol.FigureRepository.Api.Util;
 using LiteDB;
 using Microsoft.Extensions.Options;
 
@@ -46,7 +48,7 @@ public class CheckoutDatabase : ICheckoutDatabase
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Failed to store order in database.");
+            _logger.LogError(EventIds.DatabaseError.Ev(), e, "Failed to store order in database.");
             return false;
         }
     }

@@ -1,8 +1,10 @@
 ﻿using System.Text.Json;
 using Drutol.FigureRepository.Api.Interfaces;
+using Drutol.FigureRepository.Api.Logging;
 using Drutol.FigureRepository.Api.Models.Blockchain;
 using Drutol.FigureRepository.Api.Models.Checkout;
 using Drutol.FigureRepository.Api.Models.Configuration;
+using Drutol.FigureRepository.Api.Util;
 using Drutol.FigureRepository.Shared.Blockchain.Loopring;
 using Drutol.FigureRepository.Shared.Blockchain.Loopring.Nft;
 using Microsoft.Extensions.Options;
@@ -92,16 +94,16 @@ public class NftTransferProvider : INftTransferProvider
 
                     if (transferResponse is ITransferNftResponseModel.Fail transferFail)
                     {
-                        _logger.LogError($"Failed to transfer nft. {JsonSerializer.Serialize(transferFail)}");
+                        _logger.LogError(EventIds.LoopringError.Ev(), $"Failed to transfer nft. {JsonSerializer.Serialize(transferFail)}");
                         return new NftTransferResult(false);
                     }
                 }
                 else
                 {
                     if (feesResponse is IGetOffchainFeeResponseModel.Fail feesFail)
-                        _logger.LogError($"Failed to obtain loopring fees. {JsonSerializer.Serialize(feesFail)}");
+                        _logger.LogError(EventIds.LoopringError.Ev(), $"Failed to obtain loopring fees. {JsonSerializer.Serialize(feesFail)}");
                     if (storageIdResponse is IGetStorageIdResponseModel.Fail storageFail)
-                        _logger.LogError($"Failed to obtain loopring storage. {JsonSerializer.Serialize(storageFail)}");
+                        _logger.LogError(EventIds.LoopringError.Ev(), $"Failed to obtain loopring storage. {JsonSerializer.Serialize(storageFail)}");
 
                     return new NftTransferResult(false);
                 }

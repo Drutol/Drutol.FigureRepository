@@ -101,7 +101,6 @@ public class PaypalCheckoutProvider : ICheckoutProvider
 
             if (await _checkoutDatabase.CreateOrder(orderEntity))
             {
-                _logger.LogInformation($"Created order: {orderEntity}");
                 return new CheckoutOrderResponse(true, orderResult.Id);
             }
             else
@@ -111,7 +110,7 @@ public class PaypalCheckoutProvider : ICheckoutProvider
         }
         else
         {
-            _logger.LogInformation($"Failed to create order, PayPal status code: {response.StatusCode}");
+            _logger.LogError($"Failed to create order, PayPal status code: {response.StatusCode}");
             return new CheckoutOrderResponse(false);
         }
     }

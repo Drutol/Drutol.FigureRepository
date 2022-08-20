@@ -67,7 +67,6 @@ public class DownloadTokenManager : IDownloadTokenManager
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Failed to validate jwt token.");
             return false;
         }
     }

@@ -23,6 +23,8 @@
     <PackageReference Include="Nethereum.Signer.EIP712" Version="4.1.1" />
     <PackageReference Include="Nethereum.Web3" Version="4.6.1" />
     <PackageReference Include="PayPalCheckoutSdk" Version="1.0.4" />
+    <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
+    <PackageReference Include="Serilog.Sinks.LiteDB" Version="1.0.29" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.20.0" />
   </ItemGroup>
 

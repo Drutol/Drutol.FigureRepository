@@ -1,7 +1,9 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Sas;
 using Drutol.FigureRepository.Api.Interfaces;
+using Drutol.FigureRepository.Api.Logging;
 using Drutol.FigureRepository.Api.Models.Configuration;
+using Drutol.FigureRepository.Api.Util;
 using Drutol.FigureRepository.Shared.Models.Enums;
 using Drutol.FigureRepository.Shared.Models.Figure;
 using Functional.Maybe;
@@ -30,7 +32,7 @@ public class DownloadLinkGenerator : IDownloadLinkGenerator
 
         if (!_config.Value.Containers.TryGetValue(figure.Guid.ToString("D").ToUpper(), out var containerName))
         {
-            _logger.LogError($"Missing container name for figure {figure.Name} ({figure.Guid})");
+            _logger.LogError(EventIds.ConfigurationError.Ev(), $"Missing container name for figure {figure.Name} ({figure.Guid})");
             return Maybe<string>.Nothing;
         }
 
