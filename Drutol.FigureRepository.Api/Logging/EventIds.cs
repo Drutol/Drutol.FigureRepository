@@ -18,6 +18,7 @@
         AuthSessionAuthenticated = 52,
         AuthSessionAuthenticationFailed = 53,
 
+        AdminAuth = 60,
 
         LoopringError = 900,
         DatabaseError = 901,

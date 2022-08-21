@@ -26,7 +26,7 @@ public class DownloadTokenManager : IDownloadTokenManager
         _logger = logger;
         _configuration = configuration;
 
-        _key = Encoding.ASCII.GetBytes(_configuration.Value.JwtSigningKey);;
+        _key = Encoding.ASCII.GetBytes(_configuration.Value.JwtSigningKey);
         _validator = new JwtSecurityTokenHandler();
         _validationParameters = new TokenValidationParameters
         {

@@ -4,6 +4,7 @@ using Drutol.FigureRepository.Api.Logging;
 using Drutol.FigureRepository.Api.Models.Checkout;
 using Drutol.FigureRepository.Api.Models.Configuration;
 using Drutol.FigureRepository.Api.Util;
+using Drutol.FigureRepository.Shared.Orders;
 using LiteDB;
 using Microsoft.Extensions.Options;
 
@@ -62,5 +63,25 @@ public class CheckoutDatabase : ICheckoutDatabase
     {
         _database.GetCollection<OrderEntity>().Update(orderEntity);
         return ValueTask.CompletedTask;
+    }
+
+    public ValueTask<GetOrdersRequestResult> GetOrders(GetOrdersRequest request)
+    {
+        var query = _database.GetCollection<OrderEntity>().Query();
+
+        if (request.StatusFilter is { Count: > 0 })
+            query = query.Where(entity => request.StatusFilter.Contains(entity.Status));
+
+        if (request.From is { })
+            query = query.Where(entity => entity.CreatedAt >= request.From);
+
+        if (request.To is { })
+            query = query.Where(entity => entity.CreatedAt <= request.To);
+
+        var totalCount = query.Count();
+
+        var orders = query.Limit(Math.Min(100, request.Take)).Offset(request.Skip).ToList();
+
+        return ValueTask.FromResult(new GetOrdersRequestResult(totalCount, orders.Select(entity => entity.ToModel()).ToList()));
     }
 }

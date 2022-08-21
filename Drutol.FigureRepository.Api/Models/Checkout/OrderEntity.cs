@@ -1,4 +1,6 @@
-﻿namespace Drutol.FigureRepository.Api.Models.Checkout;
+﻿using Drutol.FigureRepository.Shared.Models.Orders;
+
+namespace Drutol.FigureRepository.Api.Models.Checkout;
 
 public class OrderEntity
 {
@@ -19,6 +21,23 @@ public class OrderEntity
     public string PayPalObject { get; set; }
     public string TransactionHash { get; set; }
 
+    public Order ToModel() => new Order
+    {
+        Status = Status,
+        WalletAddress = WalletAddress,
+        CheckoutId = CheckoutId,
+        AccountId = AccountId,
+        CreatedAt = CreatedAt,
+        Events = Events?.Select(entity => entity.ToModel()).ToList(),
+        FigureId = FigureId,
+        Guid = Guid,
+        IncludesWalletActivation = IncludesWalletActivation,
+        PaidFee = PaidFee,
+        PayPalObject = PayPalObject,
+        Price = Price,
+        TransactionHash = TransactionHash,
+    };
+
     public override string ToString()
     {
         return $"Order: " +
@@ -27,11 +46,4 @@ public class OrderEntity
                $"{nameof(WalletAddress)}: {WalletAddress}, " +
                $"{nameof(CheckoutId)}: {CheckoutId}";
     }
-}
-
-public class OrderEventEntity
-{
-    public OrderStatus StatusChange { get; init; }
-    public DateTime DateTime { get; init; }
-    public string Data { get; set; }
 }
