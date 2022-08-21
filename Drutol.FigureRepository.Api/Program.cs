@@ -37,7 +37,10 @@ public class Program
         builder.Host.UseSerilog((context, configuration) =>
         {
             configuration.Enrich.FromLogContext()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft.AspNetCore.Hosting.Diagnostics", LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft.AspNetCore.Cors", LogEventLevel.Warning)
                 .WriteTo.LiteDB(LogDatabase, "logs")
                 .WriteTo.Console(LogEventLevel.Debug, "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message} {Exception} {Properties} {NewLine}");
         });
@@ -87,22 +90,24 @@ public class Program
         app.MapControllers();
         app.UseCors(policyBuilder => policyBuilder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().SetIsOriginAllowed(s => true));
 
-        Log.Logger = new LoggerConfiguration()
+        var logger = new LoggerConfiguration()
             .Enrich.FromLogContext()
-            .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+            .MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning)
+            .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
+            .MinimumLevel.Override("Microsoft.AspNetCore.Hosting.Diagnostics", LogEventLevel.Warning)
             .WriteTo.Console(LogEventLevel.Verbose, LogTemplate)
             .WriteTo.LiteDB(LogDatabase, "logs")
             .CreateLogger();
 
         try
         {
-            Log.Information("Starting web host");
+            logger.Information("Starting web host");
             await app.Services.GetRequiredService<IBlockchainAuthProvider>().Initialize();
             await app.RunAsync();
         }
         catch (Exception ex)
         {
-            Log.Fatal(ex, "Host terminated unexpectedly");
+            logger.Fatal(ex, "Host terminated unexpectedly");
         }
         finally
         {

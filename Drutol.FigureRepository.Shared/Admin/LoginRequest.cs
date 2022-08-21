@@ -9,5 +9,5 @@ namespace Drutol.FigureRepository.Shared.Admin
 {
     public record LoginRequest(string Key);
 
-    public record LoginResult(bool Success, TokenResponse TokenResponse = null);
+    public record LoginRequestResult(bool Success, TokenResponse TokenResponse = null);
 }

@@ -95,6 +95,7 @@ public class PaypalCheckoutProvider : ICheckoutProvider
                     }
                 },
                 Price = figure.CheckoutDetails.Price,
+                PayPalObject = JsonSerializer.Serialize(orderResult),
                 FigureId = figure.Guid,
                 Status = OrderStatus.Created
             };

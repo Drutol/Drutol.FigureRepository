@@ -1,10 +1,7 @@
-﻿using System.Text.Json;
-using Drutol.FigureRepository.BlazorApp.Enums;
+﻿using Drutol.FigureRepository.BlazorApp.Enums;
 using Drutol.FigureRepository.BlazorApp.Interfaces.Wallet;
 using Drutol.FigureRepository.BlazorApp.Models;
 using Functional.Maybe;
-using MetaMask.Blazor;
-using MetaMask.Blazor.Enums;
 using MudBlazor;
 
 namespace Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet;

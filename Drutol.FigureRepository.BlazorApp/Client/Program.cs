@@ -1,12 +1,16 @@
 using Blazored.LocalStorage;
 using Blazored.SessionStorage;
+using Drutol.FigureRepository.Api.Models;
 using Drutol.FigureRepository.BlazorApp.Infrastructure;
 using Drutol.FigureRepository.BlazorApp.Infrastructure.Figures;
 using Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet;
+using Drutol.FigureRepository.BlazorApp.Interfaces;
 using Drutol.FigureRepository.BlazorApp.Interfaces.Figures;
 using Drutol.FigureRepository.BlazorApp.Interfaces.Http;
 using Drutol.FigureRepository.BlazorApp.Interfaces.Wallet;
+using Drutol.FigureRepository.Shared.Admin;
 using MetaMask.Blazor;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor;
@@ -44,6 +48,15 @@ public class Program
 
         builder.Services.AddScoped<IWalletConnector, MetaMaskWalletConnector>();
         builder.Services.AddScoped<IWalletConnector, GameStopWalletConnector>();
+
+        builder.Services.AddOptions();
+        builder.Services.AddAuthorizationCore(options => 
+            options.AddPolicy(
+                AuthPolicies.AdminPolicy,
+                policyBuilder => policyBuilder.RequireClaim(AdminClaims.AdminClaim)));
+        builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
+        builder.Services.AddScoped<IApiAuthenticationStateProvider>(provider => 
+            (ApiAuthenticationStateProvider)provider.GetRequiredService<AuthenticationStateProvider>());
 
         await builder.Build().RunAsync();
     }

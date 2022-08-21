@@ -80,6 +80,9 @@ public class CheckoutDatabase : ICheckoutDatabase
 
         var totalCount = query.Count();
 
+        if (request.Take == 0)
+            request.Take = 100;
+
         var orders = query.Limit(Math.Min(100, request.Take)).Offset(request.Skip).ToList();
 
         return ValueTask.FromResult(new GetOrdersRequestResult(totalCount, orders.Select(entity => entity.ToModel()).ToList()));

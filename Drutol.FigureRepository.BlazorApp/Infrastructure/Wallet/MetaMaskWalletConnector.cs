@@ -6,7 +6,6 @@ using Drutol.FigureRepository.BlazorApp.Util;
 using Functional.Maybe;
 using MetaMask.Blazor;
 using MetaMask.Blazor.Enums;
-using MudBlazor;
 
 namespace Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet;
 

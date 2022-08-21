@@ -33,20 +33,20 @@ public class AdminController : ControllerBase
 
     [HttpPost("login")]
     [AllowAnonymous]
-    public LoginResult Login(LoginRequest request)
+    public LoginRequestResult Login(LoginRequest request)
     {
         var result = _adminService.Authenticate(request.Key);
 
         return result.SelectOrElse(
-            response => new LoginResult(true, response),
+            response => new LoginRequestResult(true, response),
             () =>
             {
                 _logger.LogWarning(EventIds.AdminAuth.Ev(), "Failed admin login attempt.");
-                return new LoginResult(false);
+                return new LoginRequestResult(false);
             });
     }
 
-    [HttpGet("orders")]
+    [HttpPost("orders")]
     public async Task<GetOrdersRequestResult> GetOrders(GetOrdersRequest request)
     {
         return await _checkoutDatabase.GetOrders(request);
