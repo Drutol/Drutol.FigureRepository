@@ -10,6 +10,7 @@ using Drutol.FigureRepository.Shared.Checkout;
 using Microsoft.Extensions.Options;
 using PayPalCheckoutSdk.Core;
 using PayPalCheckoutSdk.Orders;
+using Order = PayPalCheckoutSdk.Orders.Order;
 
 namespace Drutol.FigureRepository.Api.Infrastructure;
 
@@ -17,7 +18,7 @@ public class PaypalCheckoutProvider : ICheckoutProvider
 {
     private readonly ILogger<PaypalCheckoutProvider> _logger;
     private readonly IFigureSeedManager _figureSeedManager;
-    private readonly ICheckoutDatabase _checkoutDatabase;
+    private readonly IOrderDatabase _orderDatabase;
     private readonly IDownloadTokenManager _downloadTokenManager;
     private readonly INftTransferProvider _nftTransferProvider;
     private readonly ILoopringCommunicator _loopringCommunicator;
@@ -27,7 +28,7 @@ public class PaypalCheckoutProvider : ICheckoutProvider
     public PaypalCheckoutProvider(
         ILogger<PaypalCheckoutProvider> logger,
         IFigureSeedManager figureSeedManager,
-        ICheckoutDatabase checkoutDatabase,
+        IOrderDatabase orderDatabase,
         IDownloadTokenManager downloadTokenManager,
         INftTransferProvider nftTransferProvider,
         ILoopringCommunicator loopringCommunicator,
@@ -35,7 +36,7 @@ public class PaypalCheckoutProvider : ICheckoutProvider
     {
         _logger = logger;
         _figureSeedManager = figureSeedManager;
-        _checkoutDatabase = checkoutDatabase;
+        _orderDatabase = orderDatabase;
         _downloadTokenManager = downloadTokenManager;
         _nftTransferProvider = nftTransferProvider;
         _loopringCommunicator = loopringCommunicator;
@@ -100,7 +101,7 @@ public class PaypalCheckoutProvider : ICheckoutProvider
                 Status = OrderStatus.Created
             };
 
-            if (await _checkoutDatabase.CreateOrder(orderEntity))
+            if (await _orderDatabase.CreateOrder(orderEntity))
             {
                 return new CheckoutOrderResponse(true, orderResult.Id);
             }
@@ -119,7 +120,7 @@ public class PaypalCheckoutProvider : ICheckoutProvider
     public async ValueTask<CheckoutTransactionResponse> CreateTransaction(
         CheckoutTransactionRequest transactionRequest)
     {
-        var orderEntity = await _checkoutDatabase.GetOrderByCheckoutId(transactionRequest.CheckoutId);
+        var orderEntity = await _orderDatabase.GetOrderByCheckoutId(transactionRequest.CheckoutId);
         if (orderEntity is null)
         {
             return new CheckoutTransactionResponse(CheckoutTransactionResponse.StatusCode.OrderNotFound);
@@ -174,7 +175,8 @@ public class PaypalCheckoutProvider : ICheckoutProvider
                         orderEntity.Events.Add(new OrderEventEntity
                         {
                             DateTime = DateTime.UtcNow,
-                            StatusChange = OrderStatus.DeliveryPending
+                            StatusChange = OrderStatus.DeliveryPending,
+                            Data = $"[{string.Join(", ", transferResult.ErrorMessages)}]"
                         });
                         return new(
                             CheckoutTransactionResponse.StatusCode.DeliveryPending,
@@ -222,7 +224,7 @@ public class PaypalCheckoutProvider : ICheckoutProvider
         }
         finally
         {
-            await _checkoutDatabase.UpdateOrder(orderEntity);
+            await _orderDatabase.UpdateOrder(orderEntity);
         }
     }
 }

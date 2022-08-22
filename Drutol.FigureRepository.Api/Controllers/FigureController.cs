@@ -24,7 +24,7 @@ public class FigureController : ControllerBase
     [HttpGet("all")]
     public List<Figure> GetFigures()
     {
-        _logger.LogInformation(EventIds.FiguresFetched.Ev(), "Figures fetched.");
+        _logger.LogInformation(EventIds.FiguresFetched.Ev(), $"Figures fetched.");
         return _seedManager.Figures;
     }
 }

@@ -34,4 +34,8 @@
     <ProjectReference Include="..\Drutol.FigureRepository.Shared\Drutol.FigureRepository.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Logging\" />
+  </ItemGroup>
+
 </Project>

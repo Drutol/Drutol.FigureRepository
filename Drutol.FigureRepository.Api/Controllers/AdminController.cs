@@ -1,8 +1,10 @@
-﻿using Drutol.FigureRepository.Api.Interfaces;
+﻿using Drutol.FigureRepository.Api.DataAccess;
+using Drutol.FigureRepository.Api.Interfaces;
 using Drutol.FigureRepository.Api.Logging;
 using Drutol.FigureRepository.Api.Models;
 using Drutol.FigureRepository.Api.Util;
 using Drutol.FigureRepository.Shared.Admin;
+using Drutol.FigureRepository.Shared.Logs;
 using Drutol.FigureRepository.Shared.Models.Auth;
 using Drutol.FigureRepository.Shared.Models.Orders;
 using Drutol.FigureRepository.Shared.Orders;
@@ -18,16 +20,19 @@ namespace Drutol.FigureRepository.Api.Controllers;
 public class AdminController : ControllerBase
 {
     private readonly ILogger<AdminController> _logger;
-    private readonly ICheckoutDatabase _checkoutDatabase;
+    private readonly IOrderDatabase _orderDatabase;
+    private readonly ILogDatabase _logDatabase;
     private readonly IAdminService _adminService;
 
     public AdminController(
         ILogger<AdminController> logger,
-        ICheckoutDatabase checkoutDatabase,
+        IOrderDatabase orderDatabase,
+        ILogDatabase logDatabase,
         IAdminService adminService)
     {
         _logger = logger;
-        _checkoutDatabase = checkoutDatabase;
+        _orderDatabase = orderDatabase;
+        _logDatabase = logDatabase;
         _adminService = adminService;
     }
 
@@ -49,6 +54,12 @@ public class AdminController : ControllerBase
     [HttpPost("orders")]
     public async Task<GetOrdersRequestResult> GetOrders(GetOrdersRequest request)
     {
-        return await _checkoutDatabase.GetOrders(request);
+        return await _orderDatabase.GetOrders(request);
+    }  
+    
+    [HttpPost("logs")]
+    public async Task<GetLogsRequestResult> GetLogs(GetLogsRequest request)
+    {
+        return await _logDatabase.GetLogs(request);
     }
 }

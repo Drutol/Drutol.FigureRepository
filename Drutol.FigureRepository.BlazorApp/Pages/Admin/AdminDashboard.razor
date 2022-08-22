@@ -5,13 +5,13 @@
 @using Drutol.FigureRepository.Api.Models.Checkout
 @using Drutol.FigureRepository.BlazorApp.Interfaces
 @using Drutol.FigureRepository.BlazorApp.Interfaces.Http
+@using Drutol.FigureRepository.BlazorApp.Pages.Admin.DashboardComponents
 @using Drutol.FigureRepository.Shared.Models.Orders
 @using Drutol.FigureRepository.Shared.Orders
 @using Microsoft.AspNetCore.Components
 @using System.Net.Http.Headers
 
 @attribute [Authorize(Policy = AuthPolicies.AdminPolicy)]
-@implements IDisposable
 
 @inject IApiHttpClient HttpClient
 @inject ILogger<AdminDashboard> Logger
@@ -20,120 +20,17 @@
 <MudTabs Outlined="true" Position="Position.Left" Border="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Style="height: 100%">
     <MudTabPanel Text="Orders" Icon="@Icons.Filled.ShoppingCartCheckout">
         <MudContainer MaxWidth="MaxWidth.False">
-            <MudDataGrid @ref="DataGrid" Loading="@Loading" RowsPerPage="@ItemsPerPage" T="Order" MultiSelection="false" SortMode="SortMode.Multiple" Filterable="true" 
-                         Hideable="true" Virtualize="true" Striped="true" Bordered="true" Hover="true" Items="@Orders.SelectMany(pair => pair.Value)">
-                <ToolBarContent>
-                    <MudText Typo="Typo.h6">Orders</MudText>
-                    <MudSpacer />
-                    <MudSelect T="OrderStatus" Label="Status filter" AnchorOrigin="Origin.BottomCenter" MultiSelection="true" 
-                               SelectedValues="SelectedStatuses" SelectedValuesChanged="Callback" T="OrderStatus">
-                        @foreach (var status in Enum.GetValues<OrderStatus>())
-                        {
-                            <MudSelectItem T="OrderStatus" Value="@status" />
-                        }
-
-                    </MudSelect>
-                </ToolBarContent>
-                <Columns>
-                    <Column T="Order" Field="Guid" Sortable="false" Filterable="false" />
-                    <Column T="Order" Field="Status"/>
-                    <Column T="Order" Field="CheckoutId" />
-                    <Column T="Order" Field="CreatedAt" />
-                    <Column T="Order" Field="Guid" Title="Actions">
-                        <CellTemplate>
-                            @if (@context.Item.Status == OrderStatus.DeliveryPending)
-                            {
-                                <MudButton Variant="Variant.Filled" Color="Color.Primary">Deliver</MudButton>
-                            }
-                        </CellTemplate>
-                    </Column>
-                </Columns>
-                <PagerContent>
-                    <MudDataGridPager @ref="Pager" T="Order" DisableRowsPerPage="true"  />
-                </PagerContent>
-            </MudDataGrid>
-
+            <OrdersTab/>
+        </MudContainer>
+    </MudTabPanel>    
+    <MudTabPanel Text="Logs" Icon="@Icons.Filled.ReceiptLong">
+        <MudContainer MaxWidth="MaxWidth.False">
+            <LogsTab/>
         </MudContainer>
     </MudTabPanel>
 </MudTabs>
 
 @code {
-    public MudDataGridPager<Order> Pager { get; set; }
-    public MudDataGrid<Order> DataGrid { get; set; }
-    public Dictionary<int, List<Order>> Orders { get; set; } = new Dictionary<int, List<Order>>();
-    public int ItemsPerPage { get; set; } = 50;
-    public bool Loading { get; set; }
-
-    public List<OrderStatus> SelectedStatuses { get; set; } = new List<OrderStatus>
-    {
-        OrderStatus.Delivered,
-        OrderStatus.DeliveryPending,
-        OrderStatus.Error,
-        OrderStatus.PayPalError
-    };
-
-    private async void RefreshList()
-    {
-        try
-        {
-            if (!Orders.ContainsKey(CurrentPage))
-            {
-                Loading = true;
-                StateHasChanged();
-                HttpClient.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AuthenticationStateProvider.TokenResponse.JwtToken);
-                var response = await HttpClient.Client.PostAsJsonAsync("api/admin/orders", new GetOrdersRequest
-                {
-                    StatusFilter = SelectedStatuses,
-                    Take = ItemsPerPage,
-                    Skip = CurrentPage * ItemsPerPage
-                });
-
-                var result = await response.Content.ReadFromJsonAsync<GetOrdersRequestResult>();
-
-                Orders[CurrentPage] = result.Orders;
-
-                Loading = false;
-                StateHasChanged();
-            }
-        }
-        catch (Exception e)
-        {
-            Logger.LogError(e, "Failed to load orders.");
-        }
-    }
-
-    public int CurrentPage { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-
-        //DataGrid.PagerStateHasChangedEvent += PagerStateHasChangedEvent;
-        //await DataGrid.SetRowsPerPageAsync(ItemsPerPage);
-        RefreshList();
-    }
-
-    private void PagerStateHasChangedEvent()
-    {
-        if (CurrentPage != DataGrid.CurrentPage)
-        {
-            CurrentPage = DataGrid.CurrentPage;
-            RefreshList();
-        }
-    }
-
-    public void Dispose()
-    {
-        DataGrid.PagerStateHasChangedEvent -= PagerStateHasChangedEvent;
-    }
-
-
-    private void Callback(IEnumerable<OrderStatus> obj)
-    {
-        SelectedStatuses = obj.ToList();
-        Orders.Clear();
-        DataGrid.CurrentPage = 0;
-        RefreshList();
-    }
+    
 
 }

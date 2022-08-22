@@ -1,0 +1,140 @@
+﻿@using Drutol.FigureRepository.Shared.Models.Orders
+@using Drutol.FigureRepository.Api.Models.Checkout
+@using Drutol.FigureRepository.Shared.Orders
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Net.Http.Headers
+@using Drutol.FigureRepository.Api.Logging
+@using Drutol.FigureRepository.BlazorApp.Interfaces
+@using Drutol.FigureRepository.BlazorApp.Interfaces.Http
+@using Drutol.FigureRepository.Shared.Logs
+
+@inject IApiHttpClient HttpClient
+@inject ILogger<AdminDashboard> Logger
+@inject IApiAuthenticationStateProvider AuthenticationStateProvider
+
+<MudDataGrid @ref="DataGrid" Loading="@Loading" RowsPerPage="@ItemsPerPage" T="Log" MultiSelection="false" SortMode="SortMode.Multiple" Filterable="true" 
+             Hideable="true" Virtualize="true" Striped="true" Bordered="true" Hover="true" Items="@Logs.SelectMany(pair => pair.Value)">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Logs</MudText>
+        <MudSpacer />
+        <MudSelect T="LogLevel" Label="Level filter" AnchorOrigin="Origin.BottomCenter" MultiSelection="true" 
+                   SelectedValues="SelectedLevels" SelectedValuesChanged="LevelCallback">
+            @foreach (var status in Enum.GetValues<LogLevel>())
+            {
+                <MudSelectItem T="LogLevel" Value="@status" />
+            }
+        </MudSelect> 
+        <MudDivider Vertical="true" Class="mx-4 py-4"/>
+        <MudSelect T="EventIds" Label="Event Filter" AnchorOrigin="Origin.BottomCenter" MultiSelection="true" 
+                   SelectedValues="SelectedEvents" SelectedValuesChanged="EventCallback">
+            @foreach (var status in Enum.GetValues<EventIds>())
+            {
+                <MudSelectItem T="EventIds" Value="@status" />
+            }
+        </MudSelect>
+    </ToolBarContent>
+    <Columns>
+        <Column T="Log" Field="DateTime" />
+        <Column T="Log" Field="Level"/>
+        <Column T="Log" Field="Id">
+            <CellTemplate>
+                @if (context.Item.Id.HasValue)
+                {
+                    <span>
+                        @context.Item.Id.ToString() (@((int)context.Item.Id))
+                    </span>
+                }
+                
+            </CellTemplate>
+        </Column>
+        <Column T="Log" Field="Message" />
+    </Columns>
+    <PagerContent>
+        <MudDataGridPager @ref="Pager" T="Log" DisableRowsPerPage="true"  />
+    </PagerContent>
+</MudDataGrid>
+
+@code {
+public MudDataGridPager<Log> Pager { get; set; }
+    public MudDataGrid<Log> DataGrid { get; set; }
+    public Dictionary<int, List<Log>> Logs { get; set; } = new Dictionary<int, List<Log>>();
+    public int ItemsPerPage { get; set; } = 50;
+    public bool Loading { get; set; }
+
+    public List<EventIds> SelectedEvents { get; set; } = Enum.GetValues<EventIds>().ToList();
+    public List<LogLevel> SelectedLevels { get; set; } = Enum.GetValues<LogLevel>().ToList();
+
+    private async void RefreshList()
+    {
+        try
+        {
+            if (!Logs.ContainsKey(CurrentPage))
+            {
+                Loading = true;
+                StateHasChanged();
+                HttpClient.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AuthenticationStateProvider.TokenResponse.JwtToken);
+                var response = await HttpClient.Client.PostAsJsonAsync("api/admin/logs", new GetLogsRequest
+                {
+                    EventIds = SelectedEvents,
+                    LogLevels = SelectedLevels,
+                    Take = ItemsPerPage,
+                    Skip = CurrentPage * ItemsPerPage
+                });
+
+                var result = await response.Content.ReadFromJsonAsync<GetLogsRequestResult>();
+
+                Logs[CurrentPage] = result.Logs;
+
+                Loading = false;
+                StateHasChanged();
+            }
+        }
+        catch (Exception e)
+        {
+            Logger.LogError(e, "Failed to load orders.");
+        }
+    }
+
+    public int CurrentPage { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        //DataGrid.PagerStateHasChangedEvent += PagerStateHasChangedEvent;
+        //await DataGrid.SetRowsPerPageAsync(ItemsPerPage);
+        RefreshList();
+    }
+
+    private void PagerStateHasChangedEvent()
+    {
+        if (CurrentPage != DataGrid.CurrentPage)
+        {
+            CurrentPage = DataGrid.CurrentPage;
+            RefreshList();
+        }
+    }
+
+    public void Dispose()
+    {
+        DataGrid.PagerStateHasChangedEvent -= PagerStateHasChangedEvent;
+    }
+
+
+    private void EventCallback(IEnumerable<EventIds> obj)
+    {
+        SelectedEvents = obj.ToList();
+        Logs.Clear();
+        DataGrid.CurrentPage = 0;
+        RefreshList();
+    }
+
+    private void LevelCallback(IEnumerable<LogLevel> obj)
+    {
+        SelectedLevels = obj.ToList();
+        Logs.Clear();
+        DataGrid.CurrentPage = 0;
+        RefreshList();
+    }
+
+}

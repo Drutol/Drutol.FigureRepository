@@ -10,14 +10,14 @@ using Microsoft.Extensions.Options;
 
 namespace Drutol.FigureRepository.Api.DataAccess;
 
-public class CheckoutDatabase : ICheckoutDatabase
+public class OrderDatabase : IOrderDatabase
 {
-    private readonly ILogger<CheckoutDatabase> _logger;
+    private readonly ILogger<OrderDatabase> _logger;
     private readonly IOptions<CheckoutDatabaseConfiguration> _config;
     private readonly LiteDatabase _database;
 
-    public CheckoutDatabase(
-        ILogger<CheckoutDatabase> logger,
+    public OrderDatabase(
+        ILogger<OrderDatabase> logger,
         IOptions<CheckoutDatabaseConfiguration> config)
     {
         _logger = logger;

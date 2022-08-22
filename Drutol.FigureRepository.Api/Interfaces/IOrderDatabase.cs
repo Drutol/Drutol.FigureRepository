@@ -3,7 +3,7 @@ using Drutol.FigureRepository.Shared.Orders;
 
 namespace Drutol.FigureRepository.Api.Interfaces;
 
-public interface ICheckoutDatabase
+public interface IOrderDatabase
 {
     ValueTask<bool> CreateOrder(OrderEntity order);
     ValueTask<OrderEntity?> GetOrderByCheckoutId(string checkoutId);

@@ -59,28 +59,29 @@ public class NftTransferProvider : INftTransferProvider
                     storageIdResponse is IGetStorageIdResponseModel.Success storageId)
                 {
                     var fee = fees.Fees.First(fee => fee.TokenId == 0).RequiredFee;
-                    var transferResponse = await _loopringCommunicator.TransferFigureNft(apiKey.ApiKey, new TransferNftRequestModel
-                    {
-                        FromAccountId = _config.Value.SourceAccountId,
-                        FromAddress = _config.Value.SourceAccountAddress,
-                        ToAccountId = order.AccountId,
-                        ToAddress = order.WalletAddress,
-                        TokenData = new TransferNftRequestModel.Token
+                    var transferResponse = await _loopringCommunicator.TransferFigureNft(apiKey.ApiKey,
+                        new TransferNftRequestModel
                         {
-                            Amount = "1",
-                            NftData = figure.NftDetails.NftData,
-                            TokenId = figure.NftDetails.TokenId
-                        },
+                            FromAccountId = _config.Value.SourceAccountId,
+                            FromAddress = _config.Value.SourceAccountAddress,
+                            ToAccountId = order.AccountId,
+                            ToAddress = order.WalletAddress,
+                            TokenData = new TransferNftRequestModel.Token
+                            {
+                                Amount = "1",
+                                NftData = figure.NftDetails.NftData,
+                                TokenId = figure.NftDetails.TokenId
+                            },
 
-                        Fee = new TransferNftRequestModel.MaxFee
-                        {
-                            Amount = fee,
-                            TokenId = 0
-                        },
-                        StorageId = storageId.OffchainId,
-                        PayPayeeUpdateAccount = order.IncludesWalletActivation,
-                        Memo = $"{figure.Name} - {order.CheckoutId}",
-                    }
+                            Fee = new TransferNftRequestModel.MaxFee
+                            {
+                                Amount = fee,
+                                TokenId = 0
+                            },
+                            StorageId = storageId.OffchainId,
+                            PayPayeeUpdateAccount = order.IncludesWalletActivation,
+                            Memo = $"{figure.Name} - {order.CheckoutId}",
+                        }
                     );
 
                     if (transferResponse is ITransferNftResponseModel.Success transfer)
@@ -94,25 +95,46 @@ public class NftTransferProvider : INftTransferProvider
 
                     if (transferResponse is ITransferNftResponseModel.Fail transferFail)
                     {
-                        _logger.LogError(EventIds.LoopringError.Ev(), $"Failed to transfer nft. {JsonSerializer.Serialize(transferFail)}");
-                        return new NftTransferResult(false);
+                        var error = JsonSerializer.Serialize(transferFail);
+                        _logger.LogError(EventIds.LoopringError.Ev(), $"Failed to transfer nft. {error}");
+                        return new NftTransferResult(false)
+                        {
+                            ErrorMessages = new() { error }
+                        };
                     }
                 }
                 else
                 {
+                    var errors = new List<string>();
                     if (feesResponse is IGetOffchainFeeResponseModel.Fail feesFail)
-                        _logger.LogError(EventIds.LoopringError.Ev(), $"Failed to obtain loopring fees. {JsonSerializer.Serialize(feesFail)}");
-                    if (storageIdResponse is IGetStorageIdResponseModel.Fail storageFail)
-                        _logger.LogError(EventIds.LoopringError.Ev(), $"Failed to obtain loopring storage. {JsonSerializer.Serialize(storageFail)}");
+                    {
+                        var error = JsonSerializer.Serialize(feesFail);
+                        errors.Add(error);
+                        _logger.LogError(EventIds.LoopringError.Ev(), $"Failed to obtain loopring fees. {error}");
+                    }
 
-                    return new NftTransferResult(false);
+                    if (storageIdResponse is IGetStorageIdResponseModel.Fail storageFail)
+                    {
+                        var error = JsonSerializer.Serialize(storageFail);
+                        errors.Add(error);
+                        _logger.LogError(EventIds.LoopringError.Ev(), $"Failed to obtain loopring storage. {error}");
+                    }
+
+                    return new NftTransferResult(false)
+                    {
+                        ErrorMessages = errors
+                    };
                 }
             }
             else if (apiKeyResponse is IApiKeyResponseModel.Success apiKeyFail)
             {
-                _logger.LogError($"Failed to obtain loopring api key. {JsonSerializer.Serialize(apiKeyFail)}");
+                var error = JsonSerializer.Serialize(apiKeyFail);
+                _logger.LogError($"Failed to obtain loopring api key. {error}");
 
-                return new NftTransferResult(false);
+                return new NftTransferResult(false)
+                {
+                    ErrorMessages = new() { error }
+                };
             }
 
             return new NftTransferResult(false);
@@ -120,7 +142,10 @@ public class NftTransferProvider : INftTransferProvider
         catch (Exception e)
         {
             _logger.LogError(e, "Failed to transfer nft.");
-            return new NftTransferResult(false);
+            return new NftTransferResult(false)
+            {
+                ErrorMessages = new() {e.ToString()}
+            };
         }
     }
 }

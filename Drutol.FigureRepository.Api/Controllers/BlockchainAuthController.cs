@@ -55,9 +55,9 @@ public class BlockchainAuthController : ControllerBase
         }
         else
         {
-            _logger.LogError(
+            _logger.LogInformation(
                 EventIds.AuthSessionAuthenticationFailed.Ev(),
-                $"Failed to authenticated session {request.SessionGuid}, status code: {result.Status}");
+                $"Failed to authenticate session {request.SessionGuid}, status code: {result.Status}");
         }
 
         return result;

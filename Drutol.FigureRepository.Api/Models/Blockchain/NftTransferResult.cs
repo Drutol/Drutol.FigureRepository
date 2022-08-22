@@ -2,6 +2,8 @@
 
 public record NftTransferResult(bool Success)
 {
-    public string Fee { get; set; }
-    public string Hash { get; set; }
+    public string Fee { get; init; }
+    public string Hash { get; init; }
+
+    public List<string> ErrorMessages { get; init; }
 }

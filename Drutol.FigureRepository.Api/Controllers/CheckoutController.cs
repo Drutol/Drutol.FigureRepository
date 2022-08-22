@@ -57,7 +57,7 @@ public class CheckoutController : ControllerBase
         {
             _logger.LogError(
                 EventIds.TransactionFailed.Ev(),
-                $"Completed transaction for order {transactionRequest.CheckoutId} with status code {transaction.Status}.");
+                $"Failed transaction for order {transactionRequest.CheckoutId} with status code {transaction.Status}.");
         }
 
         return transaction;

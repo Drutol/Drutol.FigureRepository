@@ -22,9 +22,6 @@ namespace Drutol.FigureRepository.Api;
 
 public class Program
 {
-    private const string LogDatabase = "Filename=DruFiguresLogs.db;Connection=shared";
-    private const string LogTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message} {Exception} {Properties} {NewLine}";
-
     public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
@@ -34,6 +31,7 @@ public class Program
         builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory(ConfigurationAction));
 
         // Add Logging
+        var logConfig = builder.Configuration.GetSection(nameof(LogConfiguration)).Get<LogConfiguration>();
         builder.Host.UseSerilog((context, configuration) =>
         {
             configuration.Enrich.FromLogContext()
@@ -41,8 +39,8 @@ public class Program
                 .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
                 .MinimumLevel.Override("Microsoft.AspNetCore.Hosting.Diagnostics", LogEventLevel.Warning)
                 .MinimumLevel.Override("Microsoft.AspNetCore.Cors", LogEventLevel.Warning)
-                .WriteTo.LiteDB(LogDatabase, "logs")
-                .WriteTo.Console(LogEventLevel.Debug, "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message} {Exception} {Properties} {NewLine}");
+                .WriteTo.LiteDB(logConfig.LogDatabase, logConfig.LogCollection)
+                .WriteTo.Console(LogEventLevel.Debug, logConfig.LogTemplate);
         });
 
         // Add Authentication
@@ -81,6 +79,7 @@ public class Program
         builder.Services.Configure<DownloadConfiguration>(builder.Configuration.GetSection(nameof(DownloadConfiguration)));
         builder.Services.Configure<AdminConfiguration>(builder.Configuration.GetSection(nameof(AdminConfiguration)));
         builder.Services.Configure<JwtConfiguration>(builder.Configuration.GetSection(nameof(JwtConfiguration)));
+        builder.Services.Configure<LogConfiguration>(builder.Configuration.GetSection(nameof(LogConfiguration)));
 
         var app = builder.Build();
 
@@ -95,8 +94,8 @@ public class Program
             .MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore.Hosting.Diagnostics", LogEventLevel.Warning)
-            .WriteTo.Console(LogEventLevel.Verbose, LogTemplate)
-            .WriteTo.LiteDB(LogDatabase, "logs")
+            .WriteTo.Console(LogEventLevel.Verbose, logConfig.LogTemplate)
+            .WriteTo.LiteDB(logConfig.LogDatabase, logConfig.LogCollection)
             .CreateLogger();
 
         try
@@ -120,7 +119,8 @@ public class Program
         builder.RegisterType<BlockchainAuthProvider>().AsImplementedInterfaces().SingleInstance();
         builder.RegisterType<LoopringCommunicator>().AsImplementedInterfaces().SingleInstance();
 
-        builder.RegisterType<CheckoutDatabase>().AsImplementedInterfaces().SingleInstance();
+        builder.RegisterType<OrderDatabase>().AsImplementedInterfaces().SingleInstance();
+        builder.RegisterType<LogDatabase>().AsImplementedInterfaces().SingleInstance();
 
         builder.RegisterType<AdminService>().AsImplementedInterfaces().SingleInstance();
 
