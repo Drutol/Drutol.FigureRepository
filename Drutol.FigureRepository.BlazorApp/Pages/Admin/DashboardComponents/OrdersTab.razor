@@ -29,11 +29,15 @@
         <Column T="Order" Field="Status"/>
         <Column T="Order" Field="CheckoutId" />
         <Column T="Order" Field="CreatedAt" />
-        <Column T="Order" Field="Guid" Title="Actions">
+        <Column T="Order" Field="WalletAddress" Title="Actions">
             <CellTemplate>
                 @if (@context.Item.Status == OrderStatus.DeliveryPending)
                 {
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary">Deliver</MudButton>
+                    <MudButton Variant="Variant.Outlined" Color="Color.Primary">Deliver</MudButton>
+                }
+                else
+                {
+                    <span>N/A</span>
                 }
             </CellTemplate>
         </Column>
