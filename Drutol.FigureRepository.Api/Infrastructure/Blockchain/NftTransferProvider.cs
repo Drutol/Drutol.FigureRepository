@@ -96,7 +96,7 @@ public class NftTransferProvider : INftTransferProvider
                     if (transferResponse is ITransferNftResponseModel.Fail transferFail)
                     {
                         var error = JsonSerializer.Serialize(transferFail);
-                        _logger.LogError(EventIds.LoopringError.Ev(), $"Failed to transfer nft. {error}");
+                        _logger.LogError(DruEventId.LoopringError.Ev(), $"Failed to transfer nft. {error}");
                         return new NftTransferResult(false)
                         {
                             ErrorMessages = new() { error }
@@ -110,14 +110,14 @@ public class NftTransferProvider : INftTransferProvider
                     {
                         var error = JsonSerializer.Serialize(feesFail);
                         errors.Add(error);
-                        _logger.LogError(EventIds.LoopringError.Ev(), $"Failed to obtain loopring fees. {error}");
+                        _logger.LogError(DruEventId.LoopringError.Ev(), $"Failed to obtain loopring fees. {error}");
                     }
 
                     if (storageIdResponse is IGetStorageIdResponseModel.Fail storageFail)
                     {
                         var error = JsonSerializer.Serialize(storageFail);
                         errors.Add(error);
-                        _logger.LogError(EventIds.LoopringError.Ev(), $"Failed to obtain loopring storage. {error}");
+                        _logger.LogError(DruEventId.LoopringError.Ev(), $"Failed to obtain loopring storage. {error}");
                     }
 
                     return new NftTransferResult(false)

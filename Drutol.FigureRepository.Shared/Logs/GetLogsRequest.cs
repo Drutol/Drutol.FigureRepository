@@ -11,7 +11,7 @@ namespace Drutol.FigureRepository.Shared.Logs
     public record GetLogsRequest
     {
         public List<LogLevel> LogLevels { get; set; }
-        public List<EventIds> EventIds { get; set; }
+        public List<DruEventId> EventIds { get; set; }
 
         public DateTime? From { get; set; }
         public DateTime? To { get; set; }

@@ -70,7 +70,6 @@ public MudDataGridPager<Order> Pager { get; set; }
             {
                 Loading = true;
                 StateHasChanged();
-                HttpClient.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AuthenticationStateProvider.TokenResponse.JwtToken);
                 var response = await HttpClient.Client.PostAsJsonAsync("api/admin/orders", new GetOrdersRequest
                 {
                     StatusFilter = SelectedStatuses,

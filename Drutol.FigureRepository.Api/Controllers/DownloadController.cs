@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Drutol.FigureRepository.Api.Controllers;
 
 [ApiController]
-[Route("download")]
+[Route("api/download")]
 public class DownloadController : ControllerBase
 {
     private readonly ILogger<DownloadController> _logger;
@@ -31,14 +31,14 @@ public class DownloadController : ControllerBase
             urls =>
             {
                 _logger.LogInformation(
-                    EventIds.DownloadPackageCreated.Ev(),
+                    DruEventId.DownloadPackageCreated.Ev(),
                     $"Created download package for figure {request.FigureGuid}.");
                 return new DownloadFigureResponse(true, urls);
             },
             () =>
             {
                 _logger.LogError(
-                    EventIds.DownloadPackageCreationFailed.Ev(),
+                    DruEventId.DownloadPackageCreationFailed.Ev(),
                     $"Download package creation for figure {request.FigureGuid} failed.");
                 return new DownloadFigureResponse(false);
             });

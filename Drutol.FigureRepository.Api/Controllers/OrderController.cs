@@ -9,14 +9,14 @@ using Microsoft.Extensions.Options;
 namespace Drutol.FigureRepository.Api.Controllers;
 
 [ApiController]
-[Route("api/checkout")]
-public class CheckoutController : ControllerBase
+[Route("api/order")]
+public class OrderController : ControllerBase
 {
-    private readonly ILogger<CheckoutController> _logger;
+    private readonly ILogger<OrderController> _logger;
     private readonly ICheckoutProvider _checkoutProvider;
 
-    public CheckoutController(
-        ILogger<CheckoutController> logger,
+    public OrderController(
+        ILogger<OrderController> logger,
         ICheckoutProvider checkoutProvider)
     {
         _logger = logger;
@@ -30,12 +30,12 @@ public class CheckoutController : ControllerBase
 
         if (order.Success)
         {
-            _logger.LogInformation(EventIds.OrderCreated.Ev(),
+            _logger.LogInformation(DruEventId.OrderCreated.Ev(),
                 $"Created order {order.OrderId} for figure {request.FigureGuid} by {request.WalletAddress}");
         }
         else
         {
-            _logger.LogError(EventIds.OrderCreationFailed.Ev(),
+            _logger.LogError(DruEventId.OrderCreationFailed.Ev(),
                 $"Failed to create order for figure {request.FigureGuid} by {request.WalletAddress}");
         }
 
@@ -50,13 +50,13 @@ public class CheckoutController : ControllerBase
         if (transaction.Status == CheckoutTransactionResponse.StatusCode.Ok)
         {
             _logger.LogInformation(
-                EventIds.TransactionCompleted.Ev(),
+                DruEventId.TransactionCompleted.Ev(),
                 $"Completed transaction for order {transactionRequest.CheckoutId}.");
         }
         else
         {
             _logger.LogError(
-                EventIds.TransactionFailed.Ev(),
+                DruEventId.TransactionFailed.Ev(),
                 $"Failed transaction for order {transactionRequest.CheckoutId} with status code {transaction.Status}.");
         }
 

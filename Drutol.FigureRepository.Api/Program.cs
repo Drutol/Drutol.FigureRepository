@@ -35,12 +35,13 @@ public class Program
         builder.Host.UseSerilog((context, configuration) =>
         {
             configuration.Enrich.FromLogContext()
+                .MinimumLevel.Override("Drutol", LogEventLevel.Verbose)
                 .MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning)
                 .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
                 .MinimumLevel.Override("Microsoft.AspNetCore.Hosting.Diagnostics", LogEventLevel.Warning)
                 .MinimumLevel.Override("Microsoft.AspNetCore.Cors", LogEventLevel.Warning)
                 .WriteTo.LiteDB(logConfig.LogDatabase, logConfig.LogCollection)
-                .WriteTo.Console(LogEventLevel.Debug, logConfig.LogTemplate);
+                .WriteTo.Console(LogEventLevel.Verbose, logConfig.LogTemplate);
         });
 
         // Add Authentication
@@ -91,9 +92,6 @@ public class Program
 
         var logger = new LoggerConfiguration()
             .Enrich.FromLogContext()
-            .MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning)
-            .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
-            .MinimumLevel.Override("Microsoft.AspNetCore.Hosting.Diagnostics", LogEventLevel.Warning)
             .WriteTo.Console(LogEventLevel.Verbose, logConfig.LogTemplate)
             .WriteTo.LiteDB(logConfig.LogDatabase, logConfig.LogCollection)
             .CreateLogger();

@@ -25,11 +25,11 @@
             }
         </MudSelect> 
         <MudDivider Vertical="true" Class="mx-4 py-4"/>
-        <MudSelect T="EventIds" Label="Event Filter" AnchorOrigin="Origin.BottomCenter" MultiSelection="true" 
+        <MudSelect T="DruEventId" Label="Event Filter" AnchorOrigin="Origin.BottomCenter" MultiSelection="true" 
                    SelectedValues="SelectedEvents" SelectedValuesChanged="EventCallback">
-            @foreach (var status in Enum.GetValues<EventIds>())
+            @foreach (var status in Enum.GetValues<DruEventId>())
             {
-                <MudSelectItem T="EventIds" Value="@status" />
+                <MudSelectItem T="DruEventId" Value="@status" />
             }
         </MudSelect>
     </ToolBarContent>
@@ -61,7 +61,7 @@ public MudDataGridPager<Log> Pager { get; set; }
     public int ItemsPerPage { get; set; } = 50;
     public bool Loading { get; set; }
 
-    public List<EventIds> SelectedEvents { get; set; } = Enum.GetValues<EventIds>().ToList();
+    public List<DruEventId> SelectedEvents { get; set; } = Enum.GetValues<DruEventId>().ToList();
     public List<LogLevel> SelectedLevels { get; set; } = Enum.GetValues<LogLevel>().ToList();
 
     private async void RefreshList()
@@ -72,7 +72,6 @@ public MudDataGridPager<Log> Pager { get; set; }
             {
                 Loading = true;
                 StateHasChanged();
-                HttpClient.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AuthenticationStateProvider.TokenResponse.JwtToken);
                 var response = await HttpClient.Client.PostAsJsonAsync("api/admin/logs", new GetLogsRequest
                 {
                     EventIds = SelectedEvents,
@@ -121,7 +120,7 @@ public MudDataGridPager<Log> Pager { get; set; }
     }
 
 
-    private void EventCallback(IEnumerable<EventIds> obj)
+    private void EventCallback(IEnumerable<DruEventId> obj)
     {
         SelectedEvents = obj.ToList();
         Logs.Clear();

@@ -150,7 +150,7 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
         if (apiKeyResponse is IApiKeyResponseModel.Fail fail)
         {
             _logger.LogError(
-                EventIds.LoopringError.Ev(),
+                DruEventId.LoopringError.Ev(),
                 $"Failed to obtain loopring api key. {JsonSerializer.Serialize(fail)}");
             return new(FinishAuthenticationResult.StatusCode.Error);
         }

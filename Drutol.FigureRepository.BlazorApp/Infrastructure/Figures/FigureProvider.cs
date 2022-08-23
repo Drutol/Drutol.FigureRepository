@@ -48,7 +48,7 @@ public class FigureProvider : IFigureProvider
         {
             try
             {
-                var data = await _apiHttpClient.Client.GetFromJsonAsync<List<Figure>>("figure/all");
+                var data = await _apiHttpClient.Client.GetFromJsonAsync<List<Figure>>("api/figure/all");
                 await _sessionStorageService.SetItemAsync(CacheKey, data);
                 Figures.Clear();
                 Figures.AddRange(data);

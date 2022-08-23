@@ -180,7 +180,7 @@
     [JSInvokable]
     public async Task SubmitPaypalOrder(string orderId)
     {
-        var result = await HttpClient.Client.PostAsJsonAsync("api/checkout/transaction", new CheckoutTransactionRequest(orderId));
+        var result = await HttpClient.Client.PostAsJsonAsync("api/order/transaction", new CheckoutTransactionRequest(orderId));
         var response = await result.Content.ReadFromJsonAsync<CheckoutTransactionResponse>();
 
         if (response.Status is CheckoutTransactionResponse.StatusCode.Ok or CheckoutTransactionResponse.StatusCode.DeliveryPending)
@@ -215,7 +215,7 @@
         {
             var reference = DotNetObjectReference.Create(this);
             var response = await HttpClient.Client.PostAsJsonAsync(
-                "api/checkout/order",
+                "api/order/order",
                 new CheckoutOrderRequest(Figure.Guid, WalletProvider.CurrentWallet.Value.SelectedAccount.Value.Address));
             var result = await response.Content.ReadFromJsonAsync<CheckoutOrderResponse>();
 
@@ -363,7 +363,7 @@
             token = await DownloadTokenManager.GetDownloadTokenForFigure(Figure);
             if (token != default)
             {
-                var result = await HttpClient.Client.PostAsJsonAsync("download/downloadData", new DownloadFigureRequest(Figure.Guid, token.JwtToken));
+                var result = await HttpClient.Client.PostAsJsonAsync("api/download/downloadData", new DownloadFigureRequest(Figure.Guid, token.JwtToken));
                 var response = await result.Content.ReadFromJsonAsync<DownloadFigureResponse>();
 
                 if (response.Success)

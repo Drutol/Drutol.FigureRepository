@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Drutol.FigureRepository.Api.Controllers;
 
 [ApiController]
-[Route("figure")]
+[Route("api/figure")]
 public class FigureController : ControllerBase
 {
     private readonly ILogger<FigureController> _logger;
@@ -24,7 +24,7 @@ public class FigureController : ControllerBase
     [HttpGet("all")]
     public List<Figure> GetFigures()
     {
-        _logger.LogInformation(EventIds.FiguresFetched.Ev(), $"Figures fetched.");
+        _logger.LogTrace(DruEventId.FiguresFetched.Ev(), "Figures fetched.");
         return _seedManager.Figures;
     }
 }

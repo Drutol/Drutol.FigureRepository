@@ -1,0 +1,59 @@
+﻿@using Drutol.FigureRepository.Shared.Models.Figure
+@using Drutol.FigureRepository.Shared.Statistics
+@using Drutol.FigureRepository.BlazorApp.Interfaces.Figures
+@using Drutol.FigureRepository.Api.Models.Checkout
+
+@inject IFigureIconProvider FigureIconProvider
+
+<MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center">
+    <MudIcon Icon="@FigureIconProvider.GetForFigure(Figure)" Size="Size.Large"/>
+    <MudText Typo="Typo.h4">@Figure.Name</MudText>
+</MudStack>
+
+<MudChart ChartType="ChartType.Donut" InputData="@Counts"InputLabels="@Labels" Width="300px" Height="300px" LegendPosition="Position.Right"  />
+
+<MudSimpleTable Style="overflow-x: auto;" Class="mb-8">
+    <thead>
+    <tr>
+        @foreach (var h in new [] {"Status", "Count", "Percentage"})
+        {
+            <th>@h</th>
+        }
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var row in Rows)
+    {
+        <tr>
+            <td>@row.Status</td>
+            <td>@row.Count</td>
+            <td>@row.Percentage.ToString("N2")%</td>
+        </tr>
+    }
+    </tbody>
+</MudSimpleTable>
+
+@code {
+
+    [Parameter]
+    public Figure Figure { get; set; }
+
+    [Parameter]
+    public FigureStatistics Statistics { get; set; }
+
+    private double[] Counts { get; set; }
+    private string[] Labels { get; set; }
+    private (OrderStatus Status, int Count, float Percentage)[] Rows { get; set; }
+
+    protected override Task OnParametersSetAsync()
+    {
+        var total = (float)Statistics.OrderCounts.Values.Sum();
+
+        Counts = Statistics.OrderCounts.Values.Select(i => (double)i).ToArray();
+        Labels = Statistics.OrderCounts.Keys.Select(status => status.ToString()).ToArray();
+        Rows = Statistics.OrderCounts.Select(pair => (pair.Key, pair.Value, pair.Value / total * 100)).ToArray();
+
+        return base.OnParametersSetAsync();
+    }
+
+}

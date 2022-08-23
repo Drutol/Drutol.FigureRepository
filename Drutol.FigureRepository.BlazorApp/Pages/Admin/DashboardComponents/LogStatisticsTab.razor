@@ -1,0 +1,52 @@
+﻿@using Drutol.FigureRepository.Shared.Statistics
+
+<style>
+    .mud-chart-legend {
+        width: 500px;
+    }  
+</style>
+ 
+<MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center">
+    <MudIcon Icon="@Icons.Filled.Event" Size="Size.Large"/>
+    <MudText Typo="Typo.h4">Events</MudText>
+</MudStack>
+
+<MudChart ChartType="ChartType.Pie" InputData="@EventCounts"InputLabels="@EventLabels" Width="300px" Height="300px" LegendPosition="Position.Right" />
+
+<MudDivider Class="ma-2"/>
+
+<MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center">
+    <MudIcon Icon="@Icons.Filled.Warning" Size="Size.Large"/>
+    <MudText Typo="Typo.h4">Level</MudText>
+</MudStack>
+
+<MudChart ChartType="ChartType.Pie" InputData="@LevelCounts"InputLabels="@LevelLabels" Width="300px" Height="300px" LegendPosition="Position.Right" />
+
+@code {
+    [Parameter]
+    public LogStatistics Statistics { get; set; }
+
+    private double[] EventCounts { get; set; }
+    private string[] EventLabels { get; set; }  
+
+    
+    private double[] LevelCounts { get; set; }
+    private string[] LevelLabels { get; set; }
+
+    protected override Task OnParametersSetAsync()
+    {        
+        var total = (float)Statistics.EventCounts.Values.Sum();
+
+        EventCounts = Statistics.EventCounts.Values.Select(i => (double)i).ToArray();
+        EventLabels = Statistics.EventCounts.Keys.Select(ev =>
+            $"{ev} {Statistics.EventCounts[ev]} ({Statistics.EventCounts[ev] / total * 100:N2}%)").ToArray();    
+
+        total = (float)Statistics.LogLevelCounts.Values.Sum();
+        
+        LevelCounts = Statistics.LogLevelCounts.Values.Select(i => (double)i).ToArray();
+        LevelLabels = Statistics.LogLevelCounts.Keys.Select(level => 
+            $"{level} {Statistics.LogLevelCounts[level]} ({Statistics.LogLevelCounts[level] / total * 100:N2}%)").ToArray();
+
+        return base.OnParametersSetAsync();
+    }
+}

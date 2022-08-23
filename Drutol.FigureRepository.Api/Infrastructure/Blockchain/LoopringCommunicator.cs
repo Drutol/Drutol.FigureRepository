@@ -48,7 +48,7 @@ public class LoopringCommunicator : ILoopringCommunicator
         }
         catch (Exception e)
         {
-            _logger.LogError(EventIds.LoopringError.Ev(), e, "Failed to obtain account.");
+            _logger.LogError(DruEventId.LoopringError.Ev(), e, "Failed to obtain account.");
             return new IAccountResponseModel.Fail();
         }
     }
@@ -75,7 +75,7 @@ public class LoopringCommunicator : ILoopringCommunicator
         }
         catch (Exception e)
         {
-            _logger.LogError(EventIds.LoopringError.Ev(), e, "Failed to obtain nft balances.");
+            _logger.LogError(DruEventId.LoopringError.Ev(), e, "Failed to obtain nft balances.");
             return new INftBalancesResponseModel.Fail();
         }
     }
@@ -101,7 +101,7 @@ public class LoopringCommunicator : ILoopringCommunicator
         }
         catch (Exception e)
         {
-            _logger.LogError(EventIds.LoopringError.Ev(), e, "Failed to obtain offchain fee.");
+            _logger.LogError(DruEventId.LoopringError.Ev(), e, "Failed to obtain offchain fee.");
             return new IGetOffchainFeeResponseModel.Fail();
         }
 
@@ -128,7 +128,7 @@ public class LoopringCommunicator : ILoopringCommunicator
         }
         catch (Exception e)
         {
-            _logger.LogError(EventIds.LoopringError.Ev(), e, "Failed to obtain storage id.");
+            _logger.LogError(DruEventId.LoopringError.Ev(), e, "Failed to obtain storage id.");
             return new IGetStorageIdResponseModel.Fail();
         }
     }
@@ -168,7 +168,7 @@ public class LoopringCommunicator : ILoopringCommunicator
         }
         catch (Exception e)
         {
-            _logger.LogError(EventIds.LoopringError.Ev(), e, "Failed to obtain api key.");
+            _logger.LogError(DruEventId.LoopringError.Ev(), e, "Failed to obtain api key.");
             return new IApiKeyResponseModel.Fail();
         }
     }
@@ -256,7 +256,7 @@ public class LoopringCommunicator : ILoopringCommunicator
         }
         catch (Exception e)
         {
-            _logger.LogError(EventIds.LoopringError.Ev(), e, "Failed to transfer nft.");
+            _logger.LogError(DruEventId.LoopringError.Ev(), e, "Failed to transfer nft.");
             return new ITransferNftResponseModel.Fail();
         }
     }

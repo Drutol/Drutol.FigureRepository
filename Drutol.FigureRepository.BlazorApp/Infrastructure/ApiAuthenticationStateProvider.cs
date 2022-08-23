@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Security.Claims;
 using Common.Logging;
 using Drutol.FigureRepository.BlazorApp.Interfaces;
@@ -33,6 +34,7 @@ namespace Drutol.FigureRepository.BlazorApp.Infrastructure
                 if (result.Success)
                 {
                     TokenResponse = result.TokenResponse;
+                    _apiHttpClient.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TokenResponse.JwtToken);
                     // TODO add timer for expiration if ever needed
                     NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
                     return true;

@@ -29,13 +29,13 @@ public class BlockchainAuthController : ControllerBase
         if (result.Status == StartAuthenticationResult.StatusCode.Ok)
         {
             _logger.LogInformation(
-                EventIds.AuthSessionCreated.Ev(),
+                DruEventId.AuthSessionCreated.Ev(),
                 $"Created auth session {result.SessionGuid} for {request.WalletAddress} for figure {request.FigureGuid}");
         }
         else
         {
             _logger.LogError(
-                EventIds.AuthSessionCreationFailed.Ev(),
+                DruEventId.AuthSessionCreationFailed.Ev(),
                 $"Failed to create auth session for {request.WalletAddress} for figure {request.FigureGuid} with status code {result.Status}");
         }
 
@@ -50,13 +50,13 @@ public class BlockchainAuthController : ControllerBase
         if (result.Status == FinishAuthenticationResult.StatusCode.Ok)
         {
             _logger.LogInformation(
-                EventIds.AuthSessionAuthenticated.Ev(),
+                DruEventId.AuthSessionAuthenticated.Ev(),
                 $"Successfully authenticated session {request.SessionGuid}.");
         }
         else
         {
             _logger.LogInformation(
-                EventIds.AuthSessionAuthenticationFailed.Ev(),
+                DruEventId.AuthSessionAuthenticationFailed.Ev(),
                 $"Failed to authenticate session {request.SessionGuid}, status code: {result.Status}");
         }
 

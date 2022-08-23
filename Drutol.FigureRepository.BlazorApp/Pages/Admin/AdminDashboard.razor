@@ -17,7 +17,7 @@
 @inject ILogger<AdminDashboard> Logger
 @inject IApiAuthenticationStateProvider AuthenticationStateProvider
 
-<MudTabs Outlined="true" Position="Position.Left" Border="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Style="height: 100%">
+<MudTabs Outlined="true" Position="Position.Left" Border="true" ApplyEffectsToContainer="true" Style="min-height: 100%">
     <MudTabPanel Text="Orders" Icon="@Icons.Filled.ShoppingCartCheckout">
         <MudContainer MaxWidth="MaxWidth.False">
             <OrdersTab/>
@@ -26,6 +26,11 @@
     <MudTabPanel Text="Logs" Icon="@Icons.Filled.ReceiptLong">
         <MudContainer MaxWidth="MaxWidth.False">
             <LogsTab/>
+        </MudContainer>
+    </MudTabPanel>
+    <MudTabPanel Text="Statistics" Icon="@Icons.Filled.BarChart">
+        <MudContainer MaxWidth="MaxWidth.False" Class="pa-0">
+            <StatisticsTab/>
         </MudContainer>
     </MudTabPanel>
 </MudTabs>

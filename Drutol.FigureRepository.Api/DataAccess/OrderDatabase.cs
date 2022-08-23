@@ -5,6 +5,7 @@ using Drutol.FigureRepository.Api.Models.Checkout;
 using Drutol.FigureRepository.Api.Models.Configuration;
 using Drutol.FigureRepository.Api.Util;
 using Drutol.FigureRepository.Shared.Orders;
+using Drutol.FigureRepository.Shared.Statistics;
 using LiteDB;
 using Microsoft.Extensions.Options;
 
@@ -31,6 +32,7 @@ public class OrderDatabase : IOrderDatabase
         orders.EnsureIndex(entity => entity.Guid);
         orders.EnsureIndex(entity => entity.CreatedAt);
         orders.EnsureIndex(entity => entity.CheckoutId);
+        orders.EnsureIndex(entity => entity.Status);
     }
 
     public async ValueTask<bool> CreateOrder(OrderEntity order)
@@ -49,7 +51,7 @@ public class OrderDatabase : IOrderDatabase
         }
         catch (Exception e)
         {
-            _logger.LogError(EventIds.DatabaseError.Ev(), e, "Failed to store order in database.");
+            _logger.LogError(DruEventId.DatabaseError.Ev(), e, "Failed to store order in database.");
             return false;
         }
     }
@@ -86,5 +88,25 @@ public class OrderDatabase : IOrderDatabase
         var orders = query.Limit(Math.Min(100, request.Take)).Offset(request.Skip).ToList();
 
         return ValueTask.FromResult(new GetOrdersRequestResult(totalCount, orders.Select(entity => entity.ToModel()).ToList()));
+    }
+
+    public ValueTask<FigureStatistics> GetFigureStatistics(Guid figureGuid, GetStatisticsRequest request)
+    {
+        var counts = new Dictionary<OrderStatus, int>();
+
+        foreach (var status in Enum.GetValues<OrderStatus>())
+        {
+            var query = _database.GetCollection<OrderEntity>().Query().Where(e => e.FigureId == figureGuid);
+
+            if (request.From is { })
+                query = query.Where(entity => entity.CreatedAt >= request.From);
+
+            if (request.To is { })
+                query = query.Where(entity => entity.CreatedAt <= request.To);
+
+            counts[status] = query.Where(entity => entity.Status == status).Count();
+        }
+
+        return ValueTask.FromResult<FigureStatistics>(new(figureGuid, counts));
     }
 }

@@ -8,6 +8,7 @@ using Drutol.FigureRepository.Shared.Logs;
 using Drutol.FigureRepository.Shared.Models.Auth;
 using Drutol.FigureRepository.Shared.Models.Orders;
 using Drutol.FigureRepository.Shared.Orders;
+using Drutol.FigureRepository.Shared.Statistics;
 using Functional.Maybe;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,17 +21,20 @@ namespace Drutol.FigureRepository.Api.Controllers;
 public class AdminController : ControllerBase
 {
     private readonly ILogger<AdminController> _logger;
+    private readonly IFigureSeedManager _figureSeedManager;
     private readonly IOrderDatabase _orderDatabase;
     private readonly ILogDatabase _logDatabase;
     private readonly IAdminService _adminService;
 
     public AdminController(
         ILogger<AdminController> logger,
+        IFigureSeedManager figureSeedManager,
         IOrderDatabase orderDatabase,
         ILogDatabase logDatabase,
         IAdminService adminService)
     {
         _logger = logger;
+        _figureSeedManager = figureSeedManager;
         _orderDatabase = orderDatabase;
         _logDatabase = logDatabase;
         _adminService = adminService;
@@ -46,7 +50,7 @@ public class AdminController : ControllerBase
             response => new LoginRequestResult(true, response),
             () =>
             {
-                _logger.LogWarning(EventIds.AdminAuth.Ev(), "Failed admin login attempt.");
+                _logger.LogWarning(DruEventId.AdminAuth.Ev(), "Failed admin login attempt.");
                 return new LoginRequestResult(false);
             });
     }
@@ -61,5 +65,19 @@ public class AdminController : ControllerBase
     public async Task<GetLogsRequestResult> GetLogs(GetLogsRequest request)
     {
         return await _logDatabase.GetLogs(request);
+    }  
+    
+    [HttpPost("statistics")]
+    public async Task<GetStatisticsRequestResult> GetLogs(GetStatisticsRequest request)
+    {
+        var logStatistics = await _logDatabase.GetLogStatistics(request);
+        var figureStatistics = new Dictionary<Guid, FigureStatistics>();
+
+        foreach (var figure in _figureSeedManager.Figures)
+        {
+            figureStatistics[figure.Guid] = await _orderDatabase.GetFigureStatistics(figure.Guid, request);
+        }
+
+        return new(figureStatistics, logStatistics);
     }
 }

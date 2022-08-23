@@ -1,0 +1,52 @@
+﻿@using Drutol.FigureRepository.BlazorApp.Interfaces.Figures
+@using Drutol.FigureRepository.BlazorApp.Interfaces.Http
+@using Drutol.FigureRepository.Shared.Statistics
+
+@inject ILogger<StatisticsTab> Logger
+@inject IFigureProvider FigureProvider
+@inject IApiHttpClient HttpClient
+@inject IFigureIconProvider FigureIconProvider
+
+@if (Statistics == null)
+{
+    <MudProgressCircular Indeterminate="true"/>
+}
+else
+{
+    <MudTabs Outlined="true" Position="Position.Right" Border="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Style="height: 100%">
+
+        <MudTabPanel Text="@($"Figure Statistics")" Icon="@FigureIconProvider.GanyuIcon">
+            <MudContainer MaxWidth="MaxWidth.False">
+                @foreach (var figure in FigureProvider.Figures)
+                {
+                    <FigureStatisticsTab Figure="figure" Statistics="Statistics.FigureStatistics[figure.Guid]"/>
+                }
+            </MudContainer>
+        </MudTabPanel>
+
+
+        <MudTabPanel Text="Log Statistics" Icon="@Icons.Filled.Receipt">
+            <MudContainer MaxWidth="MaxWidth.False">
+                <LogStatisticsTab Statistics="Statistics.LogStatistics"/>
+            </MudContainer>
+        </MudTabPanel>
+    </MudTabs>
+}
+
+@code {
+
+    public GetStatisticsRequestResult? Statistics { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var result = await HttpClient.Client.PostAsJsonAsync("/api/admin/statistics", new GetStatisticsRequest());
+            Statistics = await result.Content.ReadFromJsonAsync<GetStatisticsRequestResult>();
+        }
+        catch (Exception e)
+        {
+            Logger.LogError(e, "Failed to load statistics.");
+        }
+    }
+}
