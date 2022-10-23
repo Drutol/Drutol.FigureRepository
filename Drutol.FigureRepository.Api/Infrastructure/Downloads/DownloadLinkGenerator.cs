@@ -32,7 +32,7 @@ public class DownloadLinkGenerator : IDownloadLinkGenerator
 
         if (!_config.Value.Containers.TryGetValue(figure.Guid.ToString("D").ToUpper(), out var containerName))
         {
-            _logger.LogError(DruEventId.ConfigurationError.Ev(), $"Missing container name for figure {figure.Name} ({figure.Guid})");
+            _logger.LogError(DruEventId.ConfigurationError.Ev(), "Missing container name for figure {FigureName} ({FigureGuid})", figure.Name, figure.Guid);
             return Maybe<string>.Nothing;
         }
 

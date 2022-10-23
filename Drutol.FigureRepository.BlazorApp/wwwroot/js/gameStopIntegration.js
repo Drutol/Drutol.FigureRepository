@@ -9,18 +9,17 @@
 export async function checkGameStop() {
     // Modern dapp browsers...
     if (window.gamestop) {
-        if (gamestop.currentAddress === null || gamestop.currentAddress === undefined) {
-            try {
-                // Request account access if needed
-                await requestAccounts();
-            } catch (error) {
-                // User denied account access...
-                throw "UserDenied"
-            }
+
+        try {
+            // Request account access if needed
+            await requestAccounts();
+        } catch (error) {
+            // User denied account access...
+            throw "UserDenied"
         }
-        else {
-            console.log("Selected:" + gamestop.currentAddress);
-        }
+        
+        console.log("Selected:" + gamestop.currentAddress);
+       
     }
     // Non-dapp browsers...
     else {

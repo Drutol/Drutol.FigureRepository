@@ -5,11 +5,13 @@
 @using Drutol.FigureRepository.BlazorApp.Interfaces.Figures
 @using Drutol.FigureRepository.BlazorApp.Interfaces.Http
 @using Drutol.FigureRepository.BlazorApp.Util
+@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
 
 @inject IHostHttpClient HttpClient;
 @inject ISessionStorageService SessionStorage;
 @inject IFigureProvider FigureProvider;
 @inject IFigureIconProvider IconProvider;
+@inject IWebAssemblyHostEnvironment HostEnv;
 
 <style>
     .FigureLink .mud-nav-link-icon {

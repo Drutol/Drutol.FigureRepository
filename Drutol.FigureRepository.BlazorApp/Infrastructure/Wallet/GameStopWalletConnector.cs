@@ -38,6 +38,9 @@ public class GameStopWalletConnector : IWalletConnector
     {
         IsWalletPresent = await _gameStopService.HasGameStop();
 
+        GameStopService.AccountChangedEvent += GameStopAccountChangedEvent;
+        GameStopService.ChainChangedEvent += GameStopChainChangedEvent;
+
         if (IsWalletPresent)
         {
             await _gameStopService.ListenToEvents();
@@ -55,9 +58,6 @@ public class GameStopWalletConnector : IWalletConnector
         {
             _connectingToGameStop = true;
             await _gameStopService.ConnectGameStop();
-
-            GameStopService.AccountChangedEvent += GameStopAccountChangedEvent;
-            GameStopService.ChainChangedEvent += GameStopChainChangedEvent;
 
             await UpdateSelectedAccount();
 

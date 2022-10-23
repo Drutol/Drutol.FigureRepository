@@ -1,55 +1,55 @@
-﻿using System.Runtime.CompilerServices;
-using System.Text;
+﻿//using System.Runtime.CompilerServices;
+//using System.Text;
 
-namespace Drutol.FigureRepository.Api.Logging;
+//namespace Drutol.FigureRepository.Api.Logging;
 
-// Courtesy of https://github.com/fedarovich/interpolated-logging-demo
+//// Courtesy of https://github.com/fedarovich/interpolated-logging-demo
 
-[InterpolatedStringHandler]
-public readonly ref struct StructuredLoggingInterpolatedStringHandler
-{
-    private readonly StringBuilder _template = null!;
-    private readonly ArgumentList _arguments = null!;
+//[InterpolatedStringHandler]
+//public readonly ref struct StructuredLoggingInterpolatedStringHandler
+//{
+//    private readonly StringBuilder _template = null!;
+//    private readonly ArgumentList _arguments = null!;
 
-    public bool IsEnabled { get; }
+//    public bool IsEnabled { get; }
 
-    public StructuredLoggingInterpolatedStringHandler(int literalLength, int formattedCount, ILogger logger, LogLevel logLevel, out bool isEnabled)
-    {
-        IsEnabled = isEnabled = logger.IsEnabled(logLevel);
-        if (isEnabled)
-        {
-            _template = new(literalLength + 20 * formattedCount);
-            _arguments = new(formattedCount);
-        }
-    }
+//    public StructuredLoggingInterpolatedStringHandler(int literalLength, int formattedCount, ILogger logger, LogLevel logLevel, out bool isEnabled)
+//    {
+//        IsEnabled = isEnabled = logger.IsEnabled(logLevel);
+//        if (isEnabled)
+//        {
+//            _template = new(literalLength + 20 * formattedCount);
+//            _arguments = new(formattedCount);
+//        }
+//    }
 
-    public void AppendLiteral(string s)
-    {
-        if (!IsEnabled)
-            return;
+//    public void AppendLiteral(string s)
+//    {
+//        if (!IsEnabled)
+//            return;
 
-        _template.Append(s.Replace("{", "{{", StringComparison.Ordinal).Replace("}", "}}", StringComparison.Ordinal));
-    }
+//        _template.Append(s.Replace("{", "{{", StringComparison.Ordinal).Replace("}", "}}", StringComparison.Ordinal));
+//    }
 
-    public void AppendFormatted<T>(T value, [CallerArgumentExpression("value")] string name = "")
-    {
-        if (!IsEnabled)
-            return;
+//    public void AppendFormatted<T>(T value, [CallerArgumentExpression("value")] string name = "")
+//    {
+//        if (!IsEnabled)
+//            return;
 
-        _arguments.Add(value);
-        _template.Append($"{{@{name}}}");
-    }
+//        _arguments.Add(value);
+//        _template.Append($"{{{name}}}");
+//    }
 
-    public (string, object?[]) GetTemplateAndArguments() => (_template.ToString(), _arguments.Arguments);
+//    public (string, object?[]) GetTemplateAndArguments() => (_template.ToString(), _arguments.Arguments);
 
-    private class ArgumentList
-    {
-        private int _index;
+//    private class ArgumentList
+//    {
+//        private int _index;
 
-        public object?[] Arguments { get; }
+//        public object?[] Arguments { get; }
 
-        public ArgumentList(int formattedCount) => Arguments = new object?[formattedCount];
+//        public ArgumentList(int formattedCount) => Arguments = new object?[formattedCount];
 
-        public void Add(object? value) => Arguments[_index++] = value;
-    }
-}
+//        public void Add(object? value) => Arguments[_index++] = value;
+//    }
+//}

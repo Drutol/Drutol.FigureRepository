@@ -7,10 +7,12 @@
 @using Drutol.FigureRepository.Shared.Models
 @using Drutol.FigureRepository.Shared.Models.Enums
 @using Drutol.FigureRepository.Shared.Models.Figure
+@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
 
 @inject IFigureProvider FigureProvider
 @inject IFigureIconProvider FigureIconProvider
 @inject IJSRuntime JS
+@inject IWebAssemblyHostEnvironment HostEnv
 
 <style>
     .CarouselBullet {
@@ -18,7 +20,7 @@
     }
 </style>
 
-<MudPaper Elevation="3" Class="rounded-r-lg" Style="@($"background-color: {Theme.Palette.BackgroundGrey};")">
+<MudPaper Elevation="3" Class="ml-4 my-4 rounded-l-lg" Style="@($"background-color: {Theme.Palette.BackgroundGrey};")">
     @if (!FigureDataReady)
     {
         <MudContainer Class="pa-8" Style="height: 464px;">
@@ -77,7 +79,10 @@
     }
 
     protected override async Task OnInitializedAsync()
-    {
+    {       
+        if (HostEnv.Environment == "Prerendering")
+            return;
+
         await FigureProvider.DataReady.Task;
 
         foreach (var figure in FigureProvider.Figures)

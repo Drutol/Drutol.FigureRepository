@@ -31,12 +31,12 @@ public class OrderController : ControllerBase
         if (order.Success)
         {
             _logger.LogInformation(DruEventId.OrderCreated.Ev(),
-                $"Created order {order.OrderId} for figure {request.FigureGuid} by {request.WalletAddress}");
+                "Created order {OrderId} for figure {FigureGuid} by {WalletAddress}", order.OrderId, request.FigureGuid, request.WalletAddress);
         }
         else
         {
             _logger.LogError(DruEventId.OrderCreationFailed.Ev(),
-                $"Failed to create order for figure {request.FigureGuid} by {request.WalletAddress}");
+                "Failed to create order for figure {FigureGuid} by {WalletAddress}", request.FigureGuid, request.WalletAddress);
         }
 
         return order;
@@ -51,13 +51,13 @@ public class OrderController : ControllerBase
         {
             _logger.LogInformation(
                 DruEventId.TransactionCompleted.Ev(),
-                $"Completed transaction for order {transactionRequest.CheckoutId}.");
+                "Completed transaction for order {CheckoutId}.", transactionRequest.CheckoutId);
         }
         else
         {
             _logger.LogError(
                 DruEventId.TransactionFailed.Ev(),
-                $"Failed transaction for order {transactionRequest.CheckoutId} with status code {transaction.Status}.");
+                "Failed transaction for order {CheckoutId} with status code {Status}.", transactionRequest.CheckoutId, transaction.Status);
         }
 
         return transaction;

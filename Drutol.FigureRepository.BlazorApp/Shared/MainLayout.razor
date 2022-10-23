@@ -2,11 +2,13 @@
 @using Blazored.LocalStorage
 @using Drutol.FigureRepository.BlazorApp.Interfaces.Figures
 @using Drutol.FigureRepository.BlazorApp.Interfaces.Wallet
+@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
 @inherits LayoutComponentBase
 
 @inject ISyncLocalStorageService LocalStorageService
 @inject IWalletProvider WalletProvider
 @inject IFigureProvider FigureProvider
+@inject IWebAssemblyHostEnvironment HostEnv
 
 <MudThemeProvider Theme="_theme" @bind-IsDarkMode="@DarkMode"/>
 <MudDialogProvider/>
@@ -105,15 +107,21 @@
     };
 
     protected override async Task OnInitializedAsync()
-    {        
-        DarkMode = LocalStorageService.GetItem<bool>(DarkModeStorageKey);
-
-        await WalletProvider.Initialize();
-
+    {
         _ = Task.Run(async () =>
         {
             await FigureProvider.Initialize();
         });
+
+        if (HostEnv.Environment == "Prerendering")
+            return;
+
+        DarkMode = LocalStorageService.GetItem<bool>(DarkModeStorageKey);
+
+        await WalletProvider.Initialize();
+
+
+        WalletProvider.StateHasChanged += (sender, args) => StateHasChanged();
     }
 
     void DrawerToggle()

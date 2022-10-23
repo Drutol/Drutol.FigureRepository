@@ -41,7 +41,7 @@
         <MudSpacer />
         <MudMenu Size="Size.Large" AnchorOrigin="Origin.BottomCenter" PopoverClass="pr-2 pl-2">
             <ActivatorContent>
-                <MudButton Disabled="!IsFigureOwned" StartIcon="@Icons.Material.Outlined.Download" Size="Size.Large" OnClick="PrepareDownloads">Download</MudButton>
+                <MudButton Disabled="!IsFigureOwned || IsLoading" StartIcon="@Icons.Material.Outlined.Download" Size="Size.Large" OnClick="PrepareDownloads">Download</MudButton>
             </ActivatorContent>
             <ChildContent>
                 @if (DownloadsReady)
@@ -72,7 +72,13 @@
                 }
             </ChildContent>
         </MudMenu>
-        @if (IsFigureOwned)
+        @if (IsLoading)
+        {
+            <MudTooltip Text="Updating ownership status.">
+                <MudFab Class="ml-2" StartIcon="@Icons.Filled.HourglassTop" Color="Color.Success" Size="Size.Small"/>
+            </MudTooltip>
+        }  
+        else if (IsFigureOwned)
         {
             <MudTooltip Text="You own at least one NFT of this figure.">
                 <MudFab Class="ml-2" StartIcon="@Icons.Filled.Check" Color="Color.Success" Size="Size.Small"/>
@@ -236,6 +242,9 @@
 
     private async Task UpdateOwnership()
     {
+        if(IsLoading)
+            return;
+
         try
         {
             IsLoading = true;
@@ -316,9 +325,6 @@
         }
         finally
         {
-            if(!PaypalOrderReady && !IsFigureOwned)
-                OnBuyMenuOpened(false);
-
             IsLoading = false;
             StateHasChanged();
         }

@@ -16,7 +16,7 @@ public class MadokaFigureSeed : IFigureSeed
                       "It's a bit more risque figure but any naughty bits are not present. " +
                       "She is talking on the phone with a smug aura around, with a cute bear keychain included. " +
                       "The base is imagined to remind of the Onsen with wooden planks and paved path with bonsai tree and an Andon lamp.",
-        InitialGalleryKindDisplay = FigureMediaKind.ShadedRender,
+        InitialGalleryKindDisplay = FigureMediaKind.Painted,
         Media = new List<FigureMedia>
         {
             #region Photos
@@ -27,6 +27,51 @@ public class MadokaFigureSeed : IFigureSeed
                 MediaKind = FigureMediaKind.PrintPrototype,
                 Width = 1080,
                 Height = 1440
+            },    
+            new FigureMedia
+            {
+                Url = "images/Madoka/Photos/Main.jpg",
+                Display = FigurePhotoIntendedDisplay.All,
+                Gravity = FigurePhotoGravity.Top,
+                MediaKind = FigureMediaKind.Painted,
+                Width = 721,
+                Height = 1080
+            },   
+            new FigureMedia
+            {
+                Url = "images/Madoka/Photos/Face.jpg",
+                MediaKind = FigureMediaKind.Painted,
+                Width = 1080,
+                Height = 1080
+            },  
+            new FigureMedia
+            {
+                Url = "images/Madoka/Photos/FrontTop.jpg",
+                Gravity = FigurePhotoGravity.Center,
+                MediaKind = FigureMediaKind.Painted,
+                Width = 721,
+                Height = 1080
+            },   
+            new FigureMedia
+            {
+                Url = "images/Madoka/Photos/FrontBottom.jpg",
+                MediaKind = FigureMediaKind.Painted,
+                Width = 721,
+                Height = 1080
+            },   
+            new FigureMedia
+            {
+                Url = "images/Madoka/Photos/BackLeft.jpg",
+                MediaKind = FigureMediaKind.Painted,
+                Width = 721,
+                Height = 1080
+            },       
+            new FigureMedia
+            {
+                Url = "images/Madoka/Photos/Sakura.jpg",
+                MediaKind = FigureMediaKind.Painted,
+                Width = 1080,
+                Height = 1080
             },
 
             #endregion
@@ -36,7 +81,6 @@ public class MadokaFigureSeed : IFigureSeed
             new FigureMedia
             {
                 Url = "images/Madoka/Render/Front.jpg",
-                Display = FigurePhotoIntendedDisplay.All,
                 MediaKind = FigureMediaKind.ShadedRender,
                 Gravity = FigurePhotoGravity.Top,
                 Width = 1080,
@@ -181,9 +225,11 @@ public class MadokaFigureSeed : IFigureSeed
                 Type = FigureExternalLinkType.Twitter
             },
         },
-        NftDetails = new("0xb06146103f0b05e55c7b8ccf4dcd8df70b5a105c")
+        NftDetails = new("0x19c97f3ea1049454cdae644daa085633d530400c")
         {
-            TokenId = 11111
+            TokenId = 32772,
+            NftData = "0x12adce79f89d7efa0ce97ab2ca3f84db8290aa081163700f498fbc30157e137f",
+            NftId = "0xec999e8c733eda753047a2e6615fd6d5cd2265fd66e9e33b2216372827b8c6ce"
         },
         DownloadResources = new List<FigureDownloadResource>
         {

@@ -3,10 +3,12 @@
 @using Drutol.FigureRepository.Shared.Models.Enums
 @using Drutol.FigureRepository.BlazorApp.Util
 @using Drutol.FigureRepository.Shared.Models.Figure
+@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
 @using MudBlazor
 
 @inject IFigureProvider FigureProvider
 @inject NavigationManager NavigationManager
+@inject IWebAssemblyHostEnvironment HostEnv
 
 <MudGrid Justify="Justify.SpaceEvenly">
     @if (FigureDataReady)
@@ -74,6 +76,9 @@
 
     protected override async Task OnInitializedAsync()
     {
+        if (HostEnv.Environment == "Prerendering")
+            return;
+
         await FigureProvider.DataReady.Task;
 
         FigureDataReady = true;

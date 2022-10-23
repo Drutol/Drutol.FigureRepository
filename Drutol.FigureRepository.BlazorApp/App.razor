@@ -1,6 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
 
-<Router AppAssembly="@typeof(App).Assembly">
+
+
+<Router AppAssembly="@typeof(App).Assembly" OnNavigateAsync="Callback">
     <Found Context="routeData">
         <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
@@ -12,3 +14,10 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+@code {
+    private void Callback(NavigationContext obj)
+    {
+        
+    }
+}

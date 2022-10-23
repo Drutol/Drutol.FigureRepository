@@ -1,11 +1,13 @@
 ﻿@using Drutol.FigureRepository.BlazorApp.Interfaces.Figures
 @using Drutol.FigureRepository.BlazorApp.Interfaces.Http
 @using Drutol.FigureRepository.Shared.Statistics
+@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
 
 @inject ILogger<StatisticsTab> Logger
 @inject IFigureProvider FigureProvider
 @inject IApiHttpClient HttpClient
 @inject IFigureIconProvider FigureIconProvider
+@inject IWebAssemblyHostEnvironment HostEnv
 
 @if (Statistics == null)
 {
@@ -38,7 +40,10 @@ else
     public GetStatisticsRequestResult? Statistics { get; set; }
 
     protected override async Task OnInitializedAsync()
-    {
+    {        
+        if (HostEnv.Environment == "Prerendering")
+            return;
+
         try
         {
             var result = await HttpClient.Client.PostAsJsonAsync("/api/admin/statistics", new GetStatisticsRequest());

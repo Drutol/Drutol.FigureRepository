@@ -32,14 +32,14 @@ public class DownloadController : ControllerBase
             {
                 _logger.LogInformation(
                     DruEventId.DownloadPackageCreated.Ev(),
-                    $"Created download package for figure {request.FigureGuid}.");
+                    "Created download package for figure {FigureGuid}.", request.FigureGuid);
                 return new DownloadFigureResponse(true, urls);
             },
             () =>
             {
                 _logger.LogError(
                     DruEventId.DownloadPackageCreationFailed.Ev(),
-                    $"Download package creation for figure {request.FigureGuid} failed.");
+                    "Download package creation for figure {FigureGuid} failed.", request.FigureGuid);
                 return new DownloadFigureResponse(false);
             });
     }

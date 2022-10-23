@@ -13,6 +13,7 @@ using MetaMask.Blazor;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.Logging.Abstractions;
 using MudBlazor;
 using MudBlazor.Services;
 
@@ -26,38 +27,57 @@ public class Program
         builder.RootComponents.Add<App>("#app");
         builder.RootComponents.Add<HeadOutlet>("head::after");
 
-        builder.Services.AddScoped<IApiHttpClient>(_ => new HttpClientWrapper(new HttpClient { BaseAddress = new Uri("http://localhost:5000") }));
-        builder.Services.AddScoped<IHostHttpClient>(_ => new HttpClientWrapper(new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) }));
-        builder.Services.AddScoped<ILoopringHttpClient>(_ => new HttpClientWrapper(new HttpClient { BaseAddress = new Uri("https://uat2.loopring.io/api/v3/") }));
-        
-        builder.Services.AddMudServices(configuration =>
+
+        ConfigureServices(builder.Services, builder.HostEnvironment.BaseAddress);
+
+        await builder.Build().RunAsync();
+    }
+
+    // method for prerendering nuget compatibility
+    private static void ConfigureServices(IServiceCollection services, string baseAddress)
+    {
+#if DEBUG
+        services.AddScoped<IApiHttpClient>(_ => new HttpClientWrapper(new HttpClient { BaseAddress = new Uri("http://localhost:5000") }));
+#else
+        services.AddScoped<IApiHttpClient>(_ => new HttpClientWrapper(new HttpClient { BaseAddress = new Uri("https://figure.drutol.com") }));
+#endif
+
+        services.AddScoped<IHostHttpClient>(_ => new HttpClientWrapper(new HttpClient { BaseAddress = new Uri(baseAddress) }));
+        services.AddScoped<ILoopringHttpClient>(_ => new HttpClientWrapper(new HttpClient { BaseAddress = new Uri("https://uat2.loopring.io/api/v3/") }));
+
+
+        services.AddMudServices(configuration =>
         {
             configuration.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomLeft;
         });
 
-        builder.Services.AddMetaMaskBlazor();
-        builder.Services.AddScoped<GameStopService>();
+        services.AddMetaMaskBlazor();
+        services.AddScoped<GameStopService>();
 
-        builder.Services.AddBlazoredSessionStorage();
-        builder.Services.AddBlazoredLocalStorage();
+        services.AddBlazoredSessionStorage();
+        services.AddBlazoredLocalStorage();
 
-        builder.Services.AddScoped<IFigureProvider, FigureProvider>();
-        builder.Services.AddScoped<IFigureIconProvider, FigureIconProvider>();
-        builder.Services.AddScoped<IWalletProvider, WalletProvider>();
-        builder.Services.AddScoped<IFigureDownloadTokenManager, FigureDownloadTokenManager>();
+        services.AddScoped<IFigureProvider, FigureProvider>();
+        services.AddScoped<IFigureIconProvider, FigureIconProvider>();
+        services.AddScoped<IWalletProvider, WalletProvider>();
+        services.AddScoped<IFigureDownloadTokenManager, FigureDownloadTokenManager>();
 
-        builder.Services.AddScoped<IWalletConnector, MetaMaskWalletConnector>();
-        builder.Services.AddScoped<IWalletConnector, GameStopWalletConnector>();
+        services.AddScoped<IWalletConnector, MetaMaskWalletConnector>();
+        services.AddScoped<IWalletConnector, GameStopWalletConnector>();
 
-        builder.Services.AddOptions();
-        builder.Services.AddAuthorizationCore(options => 
+        services.AddOptions();
+        services.AddAuthorizationCore(options =>
             options.AddPolicy(
                 AuthPolicies.AdminPolicy,
                 policyBuilder => policyBuilder.RequireClaim(AdminClaims.AdminClaim)));
-        builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
-        builder.Services.AddScoped<IApiAuthenticationStateProvider>(provider => 
-            (ApiAuthenticationStateProvider)provider.GetRequiredService<AuthenticationStateProvider>());
+        services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
+        services.AddScoped<IApiAuthenticationStateProvider>(provider =>
+        {
+            if (provider.GetRequiredService<IWebAssemblyHostEnvironment>().Environment == "Prerendering")
+                return new ApiAuthenticationStateProvider(NullLogger<ApiAuthenticationStateProvider>.Instance,
+                    new HttpClientWrapper(new HttpClient()));
 
-        await builder.Build().RunAsync();
+            return (ApiAuthenticationStateProvider)provider.GetRequiredService<AuthenticationStateProvider>();
+        });
     }
 }

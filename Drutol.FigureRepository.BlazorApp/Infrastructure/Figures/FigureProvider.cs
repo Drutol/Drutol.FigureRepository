@@ -3,6 +3,7 @@ using Blazored.SessionStorage;
 using Drutol.FigureRepository.BlazorApp.Interfaces.Figures;
 using Drutol.FigureRepository.BlazorApp.Interfaces.Http;
 using Drutol.FigureRepository.Shared.Models.Figure;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 namespace Drutol.FigureRepository.BlazorApp.Infrastructure.Figures;
 
@@ -11,6 +12,7 @@ public class FigureProvider : IFigureProvider
     private const string CacheKey = "FigureDataCache";
 
     private readonly ILogger<FigureProvider> _logger;
+    private readonly IWebAssemblyHostEnvironment _webAssemblyHostEnvironment;
     private readonly ISessionStorageService _sessionStorageService;
     private readonly IApiHttpClient _apiHttpClient;
 
@@ -22,10 +24,12 @@ public class FigureProvider : IFigureProvider
 
     public FigureProvider(
         ILogger<FigureProvider> logger,
+        IWebAssemblyHostEnvironment webAssemblyHostEnvironment,
         ISessionStorageService sessionStorageService,
         IApiHttpClient apiHttpClient)
     {
         _logger = logger;
+        _webAssemblyHostEnvironment = webAssemblyHostEnvironment;
         _sessionStorageService = sessionStorageService;
         _apiHttpClient = apiHttpClient;
     }
@@ -37,19 +41,28 @@ public class FigureProvider : IFigureProvider
 
         _initialized = true;
 
-        if (await _sessionStorageService.ContainKeyAsync(CacheKey))
+        if (_webAssemblyHostEnvironment.Environment != "Prerendering")
         {
-            var data = await _sessionStorageService.GetItemAsync<List<Figure>>(CacheKey);
-            Figures.Clear();
-            Figures.AddRange(data);
+            if (await _sessionStorageService.ContainKeyAsync(CacheKey))
+            {
+                var data = await _sessionStorageService.GetItemAsync<List<Figure>>(CacheKey);
+                Figures.Clear();
+                Figures.AddRange(data);
+            }
         }
+
 
         while (true)
         {
             try
             {
                 var data = await _apiHttpClient.Client.GetFromJsonAsync<List<Figure>>("api/figure/all");
-                await _sessionStorageService.SetItemAsync(CacheKey, data);
+
+                if (_webAssemblyHostEnvironment.Environment != "Prerendering")
+                {
+                    await _sessionStorageService.SetItemAsync(CacheKey, data);
+                }
+
                 Figures.Clear();
                 Figures.AddRange(data);
 
