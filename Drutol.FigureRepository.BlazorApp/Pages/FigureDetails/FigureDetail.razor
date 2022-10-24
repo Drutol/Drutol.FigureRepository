@@ -18,6 +18,10 @@
 {
     @if (Figure != null)
     {
+        <MudHidden Breakpoint="Breakpoint.SmAndUp">
+            <MudBreadcrumbs Items="_breadcrumbs" />
+        </MudHidden>
+
         <MudGrid Style="width: 100% !important;" Spacing="0"> 
             <MudItem xs="12" sm="5" Class="pa-4 rounded" Style="@($"background-color: {Theme.Palette.BackgroundGrey}")">
                 <FigureDetailGallery Figure="Figure"/>
@@ -28,6 +32,30 @@
                 <FigureDetailListing Figure="Figure"/>
             </MudItem>
         </MudGrid>
+
+        <HeadContent>
+            <!-- Primary Meta Tags -->
+            <title>@Figure.FigureMetadata.Title</title>
+            <meta name="description" content="@Figure.FigureMetadata.Description">
+
+            <!-- Open Graph / Facebook -->
+            <meta property="og:type" content="@Figure.FigureMetadata.Type">
+            <meta property="og:url" content="@Figure.FigureMetadata.Url">
+            <meta property="og:title" content="@Figure.FigureMetadata.Title">
+            <meta property="og:description" content="@Figure.FigureMetadata.Description">
+            <meta property="og:image" content="@Figure.FigureMetadata.ImageUrl">
+
+            <meta property="og:image:type" content="@Figure.FigureMetadata.ImageMimeType">
+            <meta property="og:image:width" content="@Figure.FigureMetadata.ImageWidth">
+            <meta property="og:image:height" content="@Figure.FigureMetadata.ImageHeight">
+
+            <!-- Twitter -->
+            <meta property="twitter:card" content="summary_large_image">
+            <meta property="twitter:url" content="@Figure.FigureMetadata.Url">
+            <meta property="twitter:title" content="@Figure.FigureMetadata.Title">
+            <meta property="twitter:description" content="@Figure.FigureMetadata.Description">
+            <meta property="twitter:image" content="@Figure.FigureMetadata.ImageUrl">
+        </HeadContent>
     }
     else
     {
@@ -65,6 +93,15 @@ else
         if (Figure == null)
             return;
 
+        _breadcrumbs = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("Home", "/", false, "home"),
+            new BreadcrumbItem("Figures", "/Figures"),
+            new BreadcrumbItem(Figure.Name, $"/Figures/{Figure.Name}")
+        };
+
         await base.OnParametersSetAsync();
     }
+
+    private List<BreadcrumbItem> _breadcrumbs;
 }

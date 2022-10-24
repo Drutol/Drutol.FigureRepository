@@ -11,7 +11,9 @@ public class MadokaFigureSeed : IFigureSeed
     public Figure Figure { get; } = new Figure()
     {
         Guid = Guid.Parse("8EE2F4AC-40F9-4FD7-A551-FE679A015ED7"),
+        Index = 3,
         Name = "Madoka",
+        Flavour = "Smug Onsen",
         Description = "Madoka based on her Onsen CG artwork. " +
                       "It's a bit more risque figure but any naughty bits are not present. " +
                       "She is talking on the phone with a smug aura around, with a cute bear keychain included. " +
@@ -266,6 +268,17 @@ public class MadokaFigureSeed : IFigureSeed
         {
             new FigureExternalPurchaseOption(FigureExternalPurchaseOptionType.CgTrader, "https://www.cgtrader.com/3d-print-models/art/sculptures/ganyu-from-genshin-impact-sculpture-for-3d-printing", false),
             new FigureExternalPurchaseOption(FigureExternalPurchaseOptionType.GameStopMarketplace, "https://nft.gamestop.com", true)
+        },
+        FigureMetadata = new FigureMetadata
+        {
+            Title = "Madoka - DruFigures",
+            Description = "Garage kit of AoKana's Madoka for 3D printing. Check out renders, painted photos and get one for yourself!",
+            ImageUrl = "https://figure.drutol.com/images/Madoka/Meta/Meta.jpg",
+            ImageWidth = 1200,
+            ImageHeight = 628,
+            ImageMimeType = "image/jpg",
+            Type = "website",
+            Url = "https://figure.drutol.com/Figures/Madoka"
         }
     };
 }

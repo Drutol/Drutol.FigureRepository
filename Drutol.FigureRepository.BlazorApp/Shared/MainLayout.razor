@@ -3,12 +3,14 @@
 @using Drutol.FigureRepository.BlazorApp.Interfaces.Figures
 @using Drutol.FigureRepository.BlazorApp.Interfaces.Wallet
 @using Microsoft.AspNetCore.Components.WebAssembly.Hosting
+@using MudBlazor.Services
 @inherits LayoutComponentBase
 
 @inject ISyncLocalStorageService LocalStorageService
 @inject IWalletProvider WalletProvider
 @inject IFigureProvider FigureProvider
 @inject IWebAssemblyHostEnvironment HostEnv
+@inject IBreakpointService BreakpointService
 
 <MudThemeProvider Theme="_theme" @bind-IsDarkMode="@DarkMode"/>
 <MudDialogProvider/>
@@ -116,10 +118,10 @@
         if (HostEnv.Environment == "Prerendering")
             return;
 
+        IsExtraSmall = await BreakpointService.IsMediaSize(Breakpoint.SmAndUp);
         DarkMode = LocalStorageService.GetItem<bool>(DarkModeStorageKey);
 
         await WalletProvider.Initialize();
-
 
         WalletProvider.StateHasChanged += (sender, args) => StateHasChanged();
     }

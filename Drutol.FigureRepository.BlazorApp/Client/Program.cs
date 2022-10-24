@@ -36,7 +36,7 @@ public class Program
     // method for prerendering nuget compatibility
     private static void ConfigureServices(IServiceCollection services, string baseAddress)
     {
-#if DEBUG
+#if DEBUG && false
         services.AddScoped<IApiHttpClient>(_ => new HttpClientWrapper(new HttpClient { BaseAddress = new Uri("http://localhost:5000") }));
 #else
         services.AddScoped<IApiHttpClient>(_ => new HttpClientWrapper(new HttpClient { BaseAddress = new Uri("https://figure.drutol.com") }));

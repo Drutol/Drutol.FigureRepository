@@ -11,10 +11,12 @@ public class AsukaFigureSeed : IFigureSeed
     public Figure Figure { get; } = new Figure
     {
         Guid = Guid.Parse("DF7449B8-4915-487A-A244-0E2E4C0B55E2"),
+        Index = 0,
         Name = "Asuka",
+        Flavour = "Tobiko Skipping",
         Description = "Asuka based on the tapestry art. " +
                       "Here she is re-imagined with more dynamic pose as if she was skimming at high speed on the sea pointing in a given direction. " +
-                      "Outfit was changed from swimsuit to flight suit with a few adjustments to make it more interesting, the flaps are semi transparent with red gradient now for example.",
+                      "Outfit was changed from swimsuit to flight suit with a few adjustments to make it more interesting, the flaps are semi transparent with red gradient for instance.",
         InitialGalleryKindDisplay = FigureMediaKind.Painted,
         Media = new()
         {
@@ -343,6 +345,17 @@ public class AsukaFigureSeed : IFigureSeed
         {
             new FigureExternalPurchaseOption(FigureExternalPurchaseOptionType.CgTrader, "https://www.cgtrader.com/3d-print-models/art/sculptures/ganyu-from-genshin-impact-sculpture-for-3d-printing", false),
             new FigureExternalPurchaseOption(FigureExternalPurchaseOptionType.GameStopMarketplace, "https://nft.gamestop.com", true)
+        },
+        FigureMetadata = new FigureMetadata
+        {
+            Title = "Asuka - DruFigures",
+            Description = "Garage kit of AoKana's Asuka for 3D printing. Check out renders, painted photos and get one for yourself!",
+            ImageUrl = "https://figure.drutol.com/images/Asuka/Meta/Meta.jpg",
+            ImageWidth = 1200,
+            ImageHeight = 628,
+            ImageMimeType = "image/jpg",
+            Type = "website",
+            Url = "https://figure.drutol.com/Figures/Asuka"
         }
     };
 }

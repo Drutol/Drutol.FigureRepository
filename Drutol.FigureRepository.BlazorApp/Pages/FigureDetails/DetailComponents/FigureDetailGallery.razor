@@ -14,7 +14,7 @@
         </MudCarouselItem>
     }
 </MudCarousel>
-<MudTabs Elevation="2" Rounded="true" Centered="true" Class="ml-4 mr-4" @bind-ActivePanelIndex="ActiveGalleryTabIndex">
+<MudTabs Elevation="2" Rounded="true" Centered="true" Class="ml-8 mr-8" @bind-ActivePanelIndex="ActiveGalleryTabIndex">
     @foreach (var kind in AvailableGalleryKinds)
     {
         @if (Figure.Media.Any(media => media.MediaKind == kind))

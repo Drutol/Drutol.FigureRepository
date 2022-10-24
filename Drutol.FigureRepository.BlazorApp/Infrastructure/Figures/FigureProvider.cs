@@ -64,7 +64,7 @@ public class FigureProvider : IFigureProvider
                 }
 
                 Figures.Clear();
-                Figures.AddRange(data);
+                Figures.AddRange(data.OrderBy(figure => figure.Index));
 
                 break;
             }

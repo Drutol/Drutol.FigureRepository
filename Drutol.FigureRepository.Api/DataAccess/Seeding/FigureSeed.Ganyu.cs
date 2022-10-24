@@ -10,7 +10,9 @@ public class GanyuFigureSeed : IFigureSeed
     public Figure Figure { get; } = new Figure
     {
         Guid = Guid.Parse("046BA215-AE76-44E4-BB14-01BBEAB30527"),
+        Index = 2,
         Name = "Ganyu",
+        Flavour = "Banner Art",
         Notes = "Printed back in the day on small Photon S printer.",
         Description = "Ganyu based on her banner art sculpted with gorgeous base " +
                       "with lilies in attempt to imitate mist gathering at her feet." +
@@ -214,6 +216,17 @@ public class GanyuFigureSeed : IFigureSeed
         {
             new FigureExternalPurchaseOption(FigureExternalPurchaseOptionType.CgTrader, "https://www.cgtrader.com/3d-print-models/art/sculptures/ganyu-from-genshin-impact-sculpture-for-3d-printing", false),
             new FigureExternalPurchaseOption(FigureExternalPurchaseOptionType.GameStopMarketplace, "https://nft.gamestop.com", true)
+        },
+        FigureMetadata = new FigureMetadata
+        {
+            Title = "Ganyu - DruFigures",
+            Description = "Garage kit of Genshin's Ganyu for 3D printing. Check out renders, painted photos and get one for yourself!",
+            ImageUrl = "https://figure.drutol.com/images/Ganyu/Meta/Meta.jpg",
+            ImageWidth = 1200,
+            ImageHeight = 628,
+            ImageMimeType = "image/jpg",
+            Type = "website",
+            Url = "https://figure.drutol.com/Figures/Ganyu"
         }
     };
 }

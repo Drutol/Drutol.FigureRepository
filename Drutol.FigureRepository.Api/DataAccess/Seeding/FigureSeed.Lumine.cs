@@ -10,7 +10,9 @@ public class LumineFigureSeed : IFigureSeed
     public Figure Figure { get; } = new()
     {
         Guid = Guid.Parse("E46284DB-90D7-4A2B-BA97-36C599C1FA87"),
+        Index = 1,
         Name = "Lumine",
+        Flavour = "Modern casual outfit",
         Description = "Lumine based on her scenic park collaboration artwork. " +
                       "Having seen the base opportunity I instantly decided she will be the next project. " +
                       "Sculpted in a pose where she flips her front hair while looking smug. " +
@@ -273,6 +275,17 @@ public class LumineFigureSeed : IFigureSeed
         {
             new FigureExternalPurchaseOption(FigureExternalPurchaseOptionType.CgTrader, "https://www.cgtrader.com/3d-print-models/art/sculptures/ganyu-from-genshin-impact-sculpture-for-3d-printing", false),
             new FigureExternalPurchaseOption(FigureExternalPurchaseOptionType.GameStopMarketplace, "https://nft.gamestop.com", true)
+        },
+        FigureMetadata = new FigureMetadata
+        {
+            Title = "Lumine - DruFigures",
+            Description = "Garage kit of Genshin's Lumine for 3D printing. Check out renders, painted photos and get one for yourself!",
+            ImageUrl = "https://figure.drutol.com/images/Lumine/Meta/Meta.jpg",
+            ImageWidth = 1200,
+            ImageHeight = 628,
+            ImageMimeType = "image/jpg",
+            Type = "website",
+            Url = "https://figure.drutol.com/Figures/Lumine"
         }
     };
 }
