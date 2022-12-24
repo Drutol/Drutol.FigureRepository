@@ -8,6 +8,7 @@ using Drutol.FigureRepository.BlazorApp.Interfaces;
 using Drutol.FigureRepository.BlazorApp.Interfaces.Figures;
 using Drutol.FigureRepository.BlazorApp.Interfaces.Http;
 using Drutol.FigureRepository.BlazorApp.Interfaces.Wallet;
+using Drutol.FigureRepository.BlazorApp.Util;
 using Drutol.FigureRepository.Shared.Admin;
 using MetaMask.Blazor;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -73,7 +74,7 @@ public class Program
         services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
         services.AddScoped<IApiAuthenticationStateProvider>(provider =>
         {
-            if (provider.GetRequiredService<IWebAssemblyHostEnvironment>().Environment == "Prerendering")
+            if (provider.GetRequiredService<IWebAssemblyHostEnvironment>().IsPrerendering())
                 return new ApiAuthenticationStateProvider(NullLogger<ApiAuthenticationStateProvider>.Instance,
                     new HttpClientWrapper(new HttpClient()));
 

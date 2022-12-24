@@ -304,11 +304,11 @@ public class AsukaFigureSeed : IFigureSeed
             NumberOfPrintBatches = 6,
             PrintResinVolume = 1148,
         },
-        NftDetails = new("0xb90810d7a02287b28dd1afabe2aa4d031d29bee2")
+        NftDetails = new("0xe3111f751c5649216fb806bcaf4e614faf92e55c")
         {
-            TokenId = 32770,
-            NftData = "0x0a123123307817c3dc0a764a6d28013339e0e2905b85ce5086b0c207775ab74b",
-            NftId = "0x8cf085e080defc5f9d67aa087310f93515995db725a576375e4bb42fb98a5452"
+            TokenId = 32769,
+            NftData = "0x13675076af2641d8bb5fe69bdd948912d8cf3a3fccf2174a9a3329cb565c64a2",
+            NftId = "0xa06f00fde7c4b0354c40f8c4ba6494306b861777e178846b5befcb77d7ae286d"
         },
         DownloadResources = new List<FigureDownloadResource>
         {

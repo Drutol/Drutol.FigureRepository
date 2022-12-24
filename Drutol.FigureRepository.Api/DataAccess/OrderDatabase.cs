@@ -1,9 +1,9 @@
 ﻿using Ardalis.GuardClauses;
 using Drutol.FigureRepository.Api.Interfaces;
-using Drutol.FigureRepository.Api.Logging;
 using Drutol.FigureRepository.Api.Models.Checkout;
 using Drutol.FigureRepository.Api.Models.Configuration;
 using Drutol.FigureRepository.Api.Util;
+using Drutol.FigureRepository.Shared.Logs;
 using Drutol.FigureRepository.Shared.Orders;
 using Drutol.FigureRepository.Shared.Statistics;
 using LiteDB;

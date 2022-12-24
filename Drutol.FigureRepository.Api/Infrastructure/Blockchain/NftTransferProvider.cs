@@ -1,12 +1,12 @@
 ﻿using System.Text.Json;
 using Drutol.FigureRepository.Api.Interfaces;
-using Drutol.FigureRepository.Api.Logging;
 using Drutol.FigureRepository.Api.Models.Blockchain;
 using Drutol.FigureRepository.Api.Models.Checkout;
 using Drutol.FigureRepository.Api.Models.Configuration;
 using Drutol.FigureRepository.Api.Util;
 using Drutol.FigureRepository.Shared.Blockchain.Loopring;
 using Drutol.FigureRepository.Shared.Blockchain.Loopring.Nft;
+using Drutol.FigureRepository.Shared.Logs;
 using Microsoft.Extensions.Options;
 
 namespace Drutol.FigureRepository.Api.Infrastructure.Blockchain;

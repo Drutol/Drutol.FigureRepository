@@ -212,11 +212,11 @@ public class LumineFigureSeed : IFigureSeed
             NumberOfPrintBatches = 5,
             PrintResinVolume = 942
         },
-        NftDetails = new FigureNftDetails("0xb90810d7a02287b28dd1afabe2aa4d031d29bee2")
+        NftDetails = new FigureNftDetails("0xe3111f751c5649216fb806bcaf4e614faf92e55c")
         {
             TokenId = 32771,
-            NftData = "0x0a979c7308097d7847e8b8a4979546757774877131d695f208889d628bd05d36",
-            NftId = "0x9e67eb098d20115a197fe07cf11822b280cc8fe88e2fc9108f2f5a10b0dbe77d"
+            NftData = "0x2009c6f916cf4a1c97997896a6aa37908740ec1033332b91926e1fc6affa6b8e",
+            NftId = "0x6c4de015a95b31be48a83d1629bfd613b6e38eae8cc6fa68d7cb086b2ca1ec27"
         },
         TechnicalStatistics = new FigureTechnicalStatistics
         {

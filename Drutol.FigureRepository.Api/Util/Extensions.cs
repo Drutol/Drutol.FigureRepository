@@ -1,4 +1,4 @@
-﻿using Drutol.FigureRepository.Api.Logging;
+﻿using Drutol.FigureRepository.Shared.Logs;
 
 namespace Drutol.FigureRepository.Api.Util
 {

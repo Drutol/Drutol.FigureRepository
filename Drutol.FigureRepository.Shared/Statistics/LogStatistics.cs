@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Drutol.FigureRepository.Api.Logging;
+using Drutol.FigureRepository.Shared.Logs;
 using Microsoft.Extensions.Logging;
 
 namespace Drutol.FigureRepository.Shared.Statistics

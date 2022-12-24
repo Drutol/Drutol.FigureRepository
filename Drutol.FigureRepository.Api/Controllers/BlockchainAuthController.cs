@@ -1,7 +1,7 @@
 using Drutol.FigureRepository.Api.Interfaces;
-using Drutol.FigureRepository.Api.Logging;
 using Drutol.FigureRepository.Api.Util;
 using Drutol.FigureRepository.Shared.Blockchain;
+using Drutol.FigureRepository.Shared.Logs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Drutol.FigureRepository.Api.Controllers;

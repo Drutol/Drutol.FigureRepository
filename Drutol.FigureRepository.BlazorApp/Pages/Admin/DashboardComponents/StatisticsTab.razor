@@ -1,5 +1,6 @@
 ﻿@using Drutol.FigureRepository.BlazorApp.Interfaces.Figures
 @using Drutol.FigureRepository.BlazorApp.Interfaces.Http
+@using Drutol.FigureRepository.BlazorApp.Util
 @using Drutol.FigureRepository.Shared.Statistics
 @using Microsoft.AspNetCore.Components.WebAssembly.Hosting
 
@@ -41,7 +42,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {        
-        if (HostEnv.Environment == "Prerendering")
+        if (HostEnv.IsPrerendering())
             return;
 
         try

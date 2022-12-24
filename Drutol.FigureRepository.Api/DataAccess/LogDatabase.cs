@@ -1,5 +1,4 @@
 ﻿using Drutol.FigureRepository.Api.Interfaces;
-using Drutol.FigureRepository.Api.Logging;
 using Drutol.FigureRepository.Api.Models.Checkout;
 using Drutol.FigureRepository.Api.Models.Configuration;
 using Drutol.FigureRepository.Shared.Logs;

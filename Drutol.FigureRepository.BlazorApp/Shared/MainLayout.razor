@@ -115,7 +115,7 @@
             await FigureProvider.Initialize();
         });
 
-        if (HostEnv.Environment == "Prerendering")
+        if (HostEnv.IsPrerendering())
             return;
 
         IsExtraSmall = await BreakpointService.IsMediaSize(Breakpoint.SmAndUp);

@@ -227,11 +227,11 @@ public class MadokaFigureSeed : IFigureSeed
                 Type = FigureExternalLinkType.Twitter
             },
         },
-        NftDetails = new("0x19c97f3ea1049454cdae644daa085633d530400c")
+        NftDetails = new("0xe3111f751c5649216fb806bcaf4e614faf92e55c")
         {
             TokenId = 32772,
-            NftData = "0x12adce79f89d7efa0ce97ab2ca3f84db8290aa081163700f498fbc30157e137f",
-            NftId = "0xec999e8c733eda753047a2e6615fd6d5cd2265fd66e9e33b2216372827b8c6ce"
+            NftData = "0x0210174a8074b41f4da240628e1fa45398f6efe2474d2bcff1bafec014d5ac9e",
+            NftId = "0xb5e81d64e02e4fcf76ea1a673ff37705eb21e113abb0f0b9c2f03fa82c722504"
         },
         DownloadResources = new List<FigureDownloadResource>
         {

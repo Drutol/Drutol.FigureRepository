@@ -1,11 +1,11 @@
 ﻿using System.Numerics;
 using Drutol.FigureRepository.Api.Interfaces;
-using Drutol.FigureRepository.Api.Logging;
 using Drutol.FigureRepository.Api.Models.Checkout;
 using Drutol.FigureRepository.Api.Models.Configuration;
 using Drutol.FigureRepository.Api.Util;
 using Drutol.FigureRepository.Shared.Blockchain.Loopring;
 using Drutol.FigureRepository.Shared.Blockchain.Loopring.Nft;
+using Drutol.FigureRepository.Shared.Logs;
 using LoopringSharp;
 using Microsoft.Extensions.Options;
 using Nethereum.Signer;
@@ -135,8 +135,6 @@ public class LoopringCommunicator : ILoopringCommunicator
 
     public async ValueTask<IApiKeyResponseModel> GetApiKey(string signedDataHash, string walletAddress, int accountId)
     {
-
-
         try
         {
             var key = EDDSAHelper.RipKeyAppart((signedDataHash, walletAddress));

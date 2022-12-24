@@ -1,6 +1,5 @@
 ﻿using Drutol.FigureRepository.Api.DataAccess;
 using Drutol.FigureRepository.Api.Interfaces;
-using Drutol.FigureRepository.Api.Logging;
 using Drutol.FigureRepository.Api.Models;
 using Drutol.FigureRepository.Api.Util;
 using Drutol.FigureRepository.Shared.Admin;

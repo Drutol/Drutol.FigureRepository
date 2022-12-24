@@ -175,11 +175,11 @@ public class GanyuFigureSeed : IFigureSeed
                 Url = "https://www.artstation.com/artwork/DAQ49A"
             }
         },
-        NftDetails = new("0xb90810d7a02287b28dd1afabe2aa4d031d29bee2")
+        NftDetails = new("0xe3111f751c5649216fb806bcaf4e614faf92e55c")
         {
-            TokenId = 32769,
-            NftData = "0x1bdf94fb9ee519b8edfb1d9d9525abc6e0c73248641f508090be2dde644a96f1",
-            NftId = "0x51c6e0ca9657c48b86861a2c4b3020b35191c8d6047aeacecb5db776ee3a7252"
+            TokenId = 32770,
+            NftData = "0x2d30871c3f9b55f272a6e682a98d5862bd03c599da4636b30c9733ab8b28ed86",
+            NftId = "0x76c56430fb00d8e96ba9b2c3e7e700136d86342dcef448c730d2ef00f63c7a06"
         },
         CheckoutDetails = new FigureCheckoutDetails
         {

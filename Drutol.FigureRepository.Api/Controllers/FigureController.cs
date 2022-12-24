@@ -1,6 +1,6 @@
 ﻿using Drutol.FigureRepository.Api.Interfaces;
-using Drutol.FigureRepository.Api.Logging;
 using Drutol.FigureRepository.Api.Util;
+using Drutol.FigureRepository.Shared.Logs;
 using Drutol.FigureRepository.Shared.Models.Figure;
 using Microsoft.AspNetCore.Mvc;
 

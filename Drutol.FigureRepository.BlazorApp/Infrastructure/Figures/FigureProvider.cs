@@ -2,6 +2,7 @@
 using Blazored.SessionStorage;
 using Drutol.FigureRepository.BlazorApp.Interfaces.Figures;
 using Drutol.FigureRepository.BlazorApp.Interfaces.Http;
+using Drutol.FigureRepository.BlazorApp.Util;
 using Drutol.FigureRepository.Shared.Models.Figure;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
@@ -41,7 +42,7 @@ public class FigureProvider : IFigureProvider
 
         _initialized = true;
 
-        if (_webAssemblyHostEnvironment.Environment != "Prerendering")
+        if (!_webAssemblyHostEnvironment.IsPrerendering())
         {
             if (await _sessionStorageService.ContainKeyAsync(CacheKey))
             {
@@ -58,7 +59,7 @@ public class FigureProvider : IFigureProvider
             {
                 var data = await _apiHttpClient.Client.GetFromJsonAsync<List<Figure>>("api/figure/all");
 
-                if (_webAssemblyHostEnvironment.Environment != "Prerendering")
+                if (!_webAssemblyHostEnvironment.IsPrerendering())
                 {
                     await _sessionStorageService.SetItemAsync(CacheKey, data);
                 }

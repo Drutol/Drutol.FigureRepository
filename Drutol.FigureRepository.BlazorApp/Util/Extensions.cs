@@ -1,5 +1,6 @@
 ﻿using Drutol.FigureRepository.Shared.Models.Enums;
 using Drutol.FigureRepository.Shared.Models.Figure;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.JSInterop;
 
 namespace Drutol.FigureRepository.BlazorApp.Util;
@@ -66,5 +67,10 @@ public static class Extensions
         }
 
         return list;
+    }
+
+    public static bool IsPrerendering(this IWebAssemblyHostEnvironment env)
+    {
+        return env.Environment == "Prerendering";
     }
 }
