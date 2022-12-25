@@ -1,6 +1,7 @@
 ﻿using Drutol.FigureRepository.Api.DataAccess;
 using Drutol.FigureRepository.Api.Interfaces;
 using Drutol.FigureRepository.Api.Models;
+using Drutol.FigureRepository.Api.Models.Checkout;
 using Drutol.FigureRepository.Api.Util;
 using Drutol.FigureRepository.Shared.Admin;
 using Drutol.FigureRepository.Shared.Logs;
@@ -23,6 +24,7 @@ public class AdminController : ControllerBase
     private readonly IFigureSeedManager _figureSeedManager;
     private readonly IOrderDatabase _orderDatabase;
     private readonly ILogDatabase _logDatabase;
+    private readonly INftTransferProvider _nftTransferProvider;
     private readonly IAdminService _adminService;
 
     public AdminController(
@@ -30,12 +32,14 @@ public class AdminController : ControllerBase
         IFigureSeedManager figureSeedManager,
         IOrderDatabase orderDatabase,
         ILogDatabase logDatabase,
+        INftTransferProvider nftTransferProvider,
         IAdminService adminService)
     {
         _logger = logger;
         _figureSeedManager = figureSeedManager;
         _orderDatabase = orderDatabase;
         _logDatabase = logDatabase;
+        _nftTransferProvider = nftTransferProvider;
         _adminService = adminService;
     }
 
@@ -78,5 +82,25 @@ public class AdminController : ControllerBase
         }
 
         return new(figureStatistics, logStatistics);
+    }  
+    
+    [HttpPost("deliverPendingOrder")]
+    public async Task<DeliverPendingOrderRequestResult> DeliverPendingOrder(DeliverPendingOrderRequest request)
+    {
+        var order = await _orderDatabase.GetOrderByGuid(request.OrderGuid);
+
+        if (order is null or { Status: not OrderStatus.DeliveryPending })
+        {
+            return new(false);
+        }
+
+        var result = await _nftTransferProvider.TransferNft(order.ToModel());
+
+        if (result.Success)
+        {
+            _orderDatabase.ProcessNftTransferResult(order, result);
+        }
+
+        return new(result.Success);
     }
 }

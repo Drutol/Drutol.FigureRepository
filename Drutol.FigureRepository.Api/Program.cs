@@ -134,6 +134,8 @@ public class Program
         builder.RegisterType<LumineFigureSeed>().AsImplementedInterfaces().SingleInstance();
         builder.RegisterType<MadokaFigureSeed>().AsImplementedInterfaces().SingleInstance();
 
+        builder.RegisterType<PendingDeliveryFulfillmentService>().AsImplementedInterfaces().SingleInstance();
+
         builder.RegisterType<BlockchainAuthSession>().AsSelf();
     }
 }

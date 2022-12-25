@@ -298,7 +298,7 @@ public class AsukaFigureSeed : IFigureSeed
                 Height = 32,
                 Length = 132
             },
-            MaxNumberOfParts = 50,
+            MaxNumberOfParts = 37,
             MinNumberOfParts = 37,
             NumberOfClearParts = 4,
             NumberOfPrintBatches = 6,

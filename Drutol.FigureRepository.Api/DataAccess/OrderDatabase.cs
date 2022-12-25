@@ -1,5 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using Drutol.FigureRepository.Api.Interfaces;
+using Drutol.FigureRepository.Api.Models.Blockchain;
 using Drutol.FigureRepository.Api.Models.Checkout;
 using Drutol.FigureRepository.Api.Models.Configuration;
 using Drutol.FigureRepository.Api.Util;
@@ -61,13 +62,18 @@ public class OrderDatabase : IOrderDatabase
         return ValueTask.FromResult(_database.GetCollection<OrderEntity>().FindOne(entity => entity.CheckoutId == checkoutId))!;
     }
 
+    public ValueTask<OrderEntity?> GetOrderByGuid(Guid orderGuid)
+    {
+        return ValueTask.FromResult(_database.GetCollection<OrderEntity>().FindOne(entity => entity.Guid == orderGuid))!;
+    }
+
     public ValueTask UpdateOrder(OrderEntity orderEntity)
     {
         _database.GetCollection<OrderEntity>().Update(orderEntity);
         return ValueTask.CompletedTask;
     }
 
-    public ValueTask<GetOrdersRequestResult> GetOrders(GetOrdersRequest request)
+    public ValueTask<GetOrdersRequestResult> GetOrders(GetOrdersRequest request, bool limitTake = true)
     {
         var query = _database.GetCollection<OrderEntity>().Query();
 
@@ -85,7 +91,9 @@ public class OrderDatabase : IOrderDatabase
         if (request.Take == 0)
             request.Take = 100;
 
-        var orders = query.Limit(Math.Min(100, request.Take)).Offset(request.Skip).ToList();
+        var take = limitTake ? Math.Min(100, request.Take) : request.Take;
+
+        var orders = query.Limit(take).Offset(request.Skip).ToList();
 
         return ValueTask.FromResult(new GetOrdersRequestResult(totalCount, orders.Select(entity => entity.ToModel()).ToList()));
     }
@@ -108,5 +116,39 @@ public class OrderDatabase : IOrderDatabase
         }
 
         return ValueTask.FromResult<FigureStatistics>(new(figureGuid, counts));
+    }
+
+    public async ValueTask ProcessNftTransferResult(OrderEntity order, NftTransferResult result)
+    {
+        if (result.Success)
+        {
+            order.Status = OrderStatus.Delivered;
+            order.Events.Add(new OrderEventEntity
+            {
+                DateTime = DateTime.UtcNow,
+                StatusChange = OrderStatus.Delivered
+            });
+
+            order.TransactionHash = result.Hash;
+            order.PaidFee = result.Fee;
+
+            await UpdateOrder(order);
+
+            _logger.LogInformation("Delivered pending order {OrderGuid}.", order.Guid);
+        }
+        else
+        {
+            order.Status = OrderStatus.DeliveryPending;
+            order.Events.Add(new OrderEventEntity
+            {
+                DateTime = DateTime.UtcNow,
+                StatusChange = OrderStatus.DeliveryPending,
+                Data = $"[{string.Join(", ", result.ErrorMessages)}]"
+            });
+
+            await UpdateOrder(order);
+
+            _logger.LogInformation("Failed to deliver pending order {OrderGuid}.", order.Guid);
+        }
     }
 }

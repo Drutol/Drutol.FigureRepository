@@ -27,7 +27,7 @@ public class WalletProvider : IWalletProvider
 
     public async Task Initialize()
     {
-        if(_initialized)
+        if (_initialized)
             return;
 
         _initialized = true;
@@ -112,8 +112,11 @@ public class WalletProvider : IWalletProvider
         connector.SelectedAccount
             .Do(account =>
             {
-                _snackbar.Add($"Changed {connector.WalletType} chain to: {account.Address} ({account.ChainId})",
-                    Severity.Info);
+                if (!string.IsNullOrEmpty(account.Address))
+                {
+                    _snackbar.Add($"Changed {connector.WalletType} account to: {account.Address} ({account.ChainId})",
+                        Severity.Info);
+                }
             });
     }
 
@@ -123,8 +126,11 @@ public class WalletProvider : IWalletProvider
         connector.SelectedAccount
             .Do(account =>
             {
-                _snackbar.Add($"Changed {connector.WalletType} chain to: {account.Address} ({account.ChainId})",
-                    Severity.Info);
+                if (!string.IsNullOrEmpty(account.Address))
+                {
+                    _snackbar.Add($"Changed {connector.WalletType} account to: {account.Address} ({account.ChainId})",
+                        Severity.Info);
+                }
             });
     }
 

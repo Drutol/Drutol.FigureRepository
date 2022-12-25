@@ -60,7 +60,13 @@ public MudDataGridPager<Log> Pager { get; set; }
     public int ItemsPerPage { get; set; } = 50;
     public bool Loading { get; set; }
 
-    public List<DruEventId> SelectedEvents { get; set; } = Enum.GetValues<DruEventId>().ToList();
+    public List<DruEventId> SelectedEvents { get; set; } = Enum.GetValues<DruEventId>().Except(new[]
+    {
+        DruEventId.AuthSessionCreated,
+        DruEventId.AuthSessionAuthenticated,
+        DruEventId.AuthSessionAuthenticationFailed,
+        DruEventId.FiguresFetched,
+    }).ToList();
     public List<LogLevel> SelectedLevels { get; set; } = Enum.GetValues<LogLevel>().ToList();
 
     private async void RefreshList()

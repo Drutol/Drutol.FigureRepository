@@ -1,7 +1,6 @@
-﻿namespace Drutol.FigureRepository.Api.Models
+﻿namespace Drutol.FigureRepository.Api.Models;
+
+public static class AuthPolicies
 {
-    public static class AuthPolicies
-    {
-        public const string AdminPolicy = nameof(AdminPolicy);
-    }
+    public const string AdminPolicy = nameof(AdminPolicy);
 }

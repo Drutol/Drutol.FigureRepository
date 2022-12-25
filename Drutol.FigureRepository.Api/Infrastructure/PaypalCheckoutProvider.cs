@@ -151,33 +151,18 @@ public class PaypalCheckoutProvider : ICheckoutProvider
                         _downloadTokenManager.GenerateDownloadTokenForFigure(
                             _figureSeedManager[orderEntity.FigureId]);
 
-                    var transferResult = await _nftTransferProvider.TransferNft(orderEntity);
+                    var transferResult = await _nftTransferProvider.TransferNft(orderEntity.ToModel());
+
+                    await _orderDatabase.ProcessNftTransferResult(orderEntity, transferResult);
 
                     if (transferResult.Success)
                     {
-                        orderEntity.Status = OrderStatus.Delivered;
-                        orderEntity.Events.Add(new OrderEventEntity
-                        {
-                            DateTime = DateTime.UtcNow,
-                            StatusChange = OrderStatus.Delivered
-                        });
-
-                        orderEntity.TransactionHash = transferResult.Hash;
-                        orderEntity.PaidFee = transferResult.Fee;
-
                         return new(
                             CheckoutTransactionResponse.StatusCode.Ok,
                             downloadToken);
                     }
                     else
                     {
-                        orderEntity.Status = OrderStatus.DeliveryPending;
-                        orderEntity.Events.Add(new OrderEventEntity
-                        {
-                            DateTime = DateTime.UtcNow,
-                            StatusChange = OrderStatus.DeliveryPending,
-                            Data = $"[{string.Join(", ", transferResult.ErrorMessages)}]"
-                        });
                         return new(
                             CheckoutTransactionResponse.StatusCode.DeliveryPending,
                             downloadToken);

@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Drutol.FigureRepository.Shared.Models.Figure.Enums
+namespace Drutol.FigureRepository.Shared.Models.Figure.Enums;
+
+public enum FigureExternalPurchaseOptionType
 {
-    public enum FigureExternalPurchaseOptionType
-    {
-        GameStopMarketplace,
-        CgTrader,
-        PayPal
-    }
+    GameStopMarketplace,
+    CgTrader,
+    PayPal
 }

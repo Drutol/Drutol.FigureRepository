@@ -5,6 +5,7 @@
 @using System.Net.Http.Headers
 @using Drutol.FigureRepository.BlazorApp.Interfaces
 @using Drutol.FigureRepository.BlazorApp.Interfaces.Http
+@using Drutol.FigureRepository.Shared.Logs
 
 @inject IApiHttpClient HttpClient
 @inject ILogger<AdminDashboard> Logger
@@ -33,7 +34,7 @@
             <CellTemplate>
                 @if (@context.Item.Status == OrderStatus.DeliveryPending)
                 {
-                    <MudButton Variant="Variant.Outlined" Color="Color.Primary">Deliver</MudButton>
+                    <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="() => DeliverPendingOrder(context.Item)">Deliver</MudButton>
                 }
                 else
                 {
@@ -116,7 +117,6 @@ public MudDataGridPager<Order> Pager { get; set; }
         DataGrid.PagerStateHasChangedEvent -= PagerStateHasChangedEvent;
     }
 
-
     private void Callback(IEnumerable<OrderStatus> obj)
     {
         SelectedStatuses = obj.ToList();
@@ -124,4 +124,17 @@ public MudDataGridPager<Order> Pager { get; set; }
         DataGrid.CurrentPage = 0;
         RefreshList();
     }
+
+    private async void DeliverPendingOrder(Order order)
+    {
+        var response = await HttpClient.Client.PostAsJsonAsync("api/admin/deliverPendingOrder", new DeliverPendingOrderRequest(order.Guid));
+
+        if (response.IsSuccessStatusCode)
+        {
+            var result = await response.Content.ReadFromJsonAsync<DeliverPendingOrderRequestResult>();
+            Logger.LogInformation($"Pending delivery status: {result.Success}");
+            RefreshList();
+        }
+    }
+
 }

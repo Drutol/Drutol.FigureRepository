@@ -7,6 +7,8 @@ public class ThemeWrapper
     private readonly MudTheme _theme;
     private readonly Func<bool> _isDarkMode;
 
+    public bool IsDarkMode => _isDarkMode();
+
     public ThemeWrapper(MudTheme theme, Func<bool> isDarkMode)
     {
         _theme = theme;

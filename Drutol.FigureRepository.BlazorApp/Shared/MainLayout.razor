@@ -11,6 +11,7 @@
 @inject IFigureProvider FigureProvider
 @inject IWebAssemblyHostEnvironment HostEnv
 @inject IBreakpointService BreakpointService
+@inject NavigationManager NavigationManager
 
 <MudThemeProvider Theme="_theme" @bind-IsDarkMode="@DarkMode"/>
 <MudDialogProvider/>
@@ -124,6 +125,17 @@
         await WalletProvider.Initialize();
 
         WalletProvider.StateHasChanged += (sender, args) => StateHasChanged();
+
+        NavigationManager.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        if (!IsExtraSmall && _drawerOpen)
+        {
+            DrawerToggle();
+            StateHasChanged();
+        }
     }
 
     void DrawerToggle()

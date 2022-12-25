@@ -7,6 +7,7 @@ using Drutol.FigureRepository.Api.Util;
 using Drutol.FigureRepository.Shared.Blockchain.Loopring;
 using Drutol.FigureRepository.Shared.Blockchain.Loopring.Nft;
 using Drutol.FigureRepository.Shared.Logs;
+using Drutol.FigureRepository.Shared.Models.Orders;
 using Microsoft.Extensions.Options;
 
 namespace Drutol.FigureRepository.Api.Infrastructure.Blockchain;
@@ -30,7 +31,7 @@ public class NftTransferProvider : INftTransferProvider
         _loopringCommunicator = loopringCommunicator;
     }
 
-    public async Task<NftTransferResult> TransferNft(OrderEntity order)
+    public async Task<NftTransferResult> TransferNft(Order order)
     {
         var figure = _figureSeedManager[order.FigureId];
 

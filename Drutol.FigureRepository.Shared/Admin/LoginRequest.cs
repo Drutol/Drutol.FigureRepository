@@ -5,9 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Drutol.FigureRepository.Shared.Models.Auth;
 
-namespace Drutol.FigureRepository.Shared.Admin
-{
-    public record LoginRequest(string Key);
+namespace Drutol.FigureRepository.Shared.Admin;
 
-    public record LoginRequestResult(bool Success, TokenResponse TokenResponse = null);
-}
+public record LoginRequest(string Key);
+
+public record LoginRequestResult(bool Success, TokenResponse TokenResponse = null);

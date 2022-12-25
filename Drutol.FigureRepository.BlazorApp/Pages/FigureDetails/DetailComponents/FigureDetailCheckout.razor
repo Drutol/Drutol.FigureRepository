@@ -46,17 +46,18 @@
             <ChildContent>
                 @if (DownloadsReady)
                 {
-                    <MudStack>
+                    <MudStack Style="width: 250px">
                         @foreach (var resource in Figure.DownloadResources)
                         {
                             <MudButton Href="@DownloadUrls![resource.Type]"
                                        download="@($"{Figure.Name}{resource.Type}.{resource.Format.Str()}")">
                                 <MudImage Width="50" Class="mr-4" Src="@GetIconSrcForResource(resource)"></MudImage>
+                                <MudSpacer/>
                                 <MudStack AlignItems="AlignItems.Center" Spacing="0">
                                     <MudText>
                                         @resource.Type.Str()
                                     </MudText>
-                                    <MudTooltip>
+                                    <MudTooltip Text="@resource.Sha256">
                                         <MudText Typo="Typo.caption">
                                             <b>SHA256: </b> @(resource.Sha256.Substring(0, 9))...
                                         </MudText>
@@ -68,7 +69,9 @@
                 }
                 else
                 {
-                    <MudProgressCircular Indeterminate="true" Size="Size.Large"/>
+                    <MudStack Style="width: 250px" AlignItems="AlignItems.Center">
+                        <MudProgressCircular  Indeterminate="true" Size="Size.Large" Class="ma-8" Color="Color.Primary" />
+                    </MudStack>
                 }
             </ChildContent>
         </MudMenu>
@@ -125,14 +128,14 @@
                             Connect your wallet first in order to access all purchase options.
                             <br/>
                             <br/>
-                            You can do it by clicking the button in the top right corner of the screen.
+                            You can do it by clicking the button in the top right corner of the page.
                         </MudAlert>
                         <MudDivider Class="ma-2"/>
                         <MudStack Class="ma-2">
-                        @foreach (var option in Figure.ExternalPurchaseOptions.Concat(new[] { _dummyPayPalPurchaseOption }))
-                        {
-                            <CheckoutPurchaseButton Option="option" Disabled="@option.RequiresWallet"/>
-                        }
+                            @foreach (var option in Figure.ExternalPurchaseOptions.Concat(new[] { _dummyPayPalPurchaseOption }))
+                            {
+                                <CheckoutPurchaseButton Option="option" Disabled="@option.RequiresWallet"/>
+                            }
                         </MudStack>
                     }
                 </ChildContent>
@@ -145,9 +148,21 @@
     }
 </MudPaper>
 
+<MudOverlay Visible="@IsOrderProcessing" ZIndex="9999" AutoClose="false" DarkBackground="@Theme.IsDarkMode" LightBackground="@(!Theme.IsDarkMode)">
+    <MudPaper Class="pa-4" Elevation="4">
+        <MudStack AlignItems="AlignItems.Center">
+            <MudProgressCircular Indeterminate="true" Color="Color.Primary"/>
+            <MudText>Your order is now being processed...</MudText>
+        </MudStack>
+    </MudPaper>
+</MudOverlay>
+
 @code {
 
     private readonly FigureExternalPurchaseOption _dummyPayPalPurchaseOption = new(FigureExternalPurchaseOptionType.PayPal, "", true);
+
+    [CascadingParameter]
+    protected ThemeWrapper Theme { get; set; }
 
     [Parameter]
     public Figure Figure { get; set; }
@@ -158,6 +173,7 @@
     public bool FailedToDetermineOwnership { get; set; }
     public bool CanPurchase { get; set; }
     public bool DownloadsReady { get; set; }
+    public bool IsOrderProcessing { get; set; }
 
     public MudMenu PurchaseMenu { get; set; }
     public Dictionary<FigureDownloadType, string>? DownloadUrls { get; set; }
@@ -186,17 +202,27 @@
     [JSInvokable]
     public async Task SubmitPaypalOrder(string orderId)
     {
-        var result = await HttpClient.Client.PostAsJsonAsync("api/order/transaction", new CheckoutTransactionRequest(orderId));
-        var response = await result.Content.ReadFromJsonAsync<CheckoutTransactionResponse>();
-
-        if (response.Status is CheckoutTransactionResponse.StatusCode.Ok or CheckoutTransactionResponse.StatusCode.DeliveryPending)
+        try
         {
-            await DownloadTokenManager.SetDownloadTokenForFigure(Figure, response.TokenResponse);
-            IsFigureOwned = true;
+            IsOrderProcessing = true;
+            StateHasChanged();
+
+            var result = await HttpClient.Client.PostAsJsonAsync("api/order/transaction", new CheckoutTransactionRequest(orderId));
+            var response = await result.Content.ReadFromJsonAsync<CheckoutTransactionResponse>();
+
+            if (response.Status is CheckoutTransactionResponse.StatusCode.Ok or CheckoutTransactionResponse.StatusCode.DeliveryPending)
+            {
+                await DownloadTokenManager.SetDownloadTokenForFigure(Figure, response.TokenResponse);
+                IsFigureOwned = true;
+            }
+
+            PurchaseMenu.CloseMenu();
+        }
+        finally
+        {
+            IsOrderProcessing = false;
             StateHasChanged();
         }
-
-        PurchaseMenu.CloseMenu();
     }   
     
     [JSInvokable]
@@ -353,12 +379,13 @@
 
     #region Download
 
-    private async Task PrepareDownloads()
+    private async void PrepareDownloads()
     {
         if(DownloadUrls != null)
             DownloadUrls.Clear();
 
         DownloadsReady = false;
+        StateHasChanged();
         var token = await DownloadTokenManager.GetDownloadTokenForFigure(Figure);
 
         if(token == default)
@@ -379,7 +406,7 @@
                 }
                 else
                 {
-                    
+                    Logger.LogError($"Failed to obtain download links.");
                 }
             }
             else
@@ -387,6 +414,8 @@
                 IsFigureOwned = false;
             }
         }
+
+        StateHasChanged();
     }
 
     private string GetIconSrcForResource(FigureDownloadResource resource)
