@@ -24,13 +24,11 @@
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
 
-@*<style>
-    .PurchaseInfoButton {
-        position: absolute;
-        right: 8px;
-        top: 8px;
+<style>
+    .BuyMenuPopover {
+        width: 400px
     }
-</style>*@
+</style>
 
 <MudPaper Elevation="2" Square="false" Class="ml-8 mr-8 mt-8" >
     <MudToolBar>
@@ -39,9 +37,18 @@
         </div>
 
         <MudSpacer />
-        <MudMenu Size="Size.Large" AnchorOrigin="Origin.BottomCenter" PopoverClass="pr-2 pl-2">
+        <MudMenu Size="Size.Large" AnchorOrigin="Origin.BottomCenter" PopoverClass="pr-2 pl-2" Disabled="@(!IsFigureOwned || IsLoading)">
             <ActivatorContent>
-                <MudButton Disabled="!IsFigureOwned || IsLoading" StartIcon="@Icons.Material.Outlined.Download" Size="Size.Large" OnClick="PrepareDownloads">Download</MudButton>
+                @if (!IsFigureOwned || IsLoading)
+                {
+                    <MudTooltip Text="Make sure to connect your wallet if you want to download." >
+                        <MudButton Disabled="true" StartIcon="@Icons.Material.Outlined.Download" Size="Size.Large">Download</MudButton>
+                    </MudTooltip>
+                }
+                else
+                {
+                    <MudButton Disabled="false" StartIcon="@Icons.Material.Outlined.Download" Size="Size.Large" OnClick="PrepareDownloads">Download</MudButton>
+                }
             </ActivatorContent>
             <ChildContent>
                 @if (DownloadsReady)
@@ -97,13 +104,13 @@
         {
             <MudMenu @ref="PurchaseMenu" Size="Size.Large" AnchorOrigin="Origin.BottomCenter" PopoverClass="BuyMenuPopover pr-2 pl-2">
                 <ActivatorContent>
-                    <MudButton Class="ml-2" StartIcon="@Icons.Filled.AddShoppingCart" Color="Color.Info" Size="Size.Large" OnClick="() => OnBuyMenuOpened(true)">
+                    <MudButton Class="ml-2" StartIcon="@Icons.Filled.AddShoppingCart" Color="Color.Warning" Size="Size.Large" OnClick="() => OnBuyMenuOpened(true)">
                         Purchase
                     </MudButton>
                 </ActivatorContent>
                 <ChildContent>
                     <MudStack Row="true" AlignItems="AlignItems.Center" Class="ml-2">
-                        <MudText Typo="Typo.h4" Align="Align.Left" Style="flex-grow: 1">Purchase</MudText>
+                        <MudText Typo="Typo.h5" Align="Align.Left" Style="flex-grow: 1">Purchase</MudText>
                         <MudSpacer/>
                         <MudFab Class="ma-2" StartIcon="@Icons.Filled.Info" Color="Color.Primary" Size="Size.Small" OnClick="ShowPurchaseInfoDialog"/>
                     </MudStack>

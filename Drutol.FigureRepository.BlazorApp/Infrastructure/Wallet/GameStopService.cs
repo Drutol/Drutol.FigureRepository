@@ -59,6 +59,20 @@ namespace Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet
                 HandleExceptions(ex);
                 throw;
             }
+        }  
+        
+        public async ValueTask<bool> HasMetaMask()
+        {
+            var module = await moduleTask.Value;
+            try
+            {
+                return await module.InvokeAsync<bool>("hasMetaMask");
+            }
+            catch (Exception ex)
+            {
+                HandleExceptions(ex);
+                throw;
+            }
         }
 
         public async ValueTask<bool> IsSiteConnected()

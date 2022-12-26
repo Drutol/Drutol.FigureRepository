@@ -32,6 +32,7 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
     private readonly ILogger<BlockchainAuthProvider> _logger;
     private readonly ILoopringCommunicator _loopringCommunicator;
     private readonly IDownloadTokenManager _downloadTokenManager;
+    private readonly IOrderDatabase _orderDatabase;
     private readonly Func<StartAuthenticationRequest, BlockchainAuthSession> _authSessionFactory;
     private readonly IOptions<BlockchainAuthConfig> _configuration;
 
@@ -42,12 +43,14 @@ public class BlockchainAuthProvider : IBlockchainAuthProvider
         ILogger<BlockchainAuthProvider> logger,
         ILoopringCommunicator loopringCommunicator,
         IDownloadTokenManager downloadTokenManager,
+        IOrderDatabase orderDatabase,
         Func<StartAuthenticationRequest, BlockchainAuthSession> authSessionFactory,
         IOptions<BlockchainAuthConfig> configuration)
     {
         _logger = logger;
         _loopringCommunicator = loopringCommunicator;
         _downloadTokenManager = downloadTokenManager;
+        _orderDatabase = orderDatabase;
         _authSessionFactory = authSessionFactory;
         _configuration = configuration;
     }

@@ -1,7 +1,53 @@
 ﻿@page "/Contact"
+@using System.Text
 
-<h3>About</h3>
+<MudPaper Class="ma-8 pa-8" Elevation="3">
+    <MudItem Class="border-l-2 pl-4 mud-border-primary">
+        <MudText Typo="Typo.h4" Align="Align.Left">Contact</MudText>
+    </MudItem>   
+    <MudStack Spacing="4" Class="mt-4">
+        <MudText>Hello! If you require any assistance feel free to use any of the following platforms to reach me:</MudText>
+        
+        <MudStack Row="true" AlignItems="AlignItems.Center">
+            <MudIcon Icon="@Icons.Custom.Brands.Twitter" Size="Size.Large" Style="color:#1c9cea" />
+            <MudLink Href="https://twitter.com/Drutol" Target="_blank">@@Drutol</MudLink>
+        </MudStack>    
+        
+        <MudStack Row="true" AlignItems="AlignItems.Center">
+            <MudIcon Icon="@Icons.Custom.Brands.Discord" Size="Size.Large" Style="color:#6e85d3" />
+            <MudLink Href="https://discord.gg/gAVStZ3xMt" Target="_blank">Discord Server</MudLink>
+        </MudStack>
+        
+        <MudStack Row="true" AlignItems="AlignItems.Center">
+            <MudIcon Icon="@Icons.Material.Filled.Email" Size="Size.Large" />
+            @if (IsEmailVisible)
+            {
+                <MudLink Href="@($"mailto:{Email}")" Target="_blank">@Email</MudLink>
+            }
+            else
+            {
+                <MudButton OnClick="ShowEmail">Show Email</MudButton>
+            }
+        </MudStack>
+        
+        <MudStack Row="true" AlignItems="AlignItems.Center">
+            <MudIcon Icon="@Icons.Custom.Brands.GitHub" Size="Size.Large" />
+            <MudLink Href="https://github.com/Drutol/Drutol.FigureRepository" Target="_blank">Github</MudLink>
+        </MudStack>
+        
+    </MudStack>
+</MudPaper>
 
 @code {
+    private readonly string addr = "ZHJ1ZmlndXJlc0Bwb2N6dGEuZm0=";
 
+    public bool IsEmailVisible { get; set; }
+    public string Email { get; set; }
+
+    private Task ShowEmail()
+    {
+        Email = Encoding.UTF8.GetString(Convert.FromBase64String(addr));
+        IsEmailVisible = true;
+        return Task.CompletedTask;
+    }
 }

@@ -6,6 +6,7 @@ using Drutol.FigureRepository.BlazorApp.Util;
 using Functional.Maybe;
 using MetaMask.Blazor;
 using MetaMask.Blazor.Enums;
+using MudBlazor;
 
 namespace Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet;
 
@@ -20,7 +21,9 @@ public class MetaMaskWalletConnector : IWalletConnector
 
     private readonly Dictionary<int, string> _signCache = new();
     private readonly ILogger<MetaMaskWalletConnector> _logger;
+    private readonly ISnackbar _snackbar;
     private readonly MetaMaskService _metaMaskService;
+    private readonly GameStopService _gameStopService;
     private bool _connectingToMetaMask;
 
     public bool IsWalletPresent { get; private set; }
@@ -29,10 +32,14 @@ public class MetaMaskWalletConnector : IWalletConnector
 
     public MetaMaskWalletConnector(
         ILogger<MetaMaskWalletConnector> logger,
-        MetaMaskService metaMaskService)
+        ISnackbar snackbar,
+        MetaMaskService metaMaskService,
+        GameStopService gameStopService)
     {
         _logger = logger;
+        _snackbar = snackbar;
         _metaMaskService = metaMaskService;
+        _gameStopService = gameStopService;
     }
 
     public async Task Initialize()
@@ -54,6 +61,22 @@ public class MetaMaskWalletConnector : IWalletConnector
     {
         try
         {
+            var basicEthereumPresent = await _metaMaskService.HasMetaMask();
+            var metaMaskPresent = await _gameStopService.HasMetaMask();
+
+            if (basicEthereumPresent && !metaMaskPresent)
+            {
+                _snackbar.Add(
+                    "Looks like you have conflicting wallet extensions. " +
+                    "MetaMask is being overriden by some other extension. " +
+                    "Try disabling default browser wallet extension setting in the offending wallet.",
+                    Severity.Warning, options =>
+                    {
+                        options.VisibleStateDuration = 10000;
+                    });
+                return false;
+            }
+
             _connectingToMetaMask = true;
             await _metaMaskService.ConnectMetaMask();
 
@@ -113,7 +136,9 @@ public class MetaMaskWalletConnector : IWalletConnector
 
     public async Task<bool> CheckIsWalletPresent()
     {
-        IsWalletPresent = await _metaMaskService.HasMetaMask();
+        var basicEthereumPresent = await _metaMaskService.HasMetaMask();
+
+        IsWalletPresent = basicEthereumPresent;
         return IsWalletPresent;
     }
 

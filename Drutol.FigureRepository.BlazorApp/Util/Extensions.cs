@@ -23,6 +23,9 @@ public static class Extensions
 
     public static string TruncateAddress(this string str)
     {
+        if (string.IsNullOrEmpty(str))
+            return string.Empty;
+
         return $"{str.Substring(0, 5)}...{str.Substring(str.Length - 4, 4)}";
     }
 

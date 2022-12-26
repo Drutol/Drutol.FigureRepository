@@ -67,6 +67,13 @@ public class OrderDatabase : IOrderDatabase
         return ValueTask.FromResult(_database.GetCollection<OrderEntity>().FindOne(entity => entity.Guid == orderGuid))!;
     }
 
+    public ValueTask<OrderEntity?> GetOrderByWalletAddress(string walletAddress, Guid figureGuid)
+    {
+        return ValueTask.FromResult(_database.GetCollection<OrderEntity>().FindOne(entity =>
+            entity.WalletAddress == walletAddress && entity.FigureId == figureGuid &&
+            entity.Status == OrderStatus.Delivered || entity.Status == OrderStatus.DeliveryPending));
+    }
+
     public ValueTask UpdateOrder(OrderEntity orderEntity)
     {
         _database.GetCollection<OrderEntity>().Update(orderEntity);
@@ -151,4 +158,6 @@ public class OrderDatabase : IOrderDatabase
             _logger.LogInformation("Failed to deliver pending order {OrderGuid}.", order.Guid);
         }
     }
+
+
 }

@@ -1,4 +1,5 @@
-﻿using Drutol.FigureRepository.BlazorApp.Enums;
+﻿using Blazored.LocalStorage;
+using Drutol.FigureRepository.BlazorApp.Enums;
 using Drutol.FigureRepository.BlazorApp.Interfaces.Wallet;
 using Drutol.FigureRepository.BlazorApp.Models;
 using Functional.Maybe;
@@ -8,20 +9,26 @@ namespace Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet;
 
 public class WalletProvider : IWalletProvider
 {
+    private const string CurrentWalletProviderKey = nameof(CurrentWalletProviderKey);
+
     public event EventHandler StateHasChanged;
     public event EventHandler WalletPromptRequest;
 
     private readonly ISnackbar _snackbar;
+    private readonly ISyncLocalStorageService _localStorageService;
     public Dictionary<WalletType, IWalletConnector> Wallets { get; }
     private bool _initialized;
 
     public bool EthereumAvailable { get; set; }
-
     public Maybe<IWalletConnector> CurrentWallet { get; private set; }
 
-    public WalletProvider(ISnackbar snackbar, IEnumerable<IWalletConnector> connectors)
+    public WalletProvider(
+        ISnackbar snackbar,
+        ISyncLocalStorageService localStorageService,
+        IEnumerable<IWalletConnector> connectors)
     {
         _snackbar = snackbar;
+        _localStorageService = localStorageService;
         Wallets = connectors.ToDictionary(connector => connector.WalletType, connector => connector);
     }
 
@@ -34,12 +41,18 @@ public class WalletProvider : IWalletProvider
 
         foreach (var walletConnector in Wallets.Values)
         {
+            await walletConnector.Initialize();
+
             walletConnector.WalletConnected += WalletConnectorOnWalletConnected;
             walletConnector.StateHasChanged += WalletConnectorOnStateHasChanged;
             walletConnector.WalletConnectionFailed += WalletConnectorOnWalletConnectionCancelled;
             walletConnector.WalletDisconnected += WalletConnectorOnWalletDisconnected;
+        }
 
-            await walletConnector.Initialize();
+        if (_localStorageService.ContainKey(CurrentWalletProviderKey))
+        {
+            var currentWalletProviderType = _localStorageService.GetItem<WalletType>(CurrentWalletProviderKey);
+            await SwitchToWallet(currentWalletProviderType);
         }
     }
 
@@ -51,16 +64,19 @@ public class WalletProvider : IWalletProvider
             connector.StateHasChanged -= CurrentWalletOnStateHasChanged;
         });
         CurrentWallet = Maybe<IWalletConnector>.Nothing;
+        _localStorageService.RemoveItem(CurrentWalletProviderKey);
 
         var connector = Wallets[walletType];
         if (await connector.Connect())
         {
             CurrentWallet = connector.ToMaybe();
+            _localStorageService.SetItem(CurrentWalletProviderKey, walletType);
             connector.StateHasChanged += CurrentWalletOnStateHasChanged;
             StateHasChanged?.Invoke(this, EventArgs.Empty);
             return true;
         }
 
+        StateHasChanged?.Invoke(this, EventArgs.Empty);
         return false;
     }
 

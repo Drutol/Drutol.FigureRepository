@@ -30,7 +30,7 @@
     }
     else
     {
-        <MudCarousel Id="Carousel" Style="height: 464px" ShowBullets="false" BulletsClass="CarouselBullet" ShowArrows="true" AutoCycle="false" TData="object" @bind-SelectedIndex="SelectedCarouselIndex">
+        <MudCarousel Id="Carousel" Style="height: 464px" ShowBullets="false" BulletsClass="CarouselBullet" ShowArrows="true" AutoCycle="true" TData="object" @bind-SelectedIndex="SelectedCarouselIndex">
             @foreach (var photo in CarouselPhotos)
             {
                 var figure = FigureDictionary[photo];

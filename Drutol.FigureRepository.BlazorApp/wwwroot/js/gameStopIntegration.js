@@ -27,6 +27,15 @@ export async function checkGameStop() {
     }
 }
 
+export async function hasMetaMask() {
+    if (window.ethereum && window.ethereum.isMetaMask) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
 export async function requestAccounts() {
     console.log('reqAccount');
     var result = await gamestop.request({

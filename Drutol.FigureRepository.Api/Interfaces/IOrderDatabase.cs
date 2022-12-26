@@ -14,4 +14,5 @@ public interface IOrderDatabase
     ValueTask<GetOrdersRequestResult> GetOrders(GetOrdersRequest request, bool limitTake = true);
     ValueTask<FigureStatistics> GetFigureStatistics(Guid figureGuid, GetStatisticsRequest request);
     ValueTask ProcessNftTransferResult(OrderEntity order, NftTransferResult result);
+    ValueTask<OrderEntity?> GetOrderByWalletAddress(string walletAddress, Guid figureGuid);
 }
