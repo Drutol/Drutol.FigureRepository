@@ -1,0 +1,48 @@
+﻿<MudDialog>
+    <DialogContent>
+        <div class="d-flex flex-column py-1">
+            <MudStack Row="true" Spacing="5">
+                <MudIcon Icon="@Icons.Outlined.QuestionAnswer" Size="Size.Large" Color="Color.Primary"/>
+                <MudText>
+                    <b>Why do I need a wallet?</b> - Your wallet extension is your account, without emails, passwords and other delicate data.
+                    It allows to establish your identity and associate your purchases with you.
+                </MudText>
+            </MudStack>          
+            <br/>
+            <MudStack Row="true" Spacing="5">
+                <MudIcon Icon="@Icons.Outlined.QuestionAnswer" Size="Size.Large" Color="Color.Primary"/>
+                <MudText>
+                    <b>What is this wallet for?</b> - Your wallet is just like real life wallet, a mean of storing currencies and other items of value.
+                    I'll be depositing there tokens representing figures, with such tokens inside you will be able to access the downloads.
+                </MudText>
+            </MudStack>     
+            <br/>
+            <MudStack Row="true" Spacing="5">
+                <MudIcon Icon="@Icons.Outlined.QuestionAnswer" Size="Size.Large" Color="Color.Primary"/>
+                <MudText>
+                    <b>What is a wallet?</b> - A wallet is just a browser extension. Nothing more.
+                </MudText>
+            </MudStack>  
+            <br/>
+            <MudStack Row="true" Spacing="5">
+                <MudIcon Icon="@Icons.Outlined.QuestionAnswer" Size="Size.Large" Color="Color.Primary"/>
+                <MudText>
+                    <b>Does it matter which one do I choose?</b> - From user experience perspective yes, GameStop wallet is more user friendly in this scenario.
+                    However! You can switch between them or even use both at the same time, you just need to import the same private key to it.
+                    Your purchases are not tied to the wallet itself but to the private key it stores. <i>Make sure you keep the key safe!</i>
+                </MudText>
+            </MudStack>
+        </div>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="Close">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    void Close() => MudDialog.Close(DialogResult.Ok(true));
+}

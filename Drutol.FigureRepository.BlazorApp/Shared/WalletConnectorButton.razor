@@ -2,8 +2,11 @@
 @using Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet
 @using Drutol.FigureRepository.BlazorApp.Enums
 @using Drutol.FigureRepository.BlazorApp.Interfaces.Wallet
+@using Drutol.FigureRepository.BlazorApp.Dialogs
 
 @inject IWalletProvider WalletProvider
+@inject IDialogService DialogService
+@inject NavigationManager NavigationManager
 
 <style>
     .RecommendedTooltip {
@@ -13,9 +16,18 @@
     .RecommendedTooltip .mud-popover-cascading-value {
         z-index: 2000;
     }
+
+    .WalletDialog {
+        width: 350px
+    }
+
+    .WalletButton span {
+        flex-grow: 1;
+        text-align: center;
+    }
 </style>
 
-<MudMenu Size="Size.Large" PopoverClass="pr-2 pl-2" Class="mr-4" @ref="WalletMenu">
+<MudMenu Size="Size.Large" PopoverClass="WalletDialog pr-2 pl-2" Class="mr-4" @ref="WalletMenu">
     <ActivatorContent>
         <MudButton StartIcon="@Icons.Material.Outlined.AccountBalanceWallet" Color="Color.Inherit" OnClick="CheckWalletAvailability">Wallet</MudButton>
     </ActivatorContent>
@@ -26,7 +38,7 @@
                 var metadata = WalletProvider.GetWalletMetadata(connector.WalletType);
                 @if (connector.IsWalletPresent)
                 {
-                    <MudButton Class="WalletButton" OnClick="@(async () => await ConnectWallet(connector.WalletType))" Variant="Variant.Filled" Color="@(connector.WalletType == WalletType.GameStop ? Color.Primary : Color.Default)">
+                    <MudButton Class="WalletButton" S OnClick="@(async () => await ConnectWallet(connector.WalletType))" Variant="Variant.Filled" Color="@(connector.WalletType == WalletType.GameStop ? Color.Primary : Color.Default)">
                         <MudImage Src="@metadata.IconUrl" Width="30" Height="30" Class="mr-2"/>
                         <MudStack Spacing="0" Style="flex-grow: 1">
                             <MudText Typo="Typo.button">Connect @connector.WalletType.ToString()</MudText>
@@ -42,10 +54,10 @@
                 }
                 else
                 {
-                    <MudButton Class="WalletButton" Href="@metadata.DownloadUrl" Variant="Variant.Filled" target="_blank" Color="@(connector.WalletType == WalletType.GameStop ? Color.Primary : Color.Default)">
+                    <MudButton Class="WalletButton" Variant="Variant.Filled" target="_blank" OnClick="() => OpenWalletInstallationDisclaimer(connector)" Color="@(connector.WalletType == WalletType.GameStop ? Color.Primary : Color.Default)">
                         <MudImage Src="@metadata.IconUrl" Width="30" Height="30" Class="mr-2"/>
                         <MudStack Spacing="0" Style="flex-grow: 1">
-                            <MudText Typo="Typo.button">Download @connector.WalletType.ToString()</MudText>
+                            <MudText Typo="Typo.button">Download @connector.WalletType.ToString()<br/>Wallet Extension</MudText>
                             @if (connector.WalletType == WalletType.GameStop)
                             {
                                 <MudTooltip RootClass="RecommendedTooltip" Text="GameStop wallet was designed for NFTs hence it provides best user experience.">
@@ -56,6 +68,8 @@
                     </MudButton>
                 }
             }
+            
+            <MudButton StartIcon="@Icons.Outlined.Info" OnClick="ShowWalletDisclaimer">What is this?</MudButton>
         </MudStack>
     </ChildContent>
 </MudMenu>
@@ -84,4 +98,20 @@
     {
         await WalletProvider.CheckWalletAvailability();
     }
+
+    private async void OpenWalletInstallationDisclaimer(IWalletConnector connector)
+    {
+        DialogService.Show<WalletDownloadDialog>(
+            "Wallet Download",
+            new DialogParameters
+            {
+                { nameof(WalletDownloadDialog.Connector), connector }
+            });
+    }
+
+    private void ShowWalletDisclaimer()
+    {
+        DialogService.Show<WalletInfoDialog>("Wallet Information");
+    }
+
 }

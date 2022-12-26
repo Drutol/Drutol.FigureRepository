@@ -11,6 +11,7 @@ public interface IWalletProvider
 
     Task Initialize();
     bool EthereumAvailable { get; set; }
+    ValueTask SetCachedWalletProviderType(WalletType walletType);
     Dictionary<WalletType, IWalletConnector> Wallets { get; }
 
     Task<bool> SwitchToWallet(WalletType walletType);

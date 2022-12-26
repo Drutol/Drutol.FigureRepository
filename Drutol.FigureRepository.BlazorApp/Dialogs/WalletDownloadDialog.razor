@@ -1,0 +1,94 @@
+﻿@using Drutol.FigureRepository.BlazorApp.Interfaces.Wallet
+@using Drutol.FigureRepository.BlazorApp.Enums
+@using Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet
+
+@inject NavigationManager NavigationManager
+@inject IWalletProvider WalletProvider
+@inject IJSRuntime JsRuntime
+
+<MudDialog>
+    <DialogContent>
+        <div class="d-flex flex-column py-1">
+            <MudStack Row="true" Spacing="5">
+                <MudImage Src="@(Connector.WalletType == WalletType.GameStop ? "svg/wallet/Gme.svg" : "svg/wallet/MetaMask.svg")" Height="50" />
+                <MudText>
+                    <MudStack Class="mt-1" Row="true" AlignItems="AlignItems.Start" Style="@(CurrentStep == Step.Download ? "opacity: 1": "opacity: .5")">
+                        <MudIcon Icon="@Icons.Filled.ChevronRight" Color="Color.Primary"/>
+                        <MudText Typo="Typo.body2" Align="Align.Left" Class="mt-1">
+                            <strong>1. Press button below to download selected extension.</strong><br/>
+                            You will be taken to the official website of the extension where you will be able to install it within your browser.
+                        </MudText>
+                    </MudStack>
+                    <MudStack Class="mt-1" Row="true" AlignItems="AlignItems.Start" Style="@(CurrentStep != Step.Download ? "opacity: 1": "opacity: .5")">
+                        <MudIcon Icon="@Icons.Filled.ChevronRight" Color="Color.Primary"/>
+                        <MudText Typo="Typo.body2" Align="Align.Left" Class="mt-1">
+                            <strong>2. Once installed, click on the extension icon and set it up.</strong><br />
+                            It will be a quick process where you will create and configure your wallet. You will find it alongside your other extensions.
+                        </MudText>
+                    </MudStack>
+                    <MudStack Class="mt-1" Row="true" AlignItems="AlignItems.Start" Style="@(CurrentStep != Step.Download ? "opacity: 1": "opacity: .5")">
+                        <MudIcon Icon="@Icons.Filled.ChevronRight" Color="Color.Primary"/>
+                        <MudText Typo="Typo.body2" Align="Align.Left" Class="mt-1">
+                            <strong>3. Press the reload button below.</strong><br />
+                            For the extension to start working a page reload is necessary. Once the reload completes the process will continue with the final connection prompt.
+                        </MudText>
+                    </MudStack>
+                </MudText>
+            </MudStack>
+        </div>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Close">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Continue">@ButtonText</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    enum Step
+    {
+        Start,
+        Download,
+        Reload
+    }
+
+    public string ButtonText { get; set; }
+    private Step CurrentStep { get; set; } = Step.Start;
+
+    [Parameter]
+    public IWalletConnector Connector { get; set; }
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Continue();
+    }
+
+    async void Continue()
+    {
+        switch (CurrentStep)
+        {
+            case Step.Start:
+                ButtonText = "Download";
+                CurrentStep = Step.Download;
+                break;     
+            case Step.Download:
+                ButtonText = "Reload";
+                await JsRuntime.InvokeVoidAsync("open", WalletProvider.GetWalletMetadata(Connector.WalletType).DownloadUrl, "_blank");
+                CurrentStep = Step.Reload;
+                break;
+            case Step.Reload:
+                await WalletProvider.SetCachedWalletProviderType(Connector.WalletType);
+                NavigationManager.NavigateTo(NavigationManager.Uri, true, true);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+        StateHasChanged();
+    }
+
+    void Close() => MudDialog.Close(DialogResult.Ok(true));
+}

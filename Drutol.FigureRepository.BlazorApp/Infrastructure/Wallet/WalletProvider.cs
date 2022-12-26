@@ -16,6 +16,8 @@ public class WalletProvider : IWalletProvider
 
     private readonly ISnackbar _snackbar;
     private readonly ISyncLocalStorageService _localStorageService;
+
+
     public Dictionary<WalletType, IWalletConnector> Wallets { get; }
     private bool _initialized;
 
@@ -54,6 +56,12 @@ public class WalletProvider : IWalletProvider
             var currentWalletProviderType = _localStorageService.GetItem<WalletType>(CurrentWalletProviderKey);
             await SwitchToWallet(currentWalletProviderType);
         }
+    }
+
+    public ValueTask SetCachedWalletProviderType(WalletType walletType)
+    {
+        _localStorageService.SetItem(CurrentWalletProviderKey, walletType);
+        return ValueTask.CompletedTask;
     }
 
     public async Task<bool> SwitchToWallet(WalletType walletType)
@@ -113,7 +121,7 @@ public class WalletProvider : IWalletProvider
     private void WalletConnectorOnWalletConnectionCancelled(object? sender, EventArgs e)
     {
         var connector = (IWalletConnector)sender!;
-        _snackbar.Add($"Cancelled {connector.WalletType} wallet connection.", Severity.Warning);
+        _snackbar.Add($"Failed to establish {connector.WalletType} wallet connection.", Severity.Warning);
     }
 
     private void WalletConnectorOnWalletDisconnected(object? sender, EventArgs e)

@@ -17,17 +17,6 @@
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
-<style>
-    .WalletButton {
-        width: 250px;
-    }
-
-    .WalletButton span {
-        flex-grow: 1;
-        text-align: center;
-    }
-</style>
-
 <MudLayout>
     <MudAppBar Elevation="2">
         <MudHidden Breakpoint="Breakpoint.SmAndUp" @bind-IsHidden="IsExtraSmall">
@@ -40,6 +29,8 @@
             <div style="width: 10px"></div>
             <MudImage Src="@(DarkMode ? "svg/logo/LogoTextWhite.svg" : "svg/logo/LogoTextBlack.svg")" Height="40"/>
         </a>
+        
+        <MudText Class="ml-2" Color="Color.Error" Typo="Typo.h4">Beta</MudText>
 
         <MudSpacer/>
         @if (WalletProvider.CurrentWallet.HasValue && WalletProvider.CurrentWallet.Value.SelectedAccount.HasValue)
