@@ -1,5 +1,6 @@
 ﻿@page "/Figures/{Name}"
 @using Drutol.FigureRepository.BlazorApp.Interfaces.Figures
+@using Drutol.FigureRepository.BlazorApp.Interfaces.Wallet
 @using Drutol.FigureRepository.BlazorApp.Util
 @using Drutol.FigureRepository.Shared.Models.Figure
 @using Drutol.FigureRepository.BlazorApp.Pages.FigureDetails.DetailComponents
@@ -7,6 +8,7 @@
 
 @inject IFigureProvider FigureProvider;
 @inject IFigureIconProvider FigureIconProvider;
+@inject IWalletProvider WalletProvider;
 
 @if (IsFigureDataReady)
 {
@@ -95,6 +97,8 @@ else
         };
 
         await base.OnParametersSetAsync();
+
+        await WalletProvider.SwitchToWalletIfWasPreviouslyConnected();
     }
 
     private List<BreadcrumbItem> _breadcrumbs;

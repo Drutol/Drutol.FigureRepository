@@ -15,6 +15,7 @@ public interface IWalletProvider
     Dictionary<WalletType, IWalletConnector> Wallets { get; }
 
     Task<bool> SwitchToWallet(WalletType walletType);
+    Task SwitchToWalletIfWasPreviouslyConnected();
     Maybe<IWalletConnector> CurrentWallet { get; }
 
     void RequestWalletPrompt();

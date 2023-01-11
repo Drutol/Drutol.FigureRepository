@@ -51,10 +51,17 @@ public class WalletProvider : IWalletProvider
             walletConnector.WalletDisconnected += WalletConnectorOnWalletDisconnected;
         }
 
-        if (_localStorageService.ContainKey(CurrentWalletProviderKey))
+    }
+
+    public async Task SwitchToWalletIfWasPreviouslyConnected()
+    {
+        if (CurrentWallet.IsNothing())
         {
-            var currentWalletProviderType = _localStorageService.GetItem<WalletType>(CurrentWalletProviderKey);
-            await SwitchToWallet(currentWalletProviderType);
+            if (_localStorageService.ContainKey(CurrentWalletProviderKey))
+            {
+                var currentWalletProviderType = _localStorageService.GetItem<WalletType>(CurrentWalletProviderKey);
+                await SwitchToWallet(currentWalletProviderType);
+            }
         }
     }
 

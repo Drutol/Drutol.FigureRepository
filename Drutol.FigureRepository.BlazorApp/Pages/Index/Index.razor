@@ -2,13 +2,47 @@
 @using Drutol.FigureRepository.BlazorApp.Interfaces.Figures
 @using Drutol.FigureRepository.BlazorApp.Pages.Index.IndexComponents
 @using Drutol.FigureRepository.BlazorApp.Pages.FigureIndex.IndexComponents
+@using Drutol.FigureRepository.BlazorApp.Util
 
 @inject IFigureProvider FigureProvider
 @inject IFigureIconProvider FigureIconProvider
+@inject IJSRuntime JsRuntime
 
 <style>
     #Gallery {
         align-self: center;
+    }
+
+    .TextContainer {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -60%);
+        opacity: 1;
+        text-align: center;
+        color: @(Theme.IsDarkMode ? "white" : "black");
+    }
+
+    .IndexImage {
+        object-fit: cover;
+        opacity: .8;
+        min-height: 1024px;
+        width: 100%;
+        filter: brightness(@(Theme.IsDarkMode ? "50%" : "100%"));
+    }
+
+    .WelcomeText {
+        color: @(Theme.IsDarkMode ? "white" : "black");
+        font-weight: lighter;
+        font-size: 7rem;
+        text-shadow: 2px 2px 4px @(Theme.IsDarkMode ? "black" : "white");
+    }
+
+    .TextContainer p, .TextContainer a {
+        font-size: 1.3rem !important;
+        font-weight: 300;
+        text-shadow: 1px 1px 2px @(Theme.IsDarkMode ? "black" : "white");
+        
     }
 </style>
 
@@ -16,16 +50,73 @@
     <MetaProperties/>
 </HeadContent>
 
-<MudGrid Spacing="0" Class="mt-2">
+<div style="position: relative">
+    <img src="@(Theme.IsDarkMode ? "images/Assets/DarkIndexImage.jpg" : "images/Assets/LightIndexImage.jpg")" class="IndexImage" />
+    
+    <div class="TextContainer">
+        <span class="WelcomeText">Welcome!</span>
+        
+        <MudText Typo="Typo.body1" Class="mt-4">
+            Welcome to DruFigures! Here I'm hosting figures I've sculpted and then published online.
+            <br/>
+            This site serves as:
+        </MudText>
+        <MudStack Style="display: inline-block !important;">
+            <MudStack Class="mt-1" Row="true" AlignItems="AlignItems.Center">
+                <MudIcon Icon="@Icons.Filled.ChevronRight" Color="Color.Primary" />
+                <MudText Typo="Typo.body2" Align="Align.Center"><strong>Portfolio</strong></MudText>
+            </MudStack>
+            <MudStack Class="mt-1" Row="true" AlignItems="AlignItems.Center">
+                <MudIcon Icon="@Icons.Filled.ChevronRight" Color="Color.Primary" />
+                <MudText Typo="Typo.body2" Align="Align.Center"><strong>Store</strong></MudText>
+            </MudStack>
+        </MudStack>
+
+        <MudText Class="mt-2" Typo="Typo.body1">
+            I'm purely a hobbyist sculptor working in Blender. Each figure comes with:
+        </MudText>
+        
+        <MudStack Style="display: inline-block !important;">
+            <MudStack Class="mt-1" Row="true" AlignItems="AlignItems.Center">
+                <MudIcon Icon="@Icons.Filled.TaskAlt" Color="Color.Primary" />
+                <MudText Typo="Typo.body2" Align="Align.Center"><strong>Blender Scenes</strong></MudText>
+            </MudStack>
+            <MudStack Class="mt-1" Row="true" AlignItems="AlignItems.Center">
+                <MudIcon Icon="@Icons.Filled.TaskAlt" Color="Color.Primary" />
+                <MudText Typo="Typo.body2" Align="Align.Center"><strong>Pre-Supported Lychee Slicer Scenes</strong></MudText>
+            </MudStack>
+            <MudStack Class="mt-1" Row="true" AlignItems="AlignItems.Center">
+                <MudIcon Icon="@Icons.Filled.TaskAlt" Color="Color.Primary" />
+                <MudText Typo="Typo.body2" Align="Align.Center"><strong>STLs</strong></MudText>
+            </MudStack>
+        </MudStack>
+
+
+        <MudText Class="mt-2" Typo="Typo.body1">
+            You can purchase the models via CGTrader listings or GameStop marketplace or directly on this site.
+        </MudText>
+
+        <MudText Class="mt-8" Typo="Typo.body1">
+            <MudIcon Icon="@Icons.Custom.Brands.GitHub" Size="Size.Small" />
+            If you are curious about this site you can find the code running it on my <MudLink Href="https://github.com/Drutol/Drutol.FigureRepository" Target="_blank">Github</MudLink>.
+        </MudText>
+
+        <MudFab Color="Color.Primary" Icon="@Icons.Material.Filled.ArrowDownward" Class="mt-8" OnClick="ScrollToFigures"/>
+
+    </div>
+
+</div>
+
+@*<MudGrid Spacing="0" Class="mt-2">
     <MudItem xs="12" sm="6" Class="d-flex flex-column">
         <IndexHello/>
     </MudItem>
     <MudItem xs="12" sm="6" Id="Gallery">
         <IndexGallery/>
     </MudItem>
-</MudGrid>
+</MudGrid>*@
 
-<MudText Typo="Typo.h4" Class="mt-4" Align="Align.Center">
+<MudText id="FiguresHeader" Typo="Typo.h4" Class="mt-4" Align="Align.Center">
     Figures
 </MudText>
 
@@ -44,5 +135,12 @@
 </MudPaper>*@
 
 @code {
+    [CascadingParameter]
+    protected ThemeWrapper Theme { get; set; }
 
+    private async void ScrollToFigures()
+    {
+        var module = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/utils.js");
+        await module.InvokeVoidAsync("scrollToFigures");
+    }
 }
