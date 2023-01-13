@@ -20,29 +20,27 @@
         transform: translate(-50%, -60%);
         opacity: 1;
         text-align: center;
-        color: @(Theme.IsDarkMode ? "white" : "black");
+        color: white;
     }
 
     .IndexImage {
         object-fit: cover;
-        opacity: .8;
+        opacity: @(Theme.IsDarkMode ? ".8" : "1");
         min-height: 1024px;
         width: 100%;
-        filter: brightness(@(Theme.IsDarkMode ? "50%" : "100%"));
     }
 
     .WelcomeText {
-        color: @(Theme.IsDarkMode ? "white" : "black");
+        color: white;
         font-weight: lighter;
         font-size: 7rem;
-        text-shadow: 2px 2px 4px @(Theme.IsDarkMode ? "black" : "white");
+        text-shadow: 1px 1px 5px black, 2px 2px 2px black, 2px 2px 1px black;
     }
 
     .TextContainer p, .TextContainer a {
-        font-size: 1.3rem !important;
+        font-size: 1.4rem !important;
         font-weight: 300;
-        text-shadow: 1px 1px 2px @(Theme.IsDarkMode ? "black" : "white");
-        
+        text-shadow: 1px 1px 5px black, 2px 2px 2px black, 2px 2px 1px black;
     }
 </style>
 
@@ -57,7 +55,7 @@
         <span class="WelcomeText">Welcome!</span>
         
         <MudText Typo="Typo.body1" Class="mt-4">
-            Welcome to DruFigures! Here I'm hosting figures I've sculpted and then published online.
+            Welcome to DruFigures! It's home of figures I've sculpted and then published online.
             <br/>
             This site serves as:
         </MudText>
@@ -107,15 +105,6 @@
 
 </div>
 
-@*<MudGrid Spacing="0" Class="mt-2">
-    <MudItem xs="12" sm="6" Class="d-flex flex-column">
-        <IndexHello/>
-    </MudItem>
-    <MudItem xs="12" sm="6" Id="Gallery">
-        <IndexGallery/>
-    </MudItem>
-</MudGrid>*@
-
 <MudText id="FiguresHeader" Typo="Typo.h4" Class="mt-4" Align="Align.Center">
     Figures
 </MudText>
@@ -125,14 +114,6 @@
 <div Class="ma-8">
     <FigureGrid ItemWidth="380"/>
 </div>
-
-@*<MudPaper Class="ma-8 pa-8" Elevation="3">
-    <MudItem Class="border-l-2 pl-4 mud-border-primary">
-        <MudText Typo="Typo.h4" Align="Align.Left">FAQ</MudText>
-    </MudItem>
-
-    <FaqList/>
-</MudPaper>*@
 
 @code {
     [CascadingParameter]

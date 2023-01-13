@@ -88,7 +88,7 @@
                                     </MudStack>
                                     @foreach (var link in Figure.ExternalLinks)
                                     {
-                                        <MudLink Href="@link.Url">@link.Type.ToString()</MudLink>
+                                        <MudLink Href="@link.Url" Target="_blank">@link.Type.ToString()</MudLink>
                                     }
                                 </MudStack>
                             </MudItem>

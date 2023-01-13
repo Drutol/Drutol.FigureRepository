@@ -5,6 +5,20 @@
 
 @inject IJSRuntime JS;
 
+<style>
+    #Carousel button {
+        background-color: var(--mud-palette-primary);
+        color: white;
+        width: 30px;
+        height: 30px;
+        opacity: 1 !important;
+    }
+
+    #Carousel svg {
+        fill: white;
+    }
+</style>
+
 <MudText Typo="Typo.h4" Class="border-l-2 pl-4 mud-border-primary">Gallery</MudText>
 <MudCarousel Id="Carousel" Style="height: 448px" ShowBullets="false" ShowArrows="true" AutoCycle="false" TData="object" @bind-SelectedIndex="CarouselSelectedIndex">
     @foreach (var photo in GalleryItems)
