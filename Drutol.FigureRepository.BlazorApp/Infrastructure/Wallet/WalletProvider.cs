@@ -2,7 +2,9 @@
 using Drutol.FigureRepository.BlazorApp.Enums;
 using Drutol.FigureRepository.BlazorApp.Interfaces.Wallet;
 using Drutol.FigureRepository.BlazorApp.Models;
+using Drutol.FigureRepository.BlazorApp.Util;
 using Functional.Maybe;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor;
 
 namespace Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet;
@@ -15,6 +17,7 @@ public class WalletProvider : IWalletProvider
     public event EventHandler WalletPromptRequest;
 
     private readonly ISnackbar _snackbar;
+    private readonly IWebAssemblyHostEnvironment _environment;
     private readonly ISyncLocalStorageService _localStorageService;
 
 
@@ -26,10 +29,12 @@ public class WalletProvider : IWalletProvider
 
     public WalletProvider(
         ISnackbar snackbar,
+        IWebAssemblyHostEnvironment environment,
         ISyncLocalStorageService localStorageService,
         IEnumerable<IWalletConnector> connectors)
     {
         _snackbar = snackbar;
+        _environment = environment;
         _localStorageService = localStorageService;
         Wallets = connectors.ToDictionary(connector => connector.WalletType, connector => connector);
     }
@@ -55,6 +60,9 @@ public class WalletProvider : IWalletProvider
 
     public async Task SwitchToWalletIfWasPreviouslyConnected()
     {
+        if(_environment.IsPrerendering())
+            return;
+
         if (CurrentWallet.IsNothing())
         {
             if (_localStorageService.ContainKey(CurrentWalletProviderKey))

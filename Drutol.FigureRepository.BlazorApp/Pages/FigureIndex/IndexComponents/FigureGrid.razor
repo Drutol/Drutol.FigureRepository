@@ -7,19 +7,36 @@
 @using MudBlazor
 
 @inject IFigureProvider FigureProvider
+@inject IFigureIconProvider FigureIconProvider
 @inject NavigationManager NavigationManager
 @inject IWebAssemblyHostEnvironment HostEnv
 
-<MudGrid Justify="Justify.SpaceEvenly">
+<style>
+    .GridItem {
+        overflow: hidden;
+        min-height: 100px;
+    }
+    
+    .GridItemIcon {
+        position: relative;
+        scale: 15;
+        left: 90%;
+        transform: translateY(60%);
+        opacity: .15;
+    }
+</style>
+
+<MudGrid Class="Grid" Justify="Justify.SpaceEvenly">
     @if (FigureDataReady)
     {
         @foreach (var figure in FigureProvider.Figures.Where(figure => figure.Media.Any(media => media.Display.HasFlag(FigurePhotoIntendedDisplay.FigureIndex))))
         {
             var photo = figure.Media.First(media => media.Display.HasFlag(FigurePhotoIntendedDisplay.FigureIndex));
             <MudItem Style="@($"max-width: {ItemWidth}px")">
-                <MudCard @onclick="() => OnItemClick(figure)" Class="cursor-pointer">
+                <MudCard @onclick="() => OnItemClick(figure)" Class="cursor-pointer" Elevation="6">
                     <MudCardMedia Image="@photo.Url" Height="400" Style="@($"background-position: {@photo.Gravity.ToCssValue()}")"/>
-                    <MudCardContent Style="min-height: 100px">
+                    <MudCardContent Class="GridItem">
+                        <MudIcon Class="GridItemIcon" Icon="@FigureIconProvider.GetForFigure(figure)" />
                         <MudText Typo="Typo.h5" Align="Align.Center">@figure.Name</MudText>
                         <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
                         <MudText Typo="Typo.body1" Class="mt-2">@figure.Description</MudText>
@@ -34,7 +51,6 @@
                         {
                             <MudText Typo="Typo.body2" Class="mt-2">Published: TBD</MudText>
                         }
-
                     </MudCardContent>
                     @*                    <MudCardActions Class="justify-end">
                         <MudButton Variant="Variant.Outlined" Color="Color.Primary" >Details</MudButton>

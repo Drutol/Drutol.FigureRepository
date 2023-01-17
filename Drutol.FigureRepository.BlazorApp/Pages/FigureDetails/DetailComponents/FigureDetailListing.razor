@@ -4,122 +4,149 @@
 @using MudBlazor
 @using Drutol.FigureRepository.BlazorApp.Util
 @using Drutol.FigureRepository.Shared.Models.Figure
+@using Drutol.FigureRepository.BlazorApp.Interfaces.Figures
 
-<MudPaper Elevation="3" Class="ml-8 mr-8 mt-4 pa-4">
-                <MudContainer Class="d-flex flex-wrap flex-row" Style="justify-content: center">
-                    <MudItem xs="12" sm="7" Class="pb-4" Style="max-width: unset !important; flex-grow: 1 !important">
-                        <MudGrid>
-                            <MudItem xs="6">
-                                <MudStack Spacing="2">
-                                    <MudStack Row="true" AlignItems="AlignItems.Center">
-                                        <MudIcon Icon="@Icons.Filled.Straighten"/>
-                                        <MudText Typo="Typo.h6" Align="Align.Center">Dimensions</MudText>
-                                    </MudStack>
-                                    <MudText Typo="Typo.body2"><strong>Width:</strong> @Figure.FigureDimensions.Width.ToString("N0") mm</MudText>
-                                    <MudText Typo="Typo.body2"><strong>Height:</strong> @Figure.FigureDimensions.Height.ToString("N0") mm</MudText>
-                                    <MudText Typo="Typo.body2"><strong>Length:</strong> @Figure.FigureDimensions.Length.ToString("N0") mm</MudText>
-                                    <MudStack Row="true" AlignItems="AlignItems.Center">
-                                        <MudTooltip Text="Maximum single part dimension at the default scale.">
-                                            <MudText Typo="Typo.subtitle1" Align="Align.Center">
-                                                <span class="border-b-2 mud-border-primary pb-1">
-                                                    Biggest Object
-                                                </span>
-                                            </MudText>
-                                        </MudTooltip>
-                                    </MudStack>
-                                    <MudText Typo="Typo.body2"><strong>W/H/L:</strong> 
-                                        @Figure.PrintDetails.BiggestPartDimension.Width.ToString("N0")/@Figure.PrintDetails.BiggestPartDimension.Height.ToString("N0")/@Figure.PrintDetails.BiggestPartDimension.Length.ToString("N0") mm
-                                    </MudText>
-                                </MudStack>
-                            </MudItem>
-                            <MudItem xs="6">
-                                <MudStack Spacing="2">
-                                    <MudStack Row="true" AlignItems="AlignItems.Center">
-                                        <MudIcon Icon="@Icons.Filled.ViewInAr"/>
-                                        <MudText Typo="Typo.h6" Align="Align.Center">Technicalities</MudText>
-                                    </MudStack>
-                                    <MudText Typo="Typo.body2"><strong>Blender Scene:</strong> @Figure.TechnicalStatistics.BlendFileSize.Bytes()</MudText>
-                                    <MudText Typo="Typo.body2"><strong>Lychee Scenes:</strong> @Figure.TechnicalStatistics.LycheeScenesSize.Bytes()</MudText>
-                                    <MudText Typo="Typo.body2"><strong>STLs:</strong> @Figure.TechnicalStatistics.StlsSize.Bytes()</MudText>
-                                    <MudText Typo="Typo.body2"><strong>Vertices:</strong> @Figure.TechnicalStatistics.Vertices.ToMetric(MetricNumeralFormats.WithSpace, 2)</MudText>
-                                    <MudText Typo="Typo.body2"><strong>Eyes:</strong> @Figure.EyeType.Str()</MudText>
-                                    <MudTooltip Text="@Figure.NftDetails.TokenAddress">
-                                        <MudText Typo="Typo.body2"><strong>Token:</strong> @Figure.NftDetails.TokenAddress.TruncateAddress()</MudText>
-                                    </MudTooltip>
-                                </MudStack>
-                            </MudItem>
-                            <MudItem xs="6">
-                                <MudStack Spacing="2">
-                                    <MudStack Row="true" AlignItems="AlignItems.Center">
-                                        <MudIcon Icon="@Icons.Filled.Print"/>
-                                        <MudText Typo="Typo.h6" Align="Align.Center">Printing</MudText>
-                                    </MudStack>
-                                    <MudText Typo="Typo.body2"><strong>Number of parts: </strong>
-                                        @if (Figure.PrintDetails.MinNumberOfParts == Figure.PrintDetails.MaxNumberOfParts)
-                                        {
-                                            @Figure.PrintDetails.MaxNumberOfParts
-                                        }
-                                        else
-                                        {
-                                            <MudTooltip Text="Depending on your print max print volume there is variable number of parts prepared.">
-                                                <span class="border-b-2 mud-border-primary">
-                                                    @($"{Figure.PrintDetails.MinNumberOfParts} - {Figure.PrintDetails.MaxNumberOfParts}")
-                                                </span>
-                                            </MudTooltip>
-                                        }
-                                    </MudText>
-                                    <MudText Typo="Typo.body2">
-                                        <MudTooltip Text="Some parts were designed to be printed clear (translucent). Separate kind of resin required.">
-                                            <span class="border-b-2 mud-border-primary">
-                                                <strong>Clear Parts: </strong>
-                                            </span>
-                                        </MudTooltip>
-                                        @Figure.PrintDetails.NumberOfClearParts
-                                    </MudText>
-                                    <MudText Typo="Typo.body2"><strong>Print Batches:</strong> @Figure.PrintDetails.NumberOfPrintBatches</MudText>
-                                    <MudText Typo="Typo.body2"><strong>Resin Volume:</strong> @Figure.PrintDetails.PrintResinVolume ml</MudText>
-                                </MudStack>
-                            </MudItem>
-                            <MudItem xs="6">
-                                <MudStack Spacing="2">
-                                    <MudStack Row="true" AlignItems="AlignItems.Center">
-                                        <MudIcon Icon="@Icons.Filled.Link"/>
-                                        <MudText Typo="Typo.h6" Align="Align.Center">External Links</MudText>
-                                    </MudStack>
-                                    @foreach (var link in Figure.ExternalLinks)
-                                    {
-                                        <MudLink Href="@link.Url" Target="_blank">@link.Type.ToString()</MudLink>
-                                    }
-                                </MudStack>
-                            </MudItem>
-                        </MudGrid>
-                    </MudItem>
-                    <MudItem xs="12" sm="5" Style="max-width: unset !important;">
-                        <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center">
-                            <MudIcon Icon="@Icons.Filled.EventRepeat"/>
-                            <MudText Typo="Typo.h6" Align="Align.Center">Timeline</MudText>
+@inject IFigureIconProvider FigureIconProvider
+
+<style>
+    .Container {
+        overflow: hidden;
+    }
+
+    .ContainerIcon {
+        position: relative;
+        scale: 30;
+        left: @(new MarkupString(FigureOffsets[Figure.Guid].Left.ToString()))%;
+        transform: translateY(@(new MarkupString(@FigureOffsets[Figure.Guid].VerticalTransform.ToString()))%);
+        opacity: .1;
+    }
+</style>
+
+<MudPaper Elevation="3" Class="Container ml-8 mr-8 mt-4 pa-4">
+    <MudIcon Class="ContainerIcon" Icon="@FigureIconProvider.GetForFigure(Figure)" />
+    <MudContainer Class="d-flex flex-wrap flex-row" Style="justify-content: center">
+        <MudItem xs="12" sm="7" Class="pb-4" Style="max-width: unset !important; flex-grow: 1 !important">
+            <MudGrid>
+                <MudItem xs="6">
+                    <MudStack Spacing="2">
+                        <MudStack Row="true" AlignItems="AlignItems.Center">
+                            <MudIcon Icon="@Icons.Filled.Straighten"/>
+                            <MudText Typo="Typo.h6" Align="Align.Center">Dimensions</MudText>
                         </MudStack>
-                        <MudTimeline TimelinePosition="TimelinePosition.Alternate">
-                            @foreach (var step in Figure.Timeline.OrderBy(entry => entry.Date))
+                        <MudText Typo="Typo.body2"><strong>Width:</strong> @Figure.FigureDimensions.Width.ToString("N0") mm</MudText>
+                        <MudText Typo="Typo.body2"><strong>Height:</strong> @Figure.FigureDimensions.Height.ToString("N0") mm</MudText>
+                        <MudText Typo="Typo.body2"><strong>Length:</strong> @Figure.FigureDimensions.Length.ToString("N0") mm</MudText>
+                        <MudStack Row="true" AlignItems="AlignItems.Center">
+                            <MudTooltip Text="Maximum single part dimension at the default scale.">
+                                <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                                    <span class="border-b-2 mud-border-primary pb-1">
+                                        Biggest Object
+                                    </span>
+                                </MudText>
+                            </MudTooltip>
+                        </MudStack>
+                        <MudText Typo="Typo.body2"><strong>W/H/L:</strong>
+                            @Figure.PrintDetails.BiggestPartDimension.Width.ToString("N0")/@Figure.PrintDetails.BiggestPartDimension.Height.ToString("N0")/@Figure.PrintDetails.BiggestPartDimension.Length.ToString("N0") mm
+                        </MudText>
+                    </MudStack>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudStack Spacing="2">
+                        <MudStack Row="true" AlignItems="AlignItems.Center">
+                            <MudIcon Icon="@Icons.Filled.ViewInAr"/>
+                            <MudText Typo="Typo.h6" Align="Align.Center">Technicalities</MudText>
+                        </MudStack>
+                        <MudText Typo="Typo.body2"><strong>Blender Scene:</strong> @Figure.TechnicalStatistics.BlendFileSize.Bytes()</MudText>
+                        <MudText Typo="Typo.body2"><strong>Lychee Scenes:</strong> @Figure.TechnicalStatistics.LycheeScenesSize.Bytes()</MudText>
+                        <MudText Typo="Typo.body2"><strong>STLs:</strong> @Figure.TechnicalStatistics.StlsSize.Bytes()</MudText>
+                        <MudText Typo="Typo.body2"><strong>Vertices:</strong> @Figure.TechnicalStatistics.Vertices.ToMetric(MetricNumeralFormats.WithSpace, 2)</MudText>
+                        <MudText Typo="Typo.body2"><strong>Eyes:</strong> @Figure.EyeType.Str()</MudText>
+                        <MudTooltip Text="@Figure.NftDetails.TokenAddress">
+                            <MudText Typo="Typo.body2"><strong>Token:</strong> @Figure.NftDetails.TokenAddress.TruncateAddress()</MudText>
+                        </MudTooltip>
+                    </MudStack>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudStack Spacing="2">
+                        <MudStack Row="true" AlignItems="AlignItems.Center">
+                            <MudIcon Icon="@Icons.Filled.Print"/>
+                            <MudText Typo="Typo.h6" Align="Align.Center">Printing</MudText>
+                        </MudStack>
+                        <MudText Typo="Typo.body2"><strong>Number of parts: </strong>
+                            @if (Figure.PrintDetails.MinNumberOfParts == Figure.PrintDetails.MaxNumberOfParts)
                             {
-                                <MudTimelineItem Size="@(step.Event switch{
-                                                           FigureTimelineEvent.Publish=> Size.Large,
-                                                           FigureTimelineEvent.ProjectInception => Size.Medium,
-                                                           _=>Size.Small })"
-                                                 Color="@(step.Event switch{
-                                                            FigureTimelineEvent.Publish=> Color.Primary,
-                                                            FigureTimelineEvent.ProjectInception => Color.Info,
-                                                            _=> Color.Default })">
-                                    <MudText Typo="Typo.button">@step.Event.Str()</MudText>
-                                    <MudText Typo="Typo.body2" Class="mud-text-secondary">@step.Date.ToString("d")</MudText>
-                                </MudTimelineItem>
+                                @Figure.PrintDetails.MaxNumberOfParts
                             }
-                        </MudTimeline>
-                    </MudItem>
-                </MudContainer>
-            </MudPaper>
+                            else
+                            {
+                                <MudTooltip Text="Depending on your print max print volume there is variable number of parts prepared.">
+                                    <span class="border-b-2 mud-border-primary">
+                                        @($"{Figure.PrintDetails.MinNumberOfParts} - {Figure.PrintDetails.MaxNumberOfParts}")
+                                    </span>
+                                </MudTooltip>
+                            }
+                        </MudText>
+                        <MudText Typo="Typo.body2">
+                            <MudTooltip Text="Some parts were designed to be printed clear (translucent). Separate kind of resin required.">
+                                <span class="border-b-2 mud-border-primary">
+                                    <strong>Clear Parts: </strong>
+                                </span>
+                            </MudTooltip>
+                            @Figure.PrintDetails.NumberOfClearParts
+                        </MudText>
+                        <MudText Typo="Typo.body2"><strong>Print Batches:</strong> @Figure.PrintDetails.NumberOfPrintBatches</MudText>
+                        <MudText Typo="Typo.body2"><strong>Resin Volume:</strong> @Figure.PrintDetails.PrintResinVolume ml</MudText>
+                    </MudStack>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudStack Spacing="2">
+                        <MudStack Row="true" AlignItems="AlignItems.Center">
+                            <MudIcon Icon="@Icons.Filled.Link"/>
+                            <MudText Typo="Typo.h6" Align="Align.Center">External Links</MudText>
+                        </MudStack>
+                        @foreach (var link in Figure.ExternalLinks)
+                        {
+                            <MudLink Href="@link.Url" Target="_blank">@link.Type.ToString()</MudLink>
+                        }
+                    </MudStack>
+                </MudItem>
+            </MudGrid>
+        </MudItem>
+        <MudItem xs="12" sm="5" Style="max-width: unset !important;">
+            <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center">
+                <MudIcon Icon="@Icons.Filled.EventRepeat"/>
+                <MudText Typo="Typo.h6" Align="Align.Center">Timeline</MudText>
+            </MudStack>
+            <MudTimeline TimelinePosition="TimelinePosition.Alternate">
+                @foreach (var step in Figure.Timeline.OrderBy(entry => entry.Date))
+                {
+                    <MudTimelineItem Size="@(step.Event switch{
+                                               FigureTimelineEvent.Publish=> Size.Large,
+                                               FigureTimelineEvent.ProjectInception => Size.Medium,
+                                               _=>Size.Small })"
+                                     Color="@(step.Event switch{
+                                                FigureTimelineEvent.Publish=> Color.Primary,
+                                                FigureTimelineEvent.ProjectInception => Color.Info,
+                                                _=> Color.Default })">
+                        <MudText Typo="Typo.button">@step.Event.Str()</MudText>
+                        <MudText Typo="Typo.body2" Class="mud-text-secondary">@step.Date.ToString("d")</MudText>
+                    </MudTimelineItem>
+                }
+            </MudTimeline>
+        </MudItem>
+    </MudContainer>
+</MudPaper>
 
 @code {
     [Parameter]
     public Figure Figure { get; set; }
+
+    private static Dictionary<Guid, (int Left, int VerticalTransform)> FigureOffsets = new()
+    {
+        { Guid.Parse("DF7449B8-4915-487A-A244-0E2E4C0B55E2"), (90, 40) }, //Asuka
+        { Guid.Parse("046BA215-AE76-44E4-BB14-01BBEAB30527"), (80, 50) }, //Ganyu
+        { Guid.Parse("E46284DB-90D7-4A2B-BA97-36C599C1FA87"), (80, 50) }, //Lumine
+        { Guid.Parse("8EE2F4AC-40F9-4FD7-A551-FE679A015ED7"), (95, 50) }, //Madoka
+    };
+
 }
