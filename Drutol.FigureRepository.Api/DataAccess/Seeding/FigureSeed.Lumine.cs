@@ -2,6 +2,7 @@
 using Drutol.FigureRepository.Shared.Models.Enums;
 using Drutol.FigureRepository.Shared.Models.Figure;
 using Drutol.FigureRepository.Shared.Models.Figure.Enums;
+using Drutol.FigureRepository.Shared.Util;
 
 namespace Drutol.FigureRepository.Api.DataAccess.Seeding;
 
@@ -9,7 +10,7 @@ public class LumineFigureSeed : IFigureSeed
 {
     public Figure Figure { get; } = new()
     {
-        Guid = Guid.Parse("E46284DB-90D7-4A2B-BA97-36C599C1FA87"),
+        Guid = KnownFigureUtils.Guids[KnownFigures.Lumine],
         Index = 1,
         Name = "Lumine",
         Flavour = "Modern casual outfit",

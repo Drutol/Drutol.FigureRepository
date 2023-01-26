@@ -28,10 +28,16 @@
     .BuyMenuPopover {
         width: 400px
     }
+
+    .Toolbar {
+        flex-wrap: wrap;
+        height: auto;
+        justify-content: space-around;
+    }
 </style>
 
 <MudPaper Elevation="2" Square="false" Class="ml-8 mr-8 mt-8" >
-    <MudToolBar>
+    <MudToolBar Class="Toolbar pa-2">
         <div class="mud-theme-primary py-2 px-6 rounded-tr-xl rounded-bl-xl">
             <MudText Align="Align.Center" Typo="Typo.h5" Style="color: white">$@Figure.CheckoutDetails.Price.ToString("N2")</MudText>
         </div>

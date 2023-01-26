@@ -3,6 +3,7 @@ using Drutol.FigureRepository.Shared.Models;
 using Drutol.FigureRepository.Shared.Models.Enums;
 using Drutol.FigureRepository.Shared.Models.Figure;
 using Drutol.FigureRepository.Shared.Models.Figure.Enums;
+using Drutol.FigureRepository.Shared.Util;
 
 namespace Drutol.FigureRepository.Api.DataAccess.Seeding;
 
@@ -10,7 +11,7 @@ public class AsukaFigureSeed : IFigureSeed
 {
     public Figure Figure { get; } = new Figure
     {
-        Guid = Guid.Parse("DF7449B8-4915-487A-A244-0E2E4C0B55E2"),
+        Guid = KnownFigureUtils.Guids[KnownFigures.Asuka],
         Index = 0,
         Name = "Asuka",
         Flavour = "Tobiko Skipping",

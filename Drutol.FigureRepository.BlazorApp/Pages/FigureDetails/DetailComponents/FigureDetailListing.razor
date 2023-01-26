@@ -5,29 +5,36 @@
 @using Drutol.FigureRepository.BlazorApp.Util
 @using Drutol.FigureRepository.Shared.Models.Figure
 @using Drutol.FigureRepository.BlazorApp.Interfaces.Figures
+@using Drutol.FigureRepository.Shared.Util
 
 @inject IFigureIconProvider FigureIconProvider
 
 <style>
     .Container {
         overflow: hidden;
+        position: relative;
     }
 
     .ContainerIcon {
-        position: relative;
+        position: absolute;
         scale: 30;
         left: @(new MarkupString(FigureOffsets[Figure.Guid].Left.ToString()))%;
-        transform: translateY(@(new MarkupString(@FigureOffsets[Figure.Guid].VerticalTransform.ToString()))%);
+        bottom: @(new MarkupString(FigureOffsets[Figure.Guid].Bottom.ToString()))%;
         opacity: .1;
+    }
+
+    .ListingGridItem {
+        min-width: 200px;
+        flex-basis: 200px;
     }
 </style>
 
 <MudPaper Elevation="3" Class="Container ml-8 mr-8 mt-4 pa-4">
-    <MudIcon Class="ContainerIcon" Icon="@FigureIconProvider.GetForFigure(Figure)" />
+    <MudIcon Class="ContainerIcon" Icon="@FigureIconProvider.GetForFigure(Figure)" Style="pointer-events: none" />
     <MudContainer Class="d-flex flex-wrap flex-row" Style="justify-content: center">
         <MudItem xs="12" sm="7" Class="pb-4" Style="max-width: unset !important; flex-grow: 1 !important">
-            <MudGrid>
-                <MudItem xs="6">
+            <MudGrid Style="flex-wrap: wrap; justify-content: space-evenly !important">
+                <MudItem Class="ListingGridItem" xs="6">
                     <MudStack Spacing="2">
                         <MudStack Row="true" AlignItems="AlignItems.Center">
                             <MudIcon Icon="@Icons.Filled.Straighten"/>
@@ -50,7 +57,7 @@
                         </MudText>
                     </MudStack>
                 </MudItem>
-                <MudItem xs="6">
+                <MudItem Class="ListingGridItem" xs="6">
                     <MudStack Spacing="2">
                         <MudStack Row="true" AlignItems="AlignItems.Center">
                             <MudIcon Icon="@Icons.Filled.ViewInAr"/>
@@ -66,7 +73,7 @@
                         </MudTooltip>
                     </MudStack>
                 </MudItem>
-                <MudItem xs="6">
+                <MudItem Class="ListingGridItem" xs="6">
                     <MudStack Spacing="2">
                         <MudStack Row="true" AlignItems="AlignItems.Center">
                             <MudIcon Icon="@Icons.Filled.Print"/>
@@ -98,7 +105,7 @@
                         <MudText Typo="Typo.body2"><strong>Resin Volume:</strong> @Figure.PrintDetails.PrintResinVolume ml</MudText>
                     </MudStack>
                 </MudItem>
-                <MudItem xs="6">
+                <MudItem Class="ListingGridItem" xs="6">
                     <MudStack Spacing="2">
                         <MudStack Row="true" AlignItems="AlignItems.Center">
                             <MudIcon Icon="@Icons.Filled.Link"/>
@@ -112,7 +119,7 @@
                 </MudItem>
             </MudGrid>
         </MudItem>
-        <MudItem xs="12" sm="5" Style="max-width: unset !important;">
+        <MudItem xs="12" sm="5" Style="max-width: 260px; min-width: 260px">
             <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center">
                 <MudIcon Icon="@Icons.Filled.EventRepeat"/>
                 <MudText Typo="Typo.h6" Align="Align.Center">Timeline</MudText>
@@ -141,12 +148,12 @@
     [Parameter]
     public Figure Figure { get; set; }
 
-    private static Dictionary<Guid, (int Left, int VerticalTransform)> FigureOffsets = new()
+    private static Dictionary<Guid, (int Left, int Bottom)> FigureOffsets = new()
     {
-        { Guid.Parse("DF7449B8-4915-487A-A244-0E2E4C0B55E2"), (90, 40) }, //Asuka
-        { Guid.Parse("046BA215-AE76-44E4-BB14-01BBEAB30527"), (80, 50) }, //Ganyu
-        { Guid.Parse("E46284DB-90D7-4A2B-BA97-36C599C1FA87"), (80, 50) }, //Lumine
-        { Guid.Parse("8EE2F4AC-40F9-4FD7-A551-FE679A015ED7"), (95, 50) }, //Madoka
+        { KnownFigureUtils.Guids[KnownFigures.Asuka], (90, 40) }, //Asuka
+        { KnownFigureUtils.Guids[KnownFigures.Ganyu], (80, 10) }, //Ganyu
+        { KnownFigureUtils.Guids[KnownFigures.Lumine], (80, 0) }, //Lumine
+        { KnownFigureUtils.Guids[KnownFigures.Madoka], (95, 10) }, //Madoka
     };
 
 }
