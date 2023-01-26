@@ -32,17 +32,22 @@
     .Toolbar {
         flex-wrap: wrap;
         height: auto;
+        gap: 4px 4px;
         justify-content: space-around;
+    }
+    
+    .ToolbarSpacer {
+        flex-grow: 1;
     }
 </style>
 
 <MudPaper Elevation="2" Square="false" Class="ml-8 mr-8 mt-8" >
     <MudToolBar Class="Toolbar pa-2">
-        <div class="mud-theme-primary py-2 px-6 rounded-tr-xl rounded-bl-xl">
+        <div class="mud-theme-primary py-2 px-6 rounded-tr-xl rounded-bl-xl mud-elevation-2">
             <MudText Align="Align.Center" Typo="Typo.h5" Style="color: white">$@Figure.CheckoutDetails.Price.ToString("N2")</MudText>
         </div>
 
-        <MudSpacer />
+        <div class="ToolbarSpacer" />
         <MudMenu Size="Size.Large" AnchorOrigin="Origin.BottomCenter" PopoverClass="pr-2 pl-2" Disabled="@(!IsFigureOwned || IsLoading)">
             <ActivatorContent>
                 @if (!IsFigureOwned || IsLoading)
@@ -91,26 +96,26 @@
         @if (IsLoading)
         {
             <MudTooltip Text="Updating ownership status.">
-                <MudFab Class="ml-2" StartIcon="@Icons.Filled.HourglassTop" Color="Color.Success" Size="Size.Small"/>
+                <MudFab StartIcon="@Icons.Filled.HourglassTop" Color="Color.Success" Size="Size.Small"/>
             </MudTooltip>
         }  
         else if (IsFigureOwned)
         {
             <MudTooltip Text="You own at least one NFT of this figure.">
-                <MudFab Class="ml-2" StartIcon="@Icons.Filled.Check" Color="Color.Success" Size="Size.Small"/>
+                <MudFab StartIcon="@Icons.Filled.Check" Color="Color.Success" Size="Size.Small"/>
             </MudTooltip>
         }
         else if (FailedToDetermineOwnership)
         {
             <MudTooltip Text="Error occured when determining ownership, click to retry.">
-                <MudFab Class="ml-2" StartIcon="@Icons.Filled.Replay" Color="Color.Warning" Size="Size.Small" OnClick="UpdateOwnership"/>
+                <MudFab StartIcon="@Icons.Filled.Replay" Color="Color.Warning" Size="Size.Small" OnClick="UpdateOwnership"/>
             </MudTooltip>
         }
         else
         {
             <MudMenu @ref="PurchaseMenu" Size="Size.Large" AnchorOrigin="Origin.BottomCenter" PopoverClass="BuyMenuPopover pr-2 pl-2">
                 <ActivatorContent>
-                    <MudButton Class="ml-2" StartIcon="@Icons.Filled.AddShoppingCart" Color="Color.Warning" Size="Size.Large" OnClick="() => OnBuyMenuOpened(true)">
+                    <MudButton StartIcon="@Icons.Filled.AddShoppingCart" Color="Color.Warning" Size="Size.Large" OnClick="() => OnBuyMenuOpened(true)">
                         Purchase
                     </MudButton>
                 </ActivatorContent>

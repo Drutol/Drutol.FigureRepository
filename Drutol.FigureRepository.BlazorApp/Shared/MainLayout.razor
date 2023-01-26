@@ -17,6 +17,16 @@
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
+<style>
+
+    @@media (max-width: 500px) {
+        .MyAddress {
+            display: none !important;
+        }
+    }
+
+</style>
+
 <MudLayout>
     <MudAppBar Elevation="2">
         <MudHidden Breakpoint="Breakpoint.SmAndUp" @bind-IsHidden="IsExtraSmall">
@@ -29,14 +39,12 @@
             <div style="width: 10px"></div>
             <MudImage Src="@(DarkMode ? "svg/logo/LogoTextWhite.svg" : "svg/logo/LogoTextBlack.svg")" Height="40"/>
         </a>
-        
-        <MudText Class="ml-2" Color="Color.Error" Typo="Typo.h4">Beta</MudText>
 
         <MudSpacer/>
         @if (WalletProvider.CurrentWallet.HasValue && WalletProvider.CurrentWallet.Value.SelectedAccount.HasValue)
         {
             var account = WalletProvider.CurrentWallet.Value.SelectedAccount.Value;
-            <MudStack Spacing="0" Class="ml-4 mr-6">
+            <MudStack Spacing="0" Class="MyAddress ml-4 mr-4">
                 <MudText Typo="Typo.button" Color="Color.Primary">My Address</MudText>
                 <MudTooltip Text="@account.Address">
                     <MudText Typo="Typo.body2" Class="mud-text-secondary">@account.Address.TruncateAddress()</MudText>
