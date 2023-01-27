@@ -19,78 +19,18 @@
     <link href="photoswipe/photoswipe.css" rel="stylesheet">
 
     <style>
-        @keyframes flickerAnimation {
-            0% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: .1;
-            }
-
-            100% {
-                opacity: 1;
-            }
-        }
-
-        @-o-keyframes flickerAnimation {
-            0% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: .1;
-            }
-
-            100% {
-                opacity: 1;
-            }
-        }
-
-        @-moz-keyframes flickerAnimation {
-            0% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: .1;
-            }
-
-            100% {
-                opacity: 1;
-            }
-        }
-
-        @-webkit-keyframes flickerAnimation {
-            0% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: .1;
-            }
-
-            100% {
-                opacity: 1;
-            }
-        }
-
-        .animate-flicker {
-            display: flex;
-            flex-direction: column;
-            justify-items: center;
-            -moz-animation: flickerAnimation 2s infinite;
-            -o-animation: flickerAnimation 2s infinite;
-            -webkit-animation: flickerAnimation 2s infinite;
-            animation: flickerAnimation 2s infinite;
-        }
-
         .LoadingText {
             text-align: center;
-            margin-top: 16px;
             font-size: 2em;
             font-weight: 100;
             font-family: Roboto, Helvetica, Arial;
+        }
+
+        .CircleContents {
+            margin-left: 28px;
+            display: flex;
+            gap: 16px;
+            flex-direction: column
         }
 
         #loader {
@@ -104,10 +44,24 @@
 <body style="height: 100%">
 <div id="app" style="display: flex; height: 100%;">
     <div id="loader">
-        <div style="margin: auto" class="animate-flicker">
-            <img src="svg\logo\LogoWeb.svg" />
-            <!--<img src="C:\Users\dogie\source\repos\Drutol.FigureRepository\Drutol.FigureRepository.BlazorApp\wwwroot\svg\logo\LogoWeb.svg" />-->
-            <span class="LoadingText" style="">Loading...</span>
+        <div style="margin: auto">
+            <div style="display: block">
+                <svg class="loading-progress">
+                    <defs>
+                        <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#2eb27a" />
+                            <stop offset="100%" stop-color="#dce84f" />
+                        </linearGradient>
+                    </defs>
+                    <circle id="emptyCircle" r="40%" cx="50%" cy="50%" />
+                    <circle r="40%" cx="50%" cy="50%" stroke="url(#gradient)"/>
+                </svg>
+                <div class="CircleContents">
+                    <img src="svg\logo\LogoWeb.svg" class="animate-flicker" />
+                    <span class="LoadingText" style="">Loading...</span>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -123,16 +77,18 @@
     <script src="js/paypalIntegration.js" type="module"></script>
     <script src="js/main.js" type="module"></script>
     <script src="js/utils.js" type="module"></script>
-    <script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD" type="module"></script>
 
 <script>
     var mode = localStorage.getItem("DarkMode");
     if (mode == 'true') {
-        document.getElementById('loader').style.background = '#202027'
-        document.getElementById('loader').style.color = 'white'
+        document.getElementById('loader').style.background = '#202027';
+        document.getElementById('loader').style.color = '#fff';
+        document.getElementById('emptyCircle').style.stroke = '#181818';
     } else {
-        document.getElementById('loader').style.background = 'white'
-        document.getElementById('loader').style.color = '#424242'
+        document.getElementById('loader').style.background = '#fff';
+        document.getElementById('loader').style.color = '#424242';
+        document.getElementById('emptyCircle').style.stroke = '#eee';
     }
 </script>
 </body>

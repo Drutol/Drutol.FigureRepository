@@ -38,3 +38,111 @@
 .blazor-error-boundary::after {
     content: "An error has occurred."
 }
+
+.loading-progress {
+    position: absolute;
+    display: block;
+    width: 28rem;
+    height: 28rem;
+    left: calc(50% - 14rem);
+    top: calc(50% - 14rem);
+}
+
+.loading-progress circle {
+    fill: none;
+    stroke-width: 0.6rem;
+    transform-origin: 50% 50%;
+    transform: rotate(-90deg);
+}
+
+.loading-progress circle:last-child {
+    stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
+    stroke-linecap: round;
+    transition: stroke-dasharray 0.05s ease-in-out;
+}
+
+.LoadingText {
+    text-align: center;
+    font-size: 2em;
+    font-weight: 100;
+    font-family: Roboto, Helvetica, Arial;
+}
+
+.CircleContents {
+    margin-left: 28px;
+    display: flex;
+    gap: 16px;
+    flex-direction: column
+}
+
+#loader {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+@keyframes flickerAnimation {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: .1;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes flickerAnimation {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: .1;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes flickerAnimation {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: .1;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes flickerAnimation {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: .1;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.animate-flicker {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    -moz-animation: flickerAnimation 2s infinite;
+    -o-animation: flickerAnimation 2s infinite;
+    -webkit-animation: flickerAnimation 2s infinite;
+    animation: flickerAnimation 2s infinite;
+}
