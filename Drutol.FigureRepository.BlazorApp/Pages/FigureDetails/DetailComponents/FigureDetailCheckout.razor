@@ -194,7 +194,9 @@
     public bool DownloadsReady { get; set; }
     public bool IsOrderProcessing { get; set; }
 
+    private SemaphoreSlim _semaphore = new(1);
     private Guid _checkedOwnershipAfterParametersSet;
+    private CancellationTokenSource _cts;
 
     public MudMenu PurchaseMenu { get; set; }
     public Dictionary<FigureDownloadType, string>? DownloadUrls { get; set; }
@@ -293,6 +295,12 @@
 
     private async Task UpdateOwnership()
     {
+        _cts?.Cancel();
+        _cts?.Dispose();
+        _cts = new CancellationTokenSource();
+        await _semaphore.WaitAsync();
+
+        var token = _cts.Token;
         if(IsLoading)
             return;
 
@@ -309,24 +317,26 @@
 
             CanPurchase = true;
 
+            StateHasChanged();
+
             try
             {
-                //var sha = Sha3Keccack.Current.CalculateHash("balanceOf(address)");
-                //var methodSignature = sha.Substring(0, 8); //first 4 bytes make the function signature
-                //var methodArgument = SelectedAccountAddress[2..].PadLeft(64, '0'); //arguments have to be encoded as 32 bytes
-                //var result = (JsonElement)await _metaMaskService.GenericRpc("eth_call", new
-                //{
-                //    to = Figure.NftDetails.TokenAddress,
-                //    data = $"0x{methodSignature}{methodArgument}"
-                //}, "latest");
-                //var amount = (int)result.GetString().HexToBigInteger(false);
+    //var sha = Sha3Keccack.Current.CalculateHash("balanceOf(address)");
+    //var methodSignature = sha.Substring(0, 8); //first 4 bytes make the function signature
+    //var methodArgument = SelectedAccountAddress[2..].PadLeft(64, '0'); //arguments have to be encoded as 32 bytes
+    //var result = (JsonElement)await _metaMaskService.GenericRpc("eth_call", new
+    //{
+    //    to = Figure.NftDetails.TokenAddress,
+    //    data = $"0x{methodSignature}{methodArgument}"
+    //}, "latest");
+    //var amount = (int)result.GetString().HexToBigInteger(false);
 
-                //ethereum.request({
-                //    method: 'personal_sign',
-                //        params: ['Sign this message to access Loopring Exchange: 0x0BABA1Ad5bE3a5C0a66E7ac838a129Bf948f1eA4 with key nonce: 0', '0x59eb7c1e8e357ef2b4eb7532cab64c6538292ac6']
-                //});
+    //ethereum.request({
+    //    method: 'personal_sign',
+    //        params: ['Sign this message to access Loopring Exchange: 0x0BABA1Ad5bE3a5C0a66E7ac838a129Bf948f1eA4 with key nonce: 0', '0x59eb7c1e8e357ef2b4eb7532cab64c6538292ac6']
+    //});
 
-                var loopringAccountResponse = await GetLoopringAccount( WalletProvider.CurrentWallet.Value.SelectedAccount.Value.Address);
+                var loopringAccountResponse = await GetLoopringAccount(WalletProvider.CurrentWallet.Value.SelectedAccount.Value.Address, token);
                 if (loopringAccountResponse is IAccountResponseModel.Success loopringAccount)
                 {
                     using var authStartContent = JsonContent.Create(new StartAuthenticationRequest(
@@ -336,17 +346,17 @@
                         Figure.Guid));
 
                     var response = await
-                        (await HttpClient.Client.PostAsync("/api/auth/StartAuthentication", authStartContent))
+                        (await HttpClient.Client.PostAsync("/api/auth/StartAuthentication", authStartContent, token))
                             .Content
-                            .ReadFromJsonAsync<StartAuthenticationResult>();
+                            .ReadFromJsonAsync<StartAuthenticationResult>(cancellationToken: token);
 
                     var signature = await WalletProvider.CurrentWallet.Value.PersonalSign(response.DataToSign);
 
                     var authFinishContent = JsonContent.Create(new FinishAuthenticationRequest(response.SessionGuid, signature));
                     var auth = await
-                        (await HttpClient.Client.PostAsync("/api/auth/FinishAuthentication", authFinishContent))
+                        (await HttpClient.Client.PostAsync("/api/auth/FinishAuthentication", authFinishContent, token))
                             .Content
-                            .ReadFromJsonAsync<FinishAuthenticationResult>();
+                            .ReadFromJsonAsync<FinishAuthenticationResult>(cancellationToken: token);
 
                     Logger.LogInformation($"Ownership authentication result: {auth.Status}");
 
@@ -367,6 +377,10 @@
                     IsFigureOwned = false;
                 }
             }
+            catch (Exception) when (token.IsCancellationRequested)
+            {
+                Logger.LogInformation("Cancelled ownership update.");
+            }
             catch (Exception e)
             {
                 Logger.LogError(e, "Failed to update ownership.");
@@ -377,11 +391,12 @@
         finally
         {
             IsLoading = false;
+            _semaphore.Release();
             StateHasChanged();
         }
     }
 
-    private async ValueTask<IAccountResponseModel> GetLoopringAccount(string walletAddress)
+    private async ValueTask<IAccountResponseModel> GetLoopringAccount(string walletAddress, CancellationToken cancellationToken)
     {
         try
         {
