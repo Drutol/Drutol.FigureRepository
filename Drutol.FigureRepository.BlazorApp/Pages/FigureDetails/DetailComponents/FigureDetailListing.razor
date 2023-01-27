@@ -1,6 +1,5 @@
 ﻿@using Drutol.FigureRepository.Shared.Models
 @using Drutol.FigureRepository.Shared.Models.Enums
-@using Humanizer
 @using MudBlazor
 @using Drutol.FigureRepository.BlazorApp.Util
 @using Drutol.FigureRepository.Shared.Models.Figure
@@ -66,7 +65,7 @@
                         <MudText Typo="Typo.body2"><strong>Blender Scene:</strong> @Figure.TechnicalStatistics.BlendFileSize.Bytes()</MudText>
                         <MudText Typo="Typo.body2"><strong>Lychee Scenes:</strong> @Figure.TechnicalStatistics.LycheeScenesSize.Bytes()</MudText>
                         <MudText Typo="Typo.body2"><strong>STLs:</strong> @Figure.TechnicalStatistics.StlsSize.Bytes()</MudText>
-                        <MudText Typo="Typo.body2"><strong>Vertices:</strong> @Figure.TechnicalStatistics.Vertices.ToMetric(MetricNumeralFormats.WithSpace, 2)</MudText>
+                        <MudText Typo="Typo.body2"><strong>Vertices:</strong> @Figure.TechnicalStatistics.Vertices.Metric(2)</MudText>
                         <MudText Typo="Typo.body2"><strong>Eyes:</strong> @Figure.EyeType.Str()</MudText>
                         <MudTooltip Text="@Figure.NftDetails.TokenAddress">
                             <MudText Typo="Typo.body2"><strong>Token:</strong> @Figure.NftDetails.TokenAddress.TruncateAddress()</MudText>
