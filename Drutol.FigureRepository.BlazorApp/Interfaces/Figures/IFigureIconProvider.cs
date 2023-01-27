@@ -9,5 +9,6 @@ public interface IFigureIconProvider
     string LumineIcon { get; }
     string MadokaIcon { get; }
     string FigureCharacterIcon { get; }
+    string FigureOriginIcon { get; }
     string GetForFigure(Figure figure);
 }
