@@ -25,7 +25,7 @@ public class LumineFigureSeed : IFigureSeed
 
             new()
             {
-                Url = "images/Lumine/Photos/Main.jpg",
+                Url = "images/Lumine/Photos/Main.webp",
                 Display = FigurePhotoIntendedDisplay.All,
                 MediaKind = FigureMediaKind.Painted,
                 Height = 1080,
@@ -33,28 +33,28 @@ public class LumineFigureSeed : IFigureSeed
             },
             new()
             {
-                Url = "images/Lumine/Photos/Front.jpg",
+                Url = "images/Lumine/Photos/Front.webp",
                 MediaKind = FigureMediaKind.Painted,
                 Height = 1080,
                 Width = 1618
             },        
             new()
             {
-                Url = "images/Lumine/Photos/FrontClose.jpg",
+                Url = "images/Lumine/Photos/FrontClose.webp",
                 MediaKind = FigureMediaKind.Painted,
                 Height = 1080,
                 Width = 1618
             },      
             new()
             {
-                Url = "images/Lumine/Photos/Face.jpg",
+                Url = "images/Lumine/Photos/Face.webp",
                 MediaKind = FigureMediaKind.Painted,
                 Height = 1080,
                 Width = 1080
             },      
             new()
             {
-                Url = "images/Lumine/Photos/DarkLight.jpg",
+                Url = "images/Lumine/Photos/DarkLight.webp",
                 Display = FigurePhotoIntendedDisplay.All,
                 MediaKind = FigureMediaKind.Painted,
                 Height = 1080,
@@ -62,21 +62,21 @@ public class LumineFigureSeed : IFigureSeed
             },      
             new()
             {
-                Url = "images/Lumine/Photos/Base.jpg",
+                Url = "images/Lumine/Photos/Base.webp",
                 MediaKind = FigureMediaKind.Painted,
                 Height = 1080,
                 Width = 1618
             },    
             new()
             {
-                Url = "images/Lumine/Photos/Back.jpg",
+                Url = "images/Lumine/Photos/Back.webp",
                 MediaKind = FigureMediaKind.Painted,
                 Height = 1080,
                 Width = 1618
             },  
             new()
             {
-                Url = "images/Lumine/Photos/Skew.jpg",
+                Url = "images/Lumine/Photos/Skew.webp",
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.Painted,
                 Height = 1080,
@@ -89,7 +89,7 @@ public class LumineFigureSeed : IFigureSeed
 
             new()
             {
-                Url = "images/Lumine/Photos/Prototype.jpg",
+                Url = "images/Lumine/Photos/Prototype.webp",
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.PrintPrototype,
                 Width = 1080,
@@ -102,7 +102,7 @@ public class LumineFigureSeed : IFigureSeed
 
             new()
             {
-                Url = "images/Lumine/Render/Main.jpg",
+                Url = "images/Lumine/Render/Main.webp",
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1080,
@@ -110,7 +110,7 @@ public class LumineFigureSeed : IFigureSeed
             },
             new()
             {
-                Url = "images/Lumine/Render/FaceCloseup.jpg",
+                Url = "images/Lumine/Render/FaceCloseup.webp",
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1080,
@@ -118,7 +118,7 @@ public class LumineFigureSeed : IFigureSeed
             },
             new()
             {
-                Url = "images/Lumine/Render/BodyCloseup.jpg",
+                Url = "images/Lumine/Render/BodyCloseup.webp",
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1080,
@@ -126,7 +126,7 @@ public class LumineFigureSeed : IFigureSeed
             },
             new()
             {
-                Url = "images/Lumine/Render/FrontLeft.jpg",
+                Url = "images/Lumine/Render/FrontLeft.webp",
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1080,
@@ -134,7 +134,7 @@ public class LumineFigureSeed : IFigureSeed
             },  
             new()
             {
-                Url = "images/Lumine/Render/FrontCloseup.jpg",
+                Url = "images/Lumine/Render/FrontCloseup.webp",
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1080,
@@ -142,7 +142,7 @@ public class LumineFigureSeed : IFigureSeed
             },
             new()
             {
-                Url = "images/Lumine/Render/LeftRightSide.jpg",
+                Url = "images/Lumine/Render/LeftRightSide.webp",
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1080,
@@ -150,7 +150,7 @@ public class LumineFigureSeed : IFigureSeed
             },
             new()
             {
-                Url = "images/Lumine/Render/LeftSide.jpg",
+                Url = "images/Lumine/Render/LeftSide.webp",
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1080,
@@ -158,7 +158,7 @@ public class LumineFigureSeed : IFigureSeed
             },
             new()
             {
-                Url = "images/Lumine/Render/LegsCloseup.jpg",
+                Url = "images/Lumine/Render/LegsCloseup.webp",
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1080,
@@ -166,7 +166,7 @@ public class LumineFigureSeed : IFigureSeed
             },    
             new()
             {
-                Url = "images/Lumine/Render/Back.jpg",
+                Url = "images/Lumine/Render/Back.webp",
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1080,
@@ -281,7 +281,7 @@ public class LumineFigureSeed : IFigureSeed
         {
             Title = "Lumine - DruFigures",
             Description = "Garage kit of Genshin's Lumine for 3D printing. Check out renders, painted photos and get one for yourself!",
-            ImageUrl = "https://figure.drutol.com/images/Lumine/Meta/Meta.jpg",
+            ImageUrl = "https://figure.drutol.com/images/Lumine/Meta/Meta.webp",
             ImageWidth = 1200,
             ImageHeight = 628,
             ImageMimeType = "image/jpg",

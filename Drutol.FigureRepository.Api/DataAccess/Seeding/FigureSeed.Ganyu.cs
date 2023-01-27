@@ -25,7 +25,7 @@ public class GanyuFigureSeed : IFigureSeed
 
             new FigureMedia
             {
-                Url = "images/Ganyu/Photos/Main.jpg",
+                Url = "images/Ganyu/Photos/Main.webp",
                 Display = FigurePhotoIntendedDisplay.All,
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.PrintPrototype,
@@ -34,7 +34,7 @@ public class GanyuFigureSeed : IFigureSeed
             },
             new FigureMedia
             {
-                Url = "images/Ganyu/Photos/BacklightSilhouette.jpg",
+                Url = "images/Ganyu/Photos/BacklightSilhouette.webp",
                 Display = FigurePhotoIntendedDisplay.All,
                 MediaKind = FigureMediaKind.PrintPrototype,
                 Width = 1080,
@@ -47,7 +47,7 @@ public class GanyuFigureSeed : IFigureSeed
 
             new FigureMedia
             {
-                Url = "images/Ganyu/Sculpt/Front.jpg",
+                Url = "images/Ganyu/Sculpt/Front.webp",
                 Display = FigurePhotoIntendedDisplay.All,
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.SculptRender,
@@ -56,7 +56,7 @@ public class GanyuFigureSeed : IFigureSeed
             },
             new FigureMedia
             {
-                Url = "images/Ganyu/Sculpt/Face.jpg",
+                Url = "images/Ganyu/Sculpt/Face.webp",
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1080,
@@ -64,7 +64,7 @@ public class GanyuFigureSeed : IFigureSeed
             },
             new FigureMedia
             {
-                Url = "images/Ganyu/Sculpt/FrontBottom.jpg",
+                Url = "images/Ganyu/Sculpt/FrontBottom.webp",
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1080,
@@ -72,7 +72,7 @@ public class GanyuFigureSeed : IFigureSeed
             },
             new FigureMedia
             {
-                Url = "images/Ganyu/Sculpt/LeftSide.jpg",
+                Url = "images/Ganyu/Sculpt/LeftSide.webp",
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1080,
@@ -80,7 +80,7 @@ public class GanyuFigureSeed : IFigureSeed
             },
             new FigureMedia
             {
-                Url = "images/Ganyu/Sculpt/Base.jpg",
+                Url = "images/Ganyu/Sculpt/Base.webp",
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1080,
@@ -88,7 +88,7 @@ public class GanyuFigureSeed : IFigureSeed
             },
             new FigureMedia
             {
-                Url = "images/Ganyu/Sculpt/BackBottom.jpg",
+                Url = "images/Ganyu/Sculpt/BackBottom.webp",
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1080,
@@ -96,7 +96,7 @@ public class GanyuFigureSeed : IFigureSeed
             },
             new FigureMedia
             {
-                Url = "images/Ganyu/Sculpt/Back.jpg",
+                Url = "images/Ganyu/Sculpt/Back.webp",
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1080,
@@ -222,7 +222,7 @@ public class GanyuFigureSeed : IFigureSeed
         {
             Title = "Ganyu - DruFigures",
             Description = "Garage kit of Genshin's Ganyu for 3D printing. Check out renders, painted photos and get one for yourself!",
-            ImageUrl = "https://figure.drutol.com/images/Ganyu/Meta/Meta.jpg",
+            ImageUrl = "https://figure.drutol.com/images/Ganyu/Meta/Meta.webp",
             ImageWidth = 1200,
             ImageHeight = 628,
             ImageMimeType = "image/jpg",

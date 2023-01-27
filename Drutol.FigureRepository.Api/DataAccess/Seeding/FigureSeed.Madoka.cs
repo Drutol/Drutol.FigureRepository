@@ -26,14 +26,14 @@ public class MadokaFigureSeed : IFigureSeed
 
             new FigureMedia
             {
-                Url = "images/Madoka/Photos/PrintPrototype.jpg",
+                Url = "images/Madoka/Photos/PrintPrototype.webp",
                 MediaKind = FigureMediaKind.PrintPrototype,
                 Width = 1080,
                 Height = 1440
             },    
             new FigureMedia
             {
-                Url = "images/Madoka/Photos/Main.jpg",
+                Url = "images/Madoka/Photos/Main.webp",
                 Display = FigurePhotoIntendedDisplay.All,
                 Gravity = FigurePhotoGravity.Top,
                 MediaKind = FigureMediaKind.Painted,
@@ -42,14 +42,14 @@ public class MadokaFigureSeed : IFigureSeed
             },   
             new FigureMedia
             {
-                Url = "images/Madoka/Photos/Face.jpg",
+                Url = "images/Madoka/Photos/Face.webp",
                 MediaKind = FigureMediaKind.Painted,
                 Width = 1080,
                 Height = 1080
             },  
             new FigureMedia
             {
-                Url = "images/Madoka/Photos/FrontTop.jpg",
+                Url = "images/Madoka/Photos/FrontTop.webp",
                 Gravity = FigurePhotoGravity.Center,
                 MediaKind = FigureMediaKind.Painted,
                 Width = 721,
@@ -57,21 +57,21 @@ public class MadokaFigureSeed : IFigureSeed
             },   
             new FigureMedia
             {
-                Url = "images/Madoka/Photos/FrontBottom.jpg",
+                Url = "images/Madoka/Photos/FrontBottom.webp",
                 MediaKind = FigureMediaKind.Painted,
                 Width = 721,
                 Height = 1080
             },   
             new FigureMedia
             {
-                Url = "images/Madoka/Photos/BackLeft.jpg",
+                Url = "images/Madoka/Photos/BackLeft.webp",
                 MediaKind = FigureMediaKind.Painted,
                 Width = 721,
                 Height = 1080
             },       
             new FigureMedia
             {
-                Url = "images/Madoka/Photos/Sakura.jpg",
+                Url = "images/Madoka/Photos/Sakura.webp",
                 MediaKind = FigureMediaKind.Painted,
                 Width = 1080,
                 Height = 1080
@@ -83,7 +83,7 @@ public class MadokaFigureSeed : IFigureSeed
 
             new FigureMedia
             {
-                Url = "images/Madoka/Render/Front.jpg",
+                Url = "images/Madoka/Render/Front.webp",
                 MediaKind = FigureMediaKind.ShadedRender,
                 Gravity = FigurePhotoGravity.Top,
                 Width = 1080,
@@ -91,14 +91,14 @@ public class MadokaFigureSeed : IFigureSeed
             },
             new FigureMedia
             {
-                Url = "images/Madoka/Render/FaceCloseup.jpg",
+                Url = "images/Madoka/Render/FaceCloseup.webp",
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1080,
                 Height = 1920
             },
             new FigureMedia
             {
-                Url = "images/Madoka/Render/BottomLeft.jpg",
+                Url = "images/Madoka/Render/BottomLeft.webp",
                 MediaKind = FigureMediaKind.ShadedRender,
                 Gravity = FigurePhotoGravity.Bottom,
                 Width = 1080,
@@ -106,21 +106,21 @@ public class MadokaFigureSeed : IFigureSeed
             },
             new FigureMedia
             {
-                Url = "images/Madoka/Render/BackRight.jpg",
+                Url = "images/Madoka/Render/BackRight.webp",
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1080,
                 Height = 1920
             },
             new FigureMedia
             {
-                Url = "images/Madoka/Render/Bear.jpg",
+                Url = "images/Madoka/Render/Bear.webp",
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1920,
                 Height = 1080
             },
             new FigureMedia
             {
-                Url = "images/Madoka/Render/Base.jpg",
+                Url = "images/Madoka/Render/Base.webp",
                 MediaKind = FigureMediaKind.ShadedRender,
                 Width = 1920,
                 Height = 1080
@@ -132,35 +132,35 @@ public class MadokaFigureSeed : IFigureSeed
 
             new FigureMedia
             {
-                Url = "images/Madoka/Sculpt/Left.jpg",
+                Url = "images/Madoka/Sculpt/Left.webp",
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1080,
                 Height = 1080
             },
             new FigureMedia
             {
-                Url = "images/Madoka/Sculpt/LeftSide.jpg",
+                Url = "images/Madoka/Sculpt/LeftSide.webp",
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1080,
                 Height = 1080
             },
             new FigureMedia
             {
-                Url = "images/Madoka/Sculpt/RightSide.jpg",
+                Url = "images/Madoka/Sculpt/RightSide.webp",
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1080,
                 Height = 1080
             },
             new FigureMedia
             {
-                Url = "images/Madoka/Sculpt/Andon.jpg",
+                Url = "images/Madoka/Sculpt/Andon.webp",
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1080,
                 Height = 1080
             },
             new FigureMedia
             {
-                Url = "images/Madoka/Sculpt/Bonsai.jpg",
+                Url = "images/Madoka/Sculpt/Bonsai.webp",
                 MediaKind = FigureMediaKind.SculptRender,
                 Width = 1080,
                 Height = 1080
@@ -274,7 +274,7 @@ public class MadokaFigureSeed : IFigureSeed
         {
             Title = "Madoka - DruFigures",
             Description = "Garage kit of AoKana's Madoka for 3D printing. Check out renders, painted photos and get one for yourself!",
-            ImageUrl = "https://figure.drutol.com/images/Madoka/Meta/Meta.jpg",
+            ImageUrl = "https://figure.drutol.com/images/Madoka/Meta/Meta.webp",
             ImageWidth = 1200,
             ImageHeight = 628,
             ImageMimeType = "image/jpg",

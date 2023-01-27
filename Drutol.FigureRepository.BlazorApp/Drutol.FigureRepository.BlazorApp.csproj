@@ -57,16 +57,16 @@
     <Content Update="wwwroot\favicon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\images\Assets\DarkIndexImage.jpg">
+    <Content Update="wwwroot\images\Assets\DarkIndexImage.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\images\Assets\LightIndexImage.jpg">
+    <Content Update="wwwroot\images\Assets\LightIndexImage.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\images\Asuka\Meta\Meta.jpg">
+    <Content Update="wwwroot\images\Asuka\Meta\Meta.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\images\Ganyu\Meta\Meta.jpg">
+    <Content Update="wwwroot\images\Ganyu\Meta\Meta.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\images\Logo\BlenderLogo.png">
@@ -81,67 +81,67 @@
     <Content Update="wwwroot\images\Logo\Stl.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\images\Lumine\Meta\Meta.jpg">
+    <Content Update="wwwroot\images\Lumine\Meta\Meta.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\images\Lumine\Render\Back.jpg">
+    <Content Update="wwwroot\images\Lumine\Render\Back.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\images\Lumine\Render\Front.jpg">
+    <Content Update="wwwroot\images\Lumine\Render\Front.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\images\Lumine\Render\RightSide.jpg">
+    <Content Update="wwwroot\images\Lumine\Render\RightSide.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\images\Lumine\Render\ShoesCloseup.jpg">
+    <Content Update="wwwroot\images\Lumine\Render\ShoesCloseup.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\images\Lumine\Render\Side.jpg">
+    <Content Update="wwwroot\images\Lumine\Render\Side.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\images\Lumine\Render\TopBody.jpg">
+    <Content Update="wwwroot\images\Lumine\Render\TopBody.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\images\Madoka\Meta\Meta.jpg">
+    <Content Update="wwwroot\images\Madoka\Meta\Meta.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\images\Madoka\Photos\PrintPrototype.jpg">
+    <Content Update="wwwroot\images\Madoka\Photos\PrintPrototype.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\images\Madoka\Render\BackRight.jpg">
+    <Content Update="wwwroot\images\Madoka\Render\BackRight.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\images\Madoka\Render\Base.jpg">
+    <Content Update="wwwroot\images\Madoka\Render\Base.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\images\Madoka\Render\Bear.jpg">
+    <Content Update="wwwroot\images\Madoka\Render\Bear.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\images\Madoka\Render\BottomLeft.jpg">
+    <Content Update="wwwroot\images\Madoka\Render\BottomLeft.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\images\Madoka\Render\FaceCloseup.jpg">
+    <Content Update="wwwroot\images\Madoka\Render\FaceCloseup.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\images\Madoka\Render\Front.jpg">
+    <Content Update="wwwroot\images\Madoka\Render\Front.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\images\Madoka\Sculpt\Andon.jpg">
+    <Content Update="wwwroot\images\Madoka\Sculpt\Andon.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\images\Madoka\Sculpt\Bonsai.jpg">
+    <Content Update="wwwroot\images\Madoka\Sculpt\Bonsai.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\images\Madoka\Sculpt\Left.jpg">
+    <Content Update="wwwroot\images\Madoka\Sculpt\Left.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\images\Madoka\Sculpt\LeftSide.jpg">
+    <Content Update="wwwroot\images\Madoka\Sculpt\LeftSide.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\images\Madoka\Sculpt\RightSide.jpg">
+    <Content Update="wwwroot\images\Madoka\Sculpt\RightSide.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\images\Meta\DruFiguresMeta.jpg">
+    <Content Update="wwwroot\images\Meta\DruFiguresMeta.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\js\gameStopIntegration.js">
