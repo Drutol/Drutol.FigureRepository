@@ -4,8 +4,6 @@ using Drutol.FigureRepository.BlazorApp.Interfaces.Wallet;
 using Drutol.FigureRepository.BlazorApp.Models;
 using Drutol.FigureRepository.BlazorApp.Util;
 using Functional.Maybe;
-using MetaMask.Blazor;
-using MetaMask.Blazor.Enums;
 using MudBlazor;
 
 namespace Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet;
@@ -107,7 +105,7 @@ public class MetaMaskWalletConnector : IWalletConnector
         WalletDisconnected?.Invoke(this, EventArgs.Empty);
     }
 
-    private async Task MetaMaskChainChangedEvent((long, Chain) arg)
+    private async Task MetaMaskChainChangedEvent((long, int) arg)
     {
         if (_connectingToMetaMask)
             return;

@@ -1,7 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Security.Claims;
-using Common.Logging;
 using Drutol.FigureRepository.BlazorApp.Interfaces;
 using Drutol.FigureRepository.BlazorApp.Interfaces.Http;
 using Drutol.FigureRepository.Shared.Admin;

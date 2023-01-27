@@ -5,6 +5,7 @@
 
 @inject IFigureIconProvider FigureIconProvider;
 
+
 <MudPaper Elevation="2" Square="false" Class="ml-8 mr-8 mt-4 pa-4">
     <div class="border-l-2 pl-3 mud-border-primary">
         <MudText Typo="Typo.h4">@Figure.Name</MudText>
@@ -12,17 +13,38 @@
     </div>
 
     <MudText Typo="Typo.body2" Class="mt-2 ml-4">@Figure.Description</MudText>
-    <MudGrid Class="mt-2">
-        <MudItem xs="6">
+    <MudGrid Class="mt-2" Style="flex-wrap: wrap" Justify="Justify.Center">
+        <MudItem xs="6" Style="min-width: 200px">
             <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center">
                 <MudIcon Icon="@FigureIconProvider.FigureCharacterIcon" Size="Size.Large" Color="Color.Surface"/>
-                <MudText Typo="Typo.body2" Align="Align.Center">@Figure.FigureCharacter.NameEnglish<br/>@Figure.FigureCharacter.NameJapanese</MudText>
+                <MudStack Spacing="0">
+                    <MudText Typo="Typo.button" Style="font-weight: 300" Color="Color.Primary" Align="Align.Center">
+                        Character
+                    </MudText>          
+                    <MudText Typo="Typo.body2" Align="Align.Center">
+                        <b>@Figure.FigureCharacter.NameEnglish</b>
+                    </MudText>       
+                    <MudText Typo="Typo.body2" Align="Align.Center">
+                        @Figure.FigureCharacter.NameJapanese
+                    </MudText>
+                </MudStack>
+
             </MudStack>
         </MudItem>
-        <MudItem xs="6">
+        <MudItem xs="6" Style="min-width: 200px">
             <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center">
-                <MudIcon Icon="@Icons.Outlined.Public" Size="Size.Large"/>
-                <MudText Typo="Typo.body2" Align="Align.Center">@Figure.FigureCharacter.OriginNameEnglish<br/>@Figure.FigureCharacter.OriginNameJapanese</MudText>
+                <MudIcon Icon="@Icons.Material.Outlined.Castle" Size="Size.Large"/>
+                <MudStack Spacing="0">
+                    <MudText Typo="Typo.button" Style="font-weight: 300" Color="Color.Primary" Align="Align.Center">
+                        Origin
+                    </MudText>          
+                    <MudText Typo="Typo.body2" Align="Align.Center">
+                        <b>@Figure.FigureCharacter.OriginNameEnglish</b>
+                    </MudText>       
+                    <MudText Typo="Typo.body2" Align="Align.Center">
+                        @Figure.FigureCharacter.OriginNameJapanese
+                    </MudText>
+                </MudStack>
             </MudStack>
         </MudItem>
     </MudGrid>

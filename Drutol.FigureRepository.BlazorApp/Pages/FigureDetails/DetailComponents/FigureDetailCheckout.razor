@@ -11,9 +11,10 @@
 @using Drutol.FigureRepository.Shared.Download
 @using Drutol.FigureRepository.Shared.Models.Enums
 @using Functional.Maybe
-@using Nethereum.Model
 @using Drutol.FigureRepository.BlazorApp.Dialogs
 @using Drutol.FigureRepository.Shared.Models.Figure.Enums
+
+@implements IDisposable
 
 @inject IJSRuntime JS
 @inject IApiHttpClient HttpClient
@@ -193,6 +194,8 @@
     public bool DownloadsReady { get; set; }
     public bool IsOrderProcessing { get; set; }
 
+    private Guid _checkedOwnershipAfterParametersSet;
+
     public MudMenu PurchaseMenu { get; set; }
     public Dictionary<FigureDownloadType, string>? DownloadUrls { get; set; }
 
@@ -212,7 +215,11 @@
     {
         await base.OnParametersSetAsync();
 
-        await UpdateOwnership();
+        if (Figure.Guid != _checkedOwnershipAfterParametersSet)
+        {
+            _checkedOwnershipAfterParametersSet = Figure.Guid;
+            await UpdateOwnership();
+        }
     }
 
     #region PayPal
@@ -454,4 +461,8 @@
         DialogService.Show<PurchaseInfoDialog>("Purchasing information");
     }
 
+    public void Dispose()
+    {
+        WalletProvider.StateHasChanged -= WalletProviderOnStateHasChanged;
+    }
 }

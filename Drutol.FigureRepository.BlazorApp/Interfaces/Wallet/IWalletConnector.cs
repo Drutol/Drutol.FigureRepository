@@ -23,5 +23,4 @@ public interface IWalletConnector
     Task Disconnect();
 
     Task<string> PersonalSign(string dataToSign);
-    Task<string> SignTypedDataV4(string dataToSign);
 }

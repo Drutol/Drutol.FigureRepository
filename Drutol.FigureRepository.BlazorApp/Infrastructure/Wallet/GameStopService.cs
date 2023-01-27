@@ -1,8 +1,6 @@
 ﻿using System.Numerics;
 using System.Text.Json;
-using MetaMask.Blazor.Enums;
-using MetaMask.Blazor.Exceptions;
-using MetaMask.Blazor.Extensions;
+using Drutol.FigureRepository.BlazorApp.Enums;
 using Microsoft.JSInterop;
 
 namespace Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet
@@ -16,16 +14,16 @@ namespace Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet
 
     public class GameStopService : IAsyncDisposable
     {
-        private readonly Lazy<Task<IJSObjectReference>> moduleTask;
+        private readonly Lazy<Task<IJSObjectReference>> _moduleTask;
 
         public static event Func<string, Task>? AccountChangedEvent;
-        public static event Func<(long, Chain), Task>? ChainChangedEvent;
+        public static event Func<(long, int), Task>? ChainChangedEvent;
         //public static event Func<Task>? ConnectEvent;
         //public static event Func<Task>? DisconnectEvent;
 
         public GameStopService(IJSRuntime jsRuntime)
         {
-            moduleTask = new(() => LoadScripts(jsRuntime).AsTask());
+            _moduleTask = new(() => LoadScripts(jsRuntime).AsTask());
         }
 
         public ValueTask<IJSObjectReference> LoadScripts(IJSRuntime jsRuntime)
@@ -35,7 +33,7 @@ namespace Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet
 
         public async ValueTask ConnectGameStop()
         {
-            var module = await moduleTask.Value;
+            var module = await _moduleTask.Value;
             try
             {
                 await module.InvokeVoidAsync("checkGameStop");
@@ -49,7 +47,7 @@ namespace Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet
 
         public async ValueTask<bool> HasGameStop()
         {
-            var module = await moduleTask.Value;
+            var module = await _moduleTask.Value;
             try
             {
                 return await module.InvokeAsync<bool>("hasGameStop");
@@ -63,7 +61,7 @@ namespace Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet
         
         public async ValueTask<bool> HasMetaMask()
         {
-            var module = await moduleTask.Value;
+            var module = await _moduleTask.Value;
             try
             {
                 return await module.InvokeAsync<bool>("hasMetaMask");
@@ -77,7 +75,7 @@ namespace Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet
 
         public async ValueTask<bool> IsSiteConnected()
         {
-            var module = await moduleTask.Value;
+            var module = await _moduleTask.Value;
             try
             {
                 return await module.InvokeAsync<bool>("isSiteConnected");
@@ -91,7 +89,7 @@ namespace Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet
 
         public async ValueTask ListenToEvents()
         {
-            var module = await moduleTask.Value;
+            var module = await _moduleTask.Value;
             try
             {
                 await module.InvokeVoidAsync("listenToChangeEvents");
@@ -105,7 +103,7 @@ namespace Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet
 
         public async ValueTask<string> GetSelectedAddress()
         {
-            var module = await moduleTask.Value;
+            var module = await _moduleTask.Value;
             try
             {
                 return await module.InvokeAsync<string>("getSelectedAddress", null);
@@ -117,9 +115,9 @@ namespace Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet
             }
         }
 
-        public async ValueTask<(long chainId, Chain chain)> GetSelectedChain()
+        public async ValueTask<(long chainId, int chain)> GetSelectedChain()
         {
-            var module = await moduleTask.Value;
+            var module = await _moduleTask.Value;
             try
             {
                 string chainHex = await module.InvokeAsync<string>("getSelectedChain", null);
@@ -132,79 +130,15 @@ namespace Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet
             }
         }
 
-        private static (long chainId, Chain chain) ChainHexToChainResponse(string chainHex)
+        private static (long chainId, int chain) ChainHexToChainResponse(string chainHex)
         {
-            long chainId = chainHex.HexToInt();
-            return (chainId, (Chain)chainId);
-        }
-
-        public async ValueTask<long> GetTransactionCount()
-        {
-            var module = await moduleTask.Value;
-            try
-            {
-                var result = await module.InvokeAsync<JsonElement>("getTransactionCount");
-                var resultString = result.GetString();
-                if (resultString != null)
-                {
-                    long intValue = resultString.HexToInt();
-                    return intValue;
-                }
-                return 0;
-            }
-            catch (Exception ex)
-            {
-                HandleExceptions(ex);
-                throw;
-            }
-        }
-
-        public async ValueTask<string> SignTypedData(string label, string value)
-        {
-            var module = await moduleTask.Value;
-            try
-            {
-                return await module.InvokeAsync<string>("signTypedData", label, value);
-            }
-            catch (Exception ex)
-            {
-                HandleExceptions(ex);
-                throw;
-            }
-        }
-
-        public async ValueTask<string> SignTypedDataV4(string typedData)
-        {
-            var module = await moduleTask.Value;
-            try
-            {
-                return await module.InvokeAsync<string>("signTypedDataV4", typedData);
-            }
-            catch (Exception ex)
-            {
-                HandleExceptions(ex);
-                throw;
-            }
-        }
-
-        public async ValueTask<string> SendTransaction(string to, BigInteger weiValue, string? data = null)
-        {
-            var module = await moduleTask.Value;
-            try
-            {
-                string hexValue = "0x" + weiValue.ToString("X");
-                return await module.InvokeAsync<string>("sendTransaction", to, hexValue, data);
-            }
-            catch (Exception ex)
-            {
-                HandleExceptions(ex);
-                throw;
-            }
+            long chainId = Convert.ToInt32(chainHex, 16);
+            return (chainId, (int)chainId);
         }
 
         public async ValueTask<dynamic> GenericRpc(string method, params dynamic?[]? args)
         {
-            var module = await moduleTask.Value;
+            var module = await _moduleTask.Value;
             try
             {
                 return await module.InvokeAsync<dynamic>("genericRpc", method, args);
@@ -216,44 +150,8 @@ namespace Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet
             }
         }
 
-        public async Task<string> RequestAccounts()
-        {
-            var result = await GenericRpc("eth_requestAccounts");
-
-            return result.ToString();
-        }
-
-        public async Task<long> GetBalance(string address, string block = "latest")
-        {
-            var result = await GenericRpc("eth_getBalance", address, block);
-
-            string hex = result.ToString();
-
-            return hex.HexToInt();
-        }
-
-        //[JSInvokable()]
-        //public static async Task OnConnect()
-        //{
-        //    Console.WriteLine("connected");
-        //    if (ConnectEvent != null)
-        //    {
-        //        await ConnectEvent.Invoke();
-        //    }
-        //}
-
-        //[JSInvokable()]
-        //public static async Task OnDisconnect()
-        //{
-        //    Console.WriteLine("disconnected");
-        //    if (DisconnectEvent != null)
-        //    {
-        //        await DisconnectEvent.Invoke();
-        //    }
-        //}
-
-        [JSInvokable()]
-        public static async Task OnAccountsChanged(string selectedAccount)
+        [JSInvokable]
+        public static async Task OnAccountsChangedMetaMask(string selectedAccount)
         {
             if (AccountChangedEvent != null)
             {
@@ -261,8 +159,8 @@ namespace Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet
             }
         }
 
-        [JSInvokable()]
-        public static async Task OnChainChanged(string chainhex)
+        [JSInvokable]
+        public static async Task OnChainChangedMetaMask(string chainhex)
         {
             if (ChainChangedEvent != null)
             {
@@ -272,9 +170,9 @@ namespace Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet
 
         public async ValueTask DisposeAsync()
         {
-            if (moduleTask.IsValueCreated)
+            if (_moduleTask.IsValueCreated)
             {
-                var module = await moduleTask.Value;
+                var module = await _moduleTask.Value;
                 await module.DisposeAsync();
             }
         }
@@ -284,9 +182,9 @@ namespace Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet
             switch (ex.Message)
             {
                 case "NoGameStop":
-                    throw new NoMetaMaskException();
+                    throw new NoWalletException(WalletType.GameStop);
                 case "UserDenied":
-                    throw new UserDeniedException();
+                    throw new WalletDeniedException(WalletType.GameStop);
             }
         }
     }

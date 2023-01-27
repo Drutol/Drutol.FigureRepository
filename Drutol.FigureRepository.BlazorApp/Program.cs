@@ -10,7 +10,6 @@ using Drutol.FigureRepository.BlazorApp.Interfaces.Http;
 using Drutol.FigureRepository.BlazorApp.Interfaces.Wallet;
 using Drutol.FigureRepository.BlazorApp.Util;
 using Drutol.FigureRepository.Shared.Admin;
-using MetaMask.Blazor;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -18,7 +17,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using MudBlazor;
 using MudBlazor.Services;
 
-namespace Drutol.FigureRepository.BlazorApp.Client;
+namespace Drutol.FigureRepository.BlazorApp;
 
 public class Program
 {
@@ -52,8 +51,8 @@ public class Program
             configuration.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomLeft;
         });
 
-        services.AddMetaMaskBlazor();
         services.AddScoped<GameStopService>();
+        services.AddScoped<MetaMaskService>();
 
         services.AddBlazoredSessionStorage();
         services.AddBlazoredLocalStorage();

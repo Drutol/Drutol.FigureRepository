@@ -4,7 +4,6 @@ using Drutol.FigureRepository.BlazorApp.Interfaces.Wallet;
 using Drutol.FigureRepository.BlazorApp.Models;
 using Drutol.FigureRepository.BlazorApp.Util;
 using Functional.Maybe;
-using MetaMask.Blazor.Enums;
 
 namespace Drutol.FigureRepository.BlazorApp.Infrastructure.Wallet;
 
@@ -83,7 +82,7 @@ public class GameStopWalletConnector : IWalletConnector
         WalletDisconnected?.Invoke(this, EventArgs.Empty);
     }
 
-    private async Task GameStopChainChangedEvent((long, Chain) arg)
+    private async Task GameStopChainChangedEvent((long, int) arg)
     {
         if (_connectingToGameStop)
             return;
@@ -142,10 +141,5 @@ public class GameStopWalletConnector : IWalletConnector
 
         _signCache[hash] = result;
         return result;
-    }
-
-    public async Task<string> SignTypedDataV4(string dataToSign)
-    {
-        return await _gameStopService.SignTypedDataV4(dataToSign.Trim('\''));
     }
 }
