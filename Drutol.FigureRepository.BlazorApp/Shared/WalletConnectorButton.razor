@@ -18,7 +18,14 @@
     }
 
     .WalletDialog {
-        width: 350px
+        width: 350px;
+    }
+
+    @@media (max-width: 480px) {
+        .WalletDialogPositioning {
+            width: 100%;
+            left: 0px !important;
+        }
     }
 
     .WalletButton span {
@@ -27,9 +34,13 @@
     }
 </style>
 
-<MudMenu Size="Size.Large" PopoverClass="WalletDialog pr-2 pl-2" @ref="WalletMenu">
+<MudMenu Size="Size.Large" PopoverClass="WalletDialog WalletDialogPositioning pr-2 pl-2" @ref="WalletMenu">
     <ActivatorContent>
-        <MudButton StartIcon="@Icons.Material.Outlined.AccountBalanceWallet" Color="Color.Inherit" OnClick="CheckWalletAvailability">Wallet</MudButton>
+        <MudButton StartIcon="@Icons.Material.Outlined.AccountBalanceWallet" Color="Color.Inherit" OnClick="CheckWalletAvailability">
+            <MudHidden Breakpoint="Breakpoint.Xs">
+                Wallet
+            </MudHidden>
+        </MudButton>
     </ActivatorContent>
     <ChildContent>
         <MudStack>
@@ -49,7 +60,7 @@
                                 </MudTooltip>
                             }
                         </MudStack>
- 
+
                     </MudButton>
                 }
                 else
@@ -68,7 +79,7 @@
                     </MudButton>
                 }
             }
-            
+
             <MudButton StartIcon="@Icons.Outlined.Info" OnClick="ShowWalletDisclaimer">What is this?</MudButton>
         </MudStack>
     </ChildContent>

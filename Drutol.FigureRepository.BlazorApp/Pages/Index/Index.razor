@@ -14,16 +14,17 @@
     }
 
     .TextContainer {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -60%);
+        position: relative;
+        min-height: 1024px;
+        top: 96px;
+        margin: auto;
         opacity: 1;
         text-align: center;
         color: white;
     }
 
     .IndexImage {
+        position: absolute;
         object-fit: cover;
         opacity: @(Theme.IsDarkMode ? ".8" : "1");
         min-height: 1024px;
@@ -33,7 +34,7 @@
     .WelcomeText {
         color: white;
         font-weight: lighter;
-        font-size: 7rem;
+        font-size: max(min(12vw, 7rem), 2.8rem);
         text-shadow: 1px 1px 5px black, 2px 2px 2px black, 2px 2px 1px black;
     }
 
@@ -51,7 +52,7 @@
 <div style="position: relative">
     <img src="@(Theme.IsDarkMode ? "images/Assets/DarkIndexImage.webp" : "images/Assets/LightIndexImage.webp")" class="IndexImage" />
     
-    <div class="TextContainer">
+    <div class="TextContainer pa-4">
         <span class="WelcomeText">Welcome!</span>
         
         <MudText Typo="Typo.body1" Class="mt-4">
@@ -100,7 +101,6 @@
         </MudText>
 
         <MudFab Color="Color.Primary" Icon="@Icons.Material.Filled.ArrowDownward" Class="mt-8" OnClick="ScrollToFigures"/>
-
     </div>
 
 </div>

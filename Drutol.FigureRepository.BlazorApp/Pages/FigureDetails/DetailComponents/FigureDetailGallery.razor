@@ -106,7 +106,11 @@
     {
         if (AvailableGalleryKinds.Count > 0)
         {
-            GalleryKind = AvailableGalleryKinds[index];
+            if (index < AvailableGalleryKinds.Count)
+                GalleryKind = AvailableGalleryKinds[index];
+            else
+                GalleryKind = Figure.InitialGalleryKindDisplay ?? FigureMediaKind.Painted;
+
             RefreshGallery();
         }
     }
