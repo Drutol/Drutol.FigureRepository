@@ -299,8 +299,8 @@ public class AsukaFigureSeed : IFigureSeed
                 Height = 32,
                 Length = 132
             },
-            MaxNumberOfParts = 37,
-            MinNumberOfParts = 37,
+            MaxNumberOfParts = 38,
+            MinNumberOfParts = 38,
             NumberOfClearParts = 4,
             NumberOfPrintBatches = 6,
             PrintResinVolume = 1148,
@@ -331,7 +331,7 @@ public class AsukaFigureSeed : IFigureSeed
         },
         CheckoutDetails = new FigureCheckoutDetails
         {
-            Price = 40m
+            Price = 30m
         },
         FigureCharacter = new FigureCharacter
         {
@@ -344,7 +344,7 @@ public class AsukaFigureSeed : IFigureSeed
         EyeType = FigureEyeType.IrisDecals,
         ExternalPurchaseOptions = new()
         {
-            new FigureExternalPurchaseOption(FigureExternalPurchaseOptionType.CgTrader, "https://www.cgtrader.com/3d-print-models/art/sculptures/ganyu-from-genshin-impact-sculpture-for-3d-printing", false),
+            new FigureExternalPurchaseOption(FigureExternalPurchaseOptionType.CgTrader, "https://www.cgtrader.com/3d-print-models/art/sculptures/asuka-from-aokana-tobiko-skipping", false),
             new FigureExternalPurchaseOption(FigureExternalPurchaseOptionType.GameStopMarketplace, "https://nft.gamestop.com", true)
         },
         FigureMetadata = new FigureMetadata

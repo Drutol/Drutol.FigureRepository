@@ -184,7 +184,7 @@ public class GanyuFigureSeed : IFigureSeed
         },
         CheckoutDetails = new FigureCheckoutDetails
         {
-            Price = 40m
+            Price = 30m
         },
         DownloadResources = new List<FigureDownloadResource>
         {

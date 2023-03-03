@@ -207,8 +207,8 @@ public class LumineFigureSeed : IFigureSeed
                 Height = 113,
                 Length = 144
             },
-            MaxNumberOfParts = 26,
-            MinNumberOfParts = 26,
+            MaxNumberOfParts = 27,
+            MinNumberOfParts = 27,
             NumberOfClearParts = 3,
             NumberOfPrintBatches = 5,
             PrintResinVolume = 942
@@ -261,7 +261,7 @@ public class LumineFigureSeed : IFigureSeed
         },
         CheckoutDetails = new FigureCheckoutDetails
         {
-            Price = 40m
+            Price = 30m
         },
         FigureCharacter = new FigureCharacter
         {
@@ -274,7 +274,7 @@ public class LumineFigureSeed : IFigureSeed
         EyeType = FigureEyeType.FullDecals,
         ExternalPurchaseOptions = new()
         {
-            new FigureExternalPurchaseOption(FigureExternalPurchaseOptionType.CgTrader, "https://www.cgtrader.com/3d-print-models/art/sculptures/ganyu-from-genshin-impact-sculpture-for-3d-printing", false),
+            new FigureExternalPurchaseOption(FigureExternalPurchaseOptionType.CgTrader, "https://www.cgtrader.com/3d-print-models/art/sculptures/lumine-from-genshin-impact-casual-outfit", false),
             new FigureExternalPurchaseOption(FigureExternalPurchaseOptionType.GameStopMarketplace, "https://nft.gamestop.com", true)
         },
         FigureMetadata = new FigureMetadata

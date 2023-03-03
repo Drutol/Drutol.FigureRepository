@@ -254,7 +254,7 @@ public class MadokaFigureSeed : IFigureSeed
         },
         CheckoutDetails = new FigureCheckoutDetails
         {
-            Price = 40m
+            Price = 20m
         },
         FigureCharacter = new FigureCharacter
         {
@@ -267,7 +267,7 @@ public class MadokaFigureSeed : IFigureSeed
         EyeType = FigureEyeType.PartSculpted,
         ExternalPurchaseOptions = new()
         {
-            new FigureExternalPurchaseOption(FigureExternalPurchaseOptionType.CgTrader, "https://www.cgtrader.com/3d-print-models/art/sculptures/ganyu-from-genshin-impact-sculpture-for-3d-printing", false),
+            new FigureExternalPurchaseOption(FigureExternalPurchaseOptionType.CgTrader, "https://www.cgtrader.com/3d-print-models/art/sculptures/madoka-from-aokana-smug-onsen", false),
             new FigureExternalPurchaseOption(FigureExternalPurchaseOptionType.GameStopMarketplace, "https://nft.gamestop.com", true)
         },
         FigureMetadata = new FigureMetadata

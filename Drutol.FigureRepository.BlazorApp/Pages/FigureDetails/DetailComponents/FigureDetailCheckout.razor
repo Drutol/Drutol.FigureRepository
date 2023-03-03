@@ -138,16 +138,20 @@
                                 <MudProgressCircular Style="place-self: center" Color="Color.Primary" Indeterminate="true"/>
                                 <MudText Align="Align.Center">PayPal Loading...</MudText>
                             }
-                            <div id="paypal-buttons" style="@(!PaypalOrderReady ? "display: none;" : string.Empty)"></div>
+                            <CheckoutPurchaseButton Option="_dummyPayPalPurchaseOption" Disabled="true" />
+                            <MudText>Coming soon...</MudText>
+                            @*<div id="paypal-buttons" style="@(!PaypalOrderReady ? "display: none;" : string.Empty)"></div>*@
                         </MudStack>
                     }
                     else
                     {
                         <MudAlert Severity="Severity.Info" Class="ml-2 mr-2 mt-2" Style="color: var(--mud-palette-text-primary)">
-                            Connect your wallet first in order to access all purchase options.
+                            More purchase options coming soon...
+                            @*                            
+                                Connect your wallet first in order to access all purchase options.
                             <br/>
                             <br/>
-                            You can do it by clicking the button in the top right corner of the page.
+                            You can do it by clicking the button in the top right corner of the page.*@
                         </MudAlert>
                         <MudDivider Class="ma-2"/>
                         <MudStack Class="ma-2">
@@ -272,13 +276,13 @@
 
         try
         {
-            var reference = DotNetObjectReference.Create(this);
-            var response = await HttpClient.Client.PostAsJsonAsync(
-                "api/order/order",
-                new CheckoutOrderRequest(Figure.Guid, WalletProvider.CurrentWallet.Value.SelectedAccount.Value.Address));
-            var result = await response.Content.ReadFromJsonAsync<CheckoutOrderResponse>();
+            //var reference = DotNetObjectReference.Create(this);
+            //var response = await HttpClient.Client.PostAsJsonAsync(
+            //    "api/order/order",
+            //    new CheckoutOrderRequest(Figure.Guid, WalletProvider.CurrentWallet.Value.SelectedAccount.Value.Address));
+            //var result = await response.Content.ReadFromJsonAsync<CheckoutOrderResponse>();
 
-            await JS.InvokeVoidAsync("openPayPal", reference, result.OrderId);
+            //await JS.InvokeVoidAsync("openPayPal", reference, result.OrderId);
         }
         catch (Exception e)
         {
