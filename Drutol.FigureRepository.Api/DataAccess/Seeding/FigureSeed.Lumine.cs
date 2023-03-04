@@ -191,6 +191,16 @@ public class LumineFigureSeed : IFigureSeed
             {
                 Event = FigureTimelineEvent.PrintDone,
                 Date = new DateTime(2021, 11, 28)
+            },  
+            new()
+            {
+                Event = FigureTimelineEvent.PaintDone,
+                Date = new DateTime(2022, 7, 18)
+            },  
+            new()
+            {
+                Event = FigureTimelineEvent.Publish,
+                Date = new DateTime(2023, 3, 4)
             }
         },
         FigureDimensions = new FigureDimensions
@@ -232,12 +242,12 @@ public class LumineFigureSeed : IFigureSeed
         {
             new()
             {
-                Url = "https://www.artstation.com/artwork/DAQ4Le",
+                Url = "https://www.artstation.com/artwork/w06vOX",
                 Type = FigureExternalLinkType.ArtStation
             },
             new()
             {
-                Url = "https://twitter.com/Drutol/status/1464873712474337283",
+                Url = "https://twitter.com/Drutol/status/1631983089348902914",
                 Type = FigureExternalLinkType.Twitter
             }
         },

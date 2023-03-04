@@ -213,18 +213,28 @@ public class MadokaFigureSeed : IFigureSeed
             {
                 Date = new(2022, 2, 14),
                 Event = FigureTimelineEvent.PrintDone
+            },
+            new()
+            {
+                Date = new(2022, 10, 10),
+                Event = FigureTimelineEvent.PaintDone
+            }, 
+            new()
+            {
+                Date = new(2023, 3, 4),
+                Event = FigureTimelineEvent.Publish
             }
         },
         ExternalLinks = new List<FigureExternalLink>
         {
             new()
             {
-                Url = "https://www.artstation.com/artwork/3qmJEm",
+                Url = "https://www.artstation.com/artwork/VJgaBN",
                 Type = FigureExternalLinkType.ArtStation
             },
             new()
             {
-                Url = "https://twitter.com/Drutol/status/1487903753130893323",
+                Url = "https://twitter.com/Drutol/status/1631982651371388928",
                 Type = FigureExternalLinkType.Twitter
             },
         },

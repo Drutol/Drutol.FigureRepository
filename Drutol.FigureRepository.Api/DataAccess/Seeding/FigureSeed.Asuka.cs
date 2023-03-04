@@ -259,7 +259,7 @@ public class AsukaFigureSeed : IFigureSeed
             },
             new()
             {
-                Date = new DateTime(2022, 7, 15),
+                Date = new DateTime(2023, 3, 4),
                 Event = FigureTimelineEvent.Publish
             }
         },
@@ -267,12 +267,12 @@ public class AsukaFigureSeed : IFigureSeed
         {
             new()
             {
-                Url = "https://www.artstation.com/artwork/G8gomz",
+                Url = "https://www.artstation.com/artwork/1x8Rbo",
                 Type = FigureExternalLinkType.ArtStation
             },
             new()
             {
-                Url = "https://twitter.com/Drutol/status/1523677655769382914",
+                Url = "https://twitter.com/Drutol/status/1631982849841676289",
                 Type = FigureExternalLinkType.Twitter
             },
         },
