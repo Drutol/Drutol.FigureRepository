@@ -237,6 +237,11 @@ public class MadokaFigureSeed : IFigureSeed
                 Url = "https://twitter.com/Drutol/status/1631982651371388928",
                 Type = FigureExternalLinkType.Twitter
             },
+            new()
+            {
+                Url = "https://www.cgtrader.com/3d-print-models/art/sculptures/madoka-from-aokana-smug-onsen",
+                Type = FigureExternalLinkType.CgTrader
+            },
         },
         NftDetails = new("0xe3111f751c5649216fb806bcaf4e614faf92e55c")
         {

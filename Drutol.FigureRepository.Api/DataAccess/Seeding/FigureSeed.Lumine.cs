@@ -249,6 +249,11 @@ public class LumineFigureSeed : IFigureSeed
             {
                 Url = "https://twitter.com/Drutol/status/1631983089348902914",
                 Type = FigureExternalLinkType.Twitter
+            },
+            new()
+            {
+                Url = "https://www.cgtrader.com/3d-print-models/art/sculptures/lumine-from-genshin-impact-casual-outfit",
+                Type = FigureExternalLinkType.CgTrader
             }
         },
         DownloadResources = new List<FigureDownloadResource>

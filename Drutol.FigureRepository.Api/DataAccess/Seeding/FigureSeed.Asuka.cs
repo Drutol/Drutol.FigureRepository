@@ -275,6 +275,11 @@ public class AsukaFigureSeed : IFigureSeed
                 Url = "https://twitter.com/Drutol/status/1631982849841676289",
                 Type = FigureExternalLinkType.Twitter
             },
+            new()
+            {
+                Url = "https://www.cgtrader.com/3d-print-models/art/sculptures/asuka-from-aokana-tobiko-skipping",
+                Type = FigureExternalLinkType.CgTrader
+            },
         },
         FigureDimensions = new()
         {
